@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://c3wsy7q6g5io4"]
+
+[ext_resource type="Texture2D" uid="uid://c51j2mga5duvm" path="res://sprites/Characters/Basic Charakter Spritesheet.png" id="1_72ieh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uwrxv"]
+size = Vector2(8, 6)
+
+[sub_resource type="AnimationRootNode" id="AnimationRootNode_8cj0n"]
+
+[node name="Player" type="CharacterBody2D" unique_id=349396540]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=134696660]
+texture = ExtResource("1_72ieh")
+hframes = 4
+vframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_uwrxv")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=749817586]
+tree_root = SubResource("AnimationRootNode_8cj0n")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationTree" unique_id=99691324]
+root_node = NodePath("../..")

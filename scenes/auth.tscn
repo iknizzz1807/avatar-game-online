@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://d1gfftnm3qh5w"]
+
+[node name="Auth" type="Control" unique_id=292367545]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Login" type="Control" parent="." unique_id=1750975188]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Login" unique_id=614926546]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -146.0
+offset_top = 77.0
+offset_right = 147.0
+offset_bottom = 174.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="GridContainer" type="GridContainer" parent="Login/VBoxContainer" unique_id=259371175]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="Login/VBoxContainer/GridContainer" unique_id=938657112]
+layout_mode = 2
+text = "Username: "
+
+[node name="TextEdit" type="LineEdit" parent="Login/VBoxContainer/GridContainer" unique_id=1758065951]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Login/VBoxContainer/GridContainer" unique_id=878850545]
+layout_mode = 2
+text = "Password: "
+
+[node name="TextEdit2" type="LineEdit" parent="Login/VBoxContainer/GridContainer" unique_id=1515658287]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Login/VBoxContainer" unique_id=1320622470]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Login"
+
+[node name="SignUp" type="Control" parent="." unique_id=751365117]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SignUp" unique_id=1675666174]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -146.0
+offset_top = 77.0
+offset_right = 147.0
+offset_bottom = 174.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="GridContainer" type="GridContainer" parent="SignUp/VBoxContainer" unique_id=632175893]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="SignUp/VBoxContainer/GridContainer" unique_id=1583831866]
+layout_mode = 2
+text = "Username: "
+
+[node name="TextEdit" type="LineEdit" parent="SignUp/VBoxContainer/GridContainer" unique_id=780278808]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="SignUp/VBoxContainer/GridContainer" unique_id=570793976]
+layout_mode = 2
+text = "Password: "
+
+[node name="TextEdit2" type="LineEdit" parent="SignUp/VBoxContainer/GridContainer" unique_id=76581671]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="SignUp/VBoxContainer" unique_id=1853657149]
+custom_minimum_size = Vector2(72, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Sign Up"

@@ -128,8 +128,8 @@
 - [ ] 🟢 Sau đăng nhập: kết nối luôn vào Godot Server, load map mặc định (Công Viên)
 
 ### HUD
-- [ ] 🟢 Hiển thị số Xu — tự cập nhật mỗi khi Go Server trả về số mới
-- [ ] 🟢 Nút mở túi đồ, nút chuyển map
+- [X] 🟢 Hiển thị số Xu — tự cập nhật mỗi khi Go Server trả về số mới
+- [X] 🟢 Nút mở túi đồ, nút chuyển map
 
 ### Túi đồ (Inventory)
 - [ ] 🟡 20 ô, hiển thị icon + số lượng

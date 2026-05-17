@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://cvmb2balyxwr5"]
+
+[ext_resource type="Script" uid="uid://d0a1hjbvbopd" path="res://scripts/client/prefabs/ui/inventory.gd" id="1_d8e3d"]
+[ext_resource type="PackedScene" uid="uid://cbfnig2hg4ehu" path="res://prefabs/ui/components/item_slot.tscn" id="2_g36n7"]
+[ext_resource type="Script" uid="uid://bagfxkfa7im1l" path="res://scripts/shared/inventory_slot.gd" id="3_islot"]
+[ext_resource type="Resource" uid="uid://item0seed01" path="res://resources/items/seed_carrot.tres" id="4_seed"]
+[ext_resource type="Resource" uid="uid://item0crop01" path="res://resources/items/crop_carrot.tres" id="5_crop"]
+[ext_resource type="Resource" uid="uid://item0fish01" path="res://resources/items/fish_small.tres" id="6_fish"]
+[ext_resource type="Resource" uid="uid://co7uip3u7skm2" path="res://resources/items/rod_bamboo.tres" id="7_rod"]
+[ext_resource type="Resource" uid="uid://item0bait01" path="res://resources/items/bait_normal.tres" id="8_bait"]
+
+[sub_resource type="Resource" id="ex_1"]
+script = ExtResource("3_islot")
+item = ExtResource("4_seed")
+quantity = 5
+
+[sub_resource type="Resource" id="ex_2"]
+script = ExtResource("3_islot")
+item = ExtResource("5_crop")
+quantity = 8
+
+[sub_resource type="Resource" id="ex_3"]
+script = ExtResource("3_islot")
+item = ExtResource("6_fish")
+quantity = 6
+
+[sub_resource type="Resource" id="ex_4"]
+script = ExtResource("3_islot")
+item = ExtResource("6_fish")
+quantity = 2
+
+[sub_resource type="Resource" id="ex_5"]
+script = ExtResource("3_islot")
+item = ExtResource("7_rod")
+
+[sub_resource type="Resource" id="ex_6"]
+script = ExtResource("3_islot")
+item = ExtResource("8_bait")
+quantity = 12
+
+[sub_resource type="Resource" id="ex_7"]
+script = ExtResource("3_islot")
+item = ExtResource("4_seed")
+quantity = 3
+
+[sub_resource type="Resource" id="ex_8"]
+script = ExtResource("3_islot")
+item = ExtResource("5_crop")
+
+[node name="Inventory" type="Control" unique_id=1276552801]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d8e3d")
+EXAMPLE_SLOTS = Array[ExtResource("3_islot")]([SubResource("ex_1"), SubResource("ex_2"), SubResource("ex_3"), SubResource("ex_4"), SubResource("ex_5"), SubResource("ex_6"), SubResource("ex_7"), SubResource("ex_8")])
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=224372060]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -185.0
+offset_top = -185.0
+offset_right = 185.0
+offset_bottom = 185.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MC" type="MarginContainer" parent="Panel" unique_id=556479765]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="Panel/MC" unique_id=970981711]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleBar" type="HBoxContainer" parent="Panel/MC/VBox" unique_id=196337454]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/MC/VBox/TitleBar" unique_id=407813423]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "🎒 Túi đồ (0/20)"
+
+[node name="CloseButton" type="Button" parent="Panel/MC/VBox/TitleBar" unique_id=1559302826]
+layout_mode = 2
+text = "✕"
+
+[node name="GridContainer" type="GridContainer" parent="Panel/MC/VBox" unique_id=2145531185]
+layout_mode = 2
+columns = 5
+
+[node name="ItemSlot" parent="Panel/MC/VBox/GridContainer" unique_id=1954823864 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot2" parent="Panel/MC/VBox/GridContainer" unique_id=620989428 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot3" parent="Panel/MC/VBox/GridContainer" unique_id=451512133 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot4" parent="Panel/MC/VBox/GridContainer" unique_id=1963045045 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot5" parent="Panel/MC/VBox/GridContainer" unique_id=1575987731 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot6" parent="Panel/MC/VBox/GridContainer" unique_id=1114029650 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot7" parent="Panel/MC/VBox/GridContainer" unique_id=780651472 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot8" parent="Panel/MC/VBox/GridContainer" unique_id=1778023668 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot9" parent="Panel/MC/VBox/GridContainer" unique_id=859107077 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot10" parent="Panel/MC/VBox/GridContainer" unique_id=880668171 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot11" parent="Panel/MC/VBox/GridContainer" unique_id=1427097874 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot12" parent="Panel/MC/VBox/GridContainer" unique_id=1921494323 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot13" parent="Panel/MC/VBox/GridContainer" unique_id=1514769065 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot14" parent="Panel/MC/VBox/GridContainer" unique_id=2080451199 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot15" parent="Panel/MC/VBox/GridContainer" unique_id=1426181112 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot16" parent="Panel/MC/VBox/GridContainer" unique_id=754236950 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot17" parent="Panel/MC/VBox/GridContainer" unique_id=675849746 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot18" parent="Panel/MC/VBox/GridContainer" unique_id=833494358 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot19" parent="Panel/MC/VBox/GridContainer" unique_id=1365219480 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="ItemSlot20" parent="Panel/MC/VBox/GridContainer" unique_id=1392182014 instance=ExtResource("2_g36n7")]
+layout_mode = 2
+
+[node name="TooltipSection" type="VBoxContainer" parent="Panel/MC/VBox" unique_id=500076775]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Separator" type="HSeparator" parent="Panel/MC/VBox/TooltipSection" unique_id=2062243780]
+layout_mode = 2
+
+[node name="TooltipName" type="Label" parent="Panel/MC/VBox/TooltipSection" unique_id=2064788764]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="SellButton" type="Button" parent="Panel/MC/VBox/TooltipSection" unique_id=2142448636]
+visible = false
+layout_mode = 2
+text = "💰 Bán"

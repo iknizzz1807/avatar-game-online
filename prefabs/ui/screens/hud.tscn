@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://b0w6mcunr1u5d"]
+
+[ext_resource type="Script" uid="uid://cnxamfcpwnwfc" path="res://scripts/client/prefabs/ui/hud.gd" id="1_hudscr"]
+
+[node name="HUD" type="Control" unique_id=1281974293]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hudscr")
+
+[node name="TopBar" type="HBoxContainer" parent="." unique_id=1799166588]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 8.0
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/separation = 8
+
+[node name="XuContainer" type="HBoxContainer" parent="TopBar" unique_id=877923920]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="XuIcon" type="Label" parent="TopBar/XuContainer" unique_id=843722593]
+layout_mode = 2
+text = "🪙"
+
+[node name="XuLabel" type="Label" parent="TopBar/XuContainer" unique_id=1161111553]
+layout_mode = 2
+text = "-- Xu"
+
+[node name="BottomBar" type="HBoxContainer" parent="." unique_id=2109506948]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -48.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="InventoryButton" type="Button" parent="BottomBar" unique_id=483438398]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+text = "🎒 Túi đồ"
+
+[node name="MapButton" type="Button" parent="BottomBar" unique_id=2005933895]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+text = "🗺 Chuyển Map"

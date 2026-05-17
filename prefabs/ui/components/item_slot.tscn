@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://cbfnig2hg4ehu"]
+
+[ext_resource type="Script" uid="uid://covf2spd6ditr" path="res://scripts/client/prefabs/ui/item_slot.gd" id="1_islotscr"]
+
+[node name="ItemSlot" type="PanelContainer" unique_id=1954823864]
+custom_minimum_size = Vector2(60, 60)
+mouse_filter = 0
+script = ExtResource("1_islotscr")
+
+[node name="Overlay" type="Control" parent="." unique_id=122604336]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Overlay" unique_id=1103417282]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="TextureRect" type="TextureRect" parent="Overlay/MarginContainer" unique_id=436227001]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconLabel" type="Label" parent="Overlay" unique_id=1373569738]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QuantityLabel" type="Label" parent="Overlay" unique_id=764397417]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = -14.0
+offset_right = -2.0
+offset_bottom = -2.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2

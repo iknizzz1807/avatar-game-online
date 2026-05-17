@@ -63,7 +63,6 @@ func _update_animation(inputDir: Vector2) -> void:
 	player.animationTree["parameters/Idle/blend_position"] = _mirror_blend(lastFacingDir);
 
 	# Flip based on the snapped cardinal — never on a raw diagonal
-	print(lastFacingDir);
 	player.sprite.flip_h = lastFacingDir.x < 0.0;
 
 

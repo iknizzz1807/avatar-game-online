@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://ccoxl121jeqgv"]
+
+[ext_resource type="Script" uid="uid://dxldafm8g0j7b" path="res://scripts/client/prefabs/ui/farm_map.gd" id="1_farmscr"]
+
+[node name="FarmMap" type="Control" unique_id=1765950099]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_farmscr")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=797498251]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -200.0
+offset_right = 190.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MC" type="MarginContainer" parent="Panel" unique_id=1540136965]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="Panel/MC" unique_id=1077884500]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleBar" type="HBoxContainer" parent="Panel/MC/VBox" unique_id=2052359428]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/MC/VBox/TitleBar" unique_id=1004291294]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "🌾 Trang trại"
+
+[node name="CloseButton" type="Button" parent="Panel/MC/VBox/TitleBar" unique_id=1959287390]
+layout_mode = 2
+text = "✕"
+
+[node name="GridContainer" type="GridContainer" parent="Panel/MC/VBox" unique_id=1954868852]
+layout_mode = 2
+columns = 4

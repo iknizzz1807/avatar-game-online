@@ -10,3 +10,5 @@ tile_map_data = PackedByteArray("AAAAAAAAAAABAAEAAAAIAAYAAAABAAEAAAAIAAUAAAABAAE
 tile_set = ExtResource("1_uwrxv")
 
 [node name="Player" parent="." unique_id=349396540 instance=ExtResource("2_yqjtg")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=897578316]

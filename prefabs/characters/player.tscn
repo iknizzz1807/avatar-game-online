@@ -3,6 +3,10 @@
 [ext_resource type="Script" uid="uid://dfn271f6vv8vo" path="res://scripts/client/prefabs/player/player.gd" id="1_1ir3x"]
 [ext_resource type="Texture2D" uid="uid://c51j2mga5duvm" path="res://sprites/Characters/Basic Charakter Spritesheet.png" id="1_72ieh"]
 [ext_resource type="Script" uid="uid://ckp6awq26ndm5" path="res://scripts/client/prefabs/player/player_normal_state.gd" id="3_eimbo"]
+[ext_resource type="PackedScene" uid="uid://b0w6mcunr1u5d" path="res://prefabs/ui/screens/hud.tscn" id="4_p1jl7"]
+[ext_resource type="PackedScene" uid="uid://bkua1vn7fon5m" path="res://prefabs/ui/screens/chat.tscn" id="5_hc1fl"]
+[ext_resource type="PackedScene" uid="uid://cvmb2balyxwr5" path="res://prefabs/ui/screens/inventory.tscn" id="6_kylil"]
+[ext_resource type="PackedScene" uid="uid://ccoxl121jeqgv" path="res://prefabs/ui/screens/farm_map.tscn" id="7_jd78j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uwrxv"]
 size = Vector2(8, 6)
@@ -213,6 +217,7 @@ script = ExtResource("1_1ir3x")
 texture = ExtResource("1_72ieh")
 hframes = 4
 vframes = 4
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
 position = Vector2(0, 5)
@@ -233,3 +238,18 @@ libraries/ = SubResource("AnimationLibrary_p1jl7")
 
 [node name="Normal" type="Node" parent="States" unique_id=2056939856]
 script = ExtResource("3_eimbo")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=658738122]
+
+[node name="HUD" parent="CanvasLayer" unique_id=1281974293 instance=ExtResource("4_p1jl7")]
+
+[node name="Chat" parent="CanvasLayer" unique_id=1850566308 instance=ExtResource("5_hc1fl")]
+visible = false
+
+[node name="FarmMap" parent="CanvasLayer" unique_id=1765950099 instance=ExtResource("7_jd78j")]
+
+[node name="Inventory" parent="CanvasLayer" unique_id=1276552801 instance=ExtResource("6_kylil")]
+visible = false
+
+[connection signal="inventory_requested" from="CanvasLayer/HUD" to="CanvasLayer/Inventory" method="open_inventory"]
+[connection signal="map_change_requested" from="CanvasLayer/HUD" to="CanvasLayer/FarmMap" method="open_map"]

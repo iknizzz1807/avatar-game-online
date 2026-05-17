@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://co7uip3u7skm2"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://caxvudoy00lc1" path="res://sprites/Objects/Basic tools and meterials.png" id="2_tex"]
+
+[resource]
+script = ExtResource("1_script")
+id = 31
+itemName = "Cần Câu Tre"
+icon = "🎣"
+texture = ExtResource("2_tex")
+buyPrice = 200
+type = "tool"
+stackable = false

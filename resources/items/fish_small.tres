@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://item0fish01"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://di6r4k3bffkp2" path="res://sprites/Objects/Egg_item.png" id="2_tex"]
+
+[resource]
+script = ExtResource("1_script")
+id = 21
+itemName = "Cá Nhỏ"
+icon = "🐟"
+texture = ExtResource("2_tex")
+sellPrice = 30
+sellable = true
+type = "fish"

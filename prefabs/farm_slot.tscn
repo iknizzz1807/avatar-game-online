@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://c0qrqh0hpvw52"]
+
+[ext_resource type="Script" uid="uid://w1cn4djqr2r6" path="res://scripts/client/prefabs/farm_slot.gd" id="1_38kc8"]
+[ext_resource type="Texture2D" uid="uid://cwd77kmuayieo" path="res://sprites/Tilesets/Tilled_Dirt_v2.png" id="1_c0c2m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lsl1e"]
+
+[node name="FarmSlot" type="Area2D" unique_id=2131962941]
+script = ExtResource("1_38kc8")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1690327330]
+texture = ExtResource("1_c0c2m")
+region_enabled = true
+region_rect = Rect2(48, 48, 16, 16)
+
+[node name="Plant" type="Sprite2D" parent="." unique_id=1438899620]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=762390403]
+shape = SubResource("RectangleShape2D_lsl1e")
+
+[node name="Timer" type="Label" parent="." unique_id=498076834]
+offset_left = -19.0
+offset_top = -32.0
+offset_right = 21.0
+offset_bottom = -9.0
+theme_override_font_sizes/font_size = 12
+text = "0:00"
+horizontal_alignment = 1
+vertical_alignment = 1

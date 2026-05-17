@@ -54,6 +54,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_d8e3d")
 EXAMPLE_SLOTS = Array[ExtResource("3_islot")]([SubResource("ex_1"), SubResource("ex_2"), SubResource("ex_3"), SubResource("ex_4"), SubResource("ex_5"), SubResource("ex_6"), SubResource("ex_7"), SubResource("ex_8")])
 

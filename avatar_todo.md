@@ -132,12 +132,12 @@
 - [X] 🟢 Nút mở túi đồ, nút chuyển map
 
 ### Túi đồ (Inventory)
-- [ ] 🟡 20 ô, hiển thị icon + số lượng
-- [ ] 🟢 Click ô → tooltip tên item + nút Bán (nếu là nông sản/cá)
+- [X] 🟡 20 ô, hiển thị icon + số lượng
+- [X] 🟢 Click ô → tooltip tên item + nút Bán (nếu là nông sản/cá)
 
 ### Chat
-- [ ] 🟡 Chat box: lịch sử tin nhắn, ô nhập, nút gửi
-- [ ] 🟢 Chat bubble trên đầu nhân vật: hiện 4 giây rồi tự ẩn
+- [X] 🟡 Chat box: lịch sử tin nhắn, ô nhập, nút gửi
+- [X] 🟢 Chat bubble trên đầu nhân vật: hiện 4 giây rồi tự ẩn
 
 ### Farm Map
 - [ ] 🟡 Hiển thị 16 ô đất với đúng trạng thái (lấy từ Go Server khi load map)

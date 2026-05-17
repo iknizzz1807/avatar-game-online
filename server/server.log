@@ -1,0 +1,31 @@
+2026/05/16 23:49:59 Database connected: game.db
+2026/05/16 23:49:59 Database migrations completed
+2026/05/16 23:49:59 Item seed data completed
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> main.main.func2 (4 handlers)
+[GIN-debug] POST   /api/auth/register        --> github.com/avatar-game/server/handlers.Register (4 handlers)
+[GIN-debug] POST   /api/auth/login           --> github.com/avatar-game/server/handlers.Login (4 handlers)
+[GIN-debug] GET    /api/user/me              --> github.com/avatar-game/server/handlers.GetMe (5 handlers)
+[GIN-debug] PUT    /api/user/map             --> github.com/avatar-game/server/handlers.ChangeMap (5 handlers)
+[GIN-debug] GET    /api/inventory            --> github.com/avatar-game/server/handlers.GetInventory (5 handlers)
+[GIN-debug] POST   /api/inventory/sell       --> github.com/avatar-game/server/handlers.SellItem (5 handlers)
+[GIN-debug] GET    /api/farm/plots           --> github.com/avatar-game/server/handlers.GetPlots (5 handlers)
+[GIN-debug] POST   /api/farm/seed            --> github.com/avatar-game/server/handlers.SeedPlot (5 handlers)
+[GIN-debug] POST   /api/farm/water           --> github.com/avatar-game/server/handlers.WaterPlot (5 handlers)
+[GIN-debug] POST   /api/farm/harvest         --> github.com/avatar-game/server/handlers.HarvestPlot (5 handlers)
+[GIN-debug] GET    /api/shop/seeds           --> github.com/avatar-game/server/handlers.GetSeeds (5 handlers)
+[GIN-debug] GET    /api/shop/fishing         --> github.com/avatar-game/server/handlers.GetFishingShop (5 handlers)
+[GIN-debug] POST   /api/shop/buy             --> github.com/avatar-game/server/handlers.BuyItem (5 handlers)
+[GIN-debug] GET    /api/fishing/status       --> github.com/avatar-game/server/handlers.GetFishingStatus (5 handlers)
+[GIN-debug] POST   /api/fishing/start        --> github.com/avatar-game/server/handlers.StartFishing (5 handlers)
+[GIN-debug] POST   /api/fishing/stop         --> github.com/avatar-game/server/handlers.StopFishing (5 handlers)
+2026/05/16 23:49:59 Server starting on port 8080
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8080
+[GIN] 2026/05/16 - 23:50:02 | 200 |  190.446767ms |             ::1 | POST     "/api/auth/register"

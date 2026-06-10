@@ -1,0 +1,117 @@
+extends Control
+
+# ═════════════════════════════════════════════════════════════════════════════
+# AUTH SCREEN
+#
+# Handles login and sign-up against the Go REST server.
+# On successful login:
+#   1. Stores JWT + user info in MultiplayerManager
+#   2. Connects to the Godot dedicated server
+#   3. Transitions to game.tscn
+# ═════════════════════════════════════════════════════════════════════════════
+
+const API_BASE: String   = "http://127.0.0.1:8080"
+const GAME_SCENE: String = "res://scenes/game.tscn"
+
+# ─── Nodes ────────────────────────────────────────────────────────────────────
+@onready var _login_panel: Control  = $Login
+@onready var _signup_panel: Control = $SignUp
+
+# Login panel
+@onready var _login_user:  LineEdit = $Login/VBoxContainer/GridContainer/TextEdit
+@onready var _login_pass:  LineEdit = $Login/VBoxContainer/GridContainer/TextEdit2
+@onready var _login_btn:   Button   = $Login/VBoxContainer/Button
+
+# Sign-up panel
+@onready var _signup_user: LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit
+@onready var _signup_pass: LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit2
+@onready var _signup_btn:  Button   = $SignUp/VBoxContainer/Button
+
+@onready var _http: HTTPRequest = $HTTPRequest
+
+
+func _ready() -> void:
+	_login_pass.secret = true
+	_signup_pass.secret = true
+
+	_login_btn.pressed.connect(_on_login_pressed)
+	_signup_btn.pressed.connect(_on_signup_pressed)
+	_http.request_completed.connect(_on_request_completed)
+
+	# Show login by default
+	_login_panel.visible  = true
+	_signup_panel.visible = false
+
+
+# ─── Button handlers ──────────────────────────────────────────────────────────
+
+func _on_login_pressed() -> void:
+	_send_request(
+		API_BASE + "/api/auth/login",
+		{ "username": _login_user.text.strip_edges(), "password": _login_pass.text }
+	)
+
+
+func _on_signup_pressed() -> void:
+	_send_request(
+		API_BASE + "/api/auth/register",
+		{ "username": _signup_user.text.strip_edges(), "password": _signup_pass.text }
+	)
+
+
+func _send_request(url: String, body: Dictionary) -> void:
+	var json_body: String  = JSON.stringify(body)
+	var headers: PackedStringArray = PackedStringArray([
+		"Content-Type: application/json"
+	])
+	_http.request(url, headers, HTTPClient.METHOD_POST, json_body)
+
+
+# ─── HTTP response ────────────────────────────────────────────────────────────
+
+func _on_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
+	if result != HTTPRequest.RESULT_SUCCESS:
+		push_error("[Auth] HTTP error: result=%d" % result)
+		return
+
+	var json_text: String = body.get_string_from_utf8()
+	var parsed = JSON.parse_string(json_text)
+	if not parsed is Dictionary:
+		push_error("[Auth] Invalid JSON response")
+		return
+
+	if response_code != 200:
+		push_error("[Auth] Server error %d: %s" % [response_code, parsed.get("error", "unknown")])
+		return
+
+	_on_login_success(parsed)
+
+
+func _on_login_success(data: Dictionary) -> void:
+	# Go server returns: { token, user: { id, username, display_name, current_map, ... } }
+	var token: String       = data.get("token", "")
+	var user: Dictionary    = data.get("user", {})
+	var user_id: int        = int(user.get("id", -1))
+	var display_name: String = user.get("display_name", user.get("username", "Player"))
+	var map_id: String      = user.get("current_map", "world")
+
+	print("[Auth] Logged in as %s (id=%d)" % [display_name, user_id])
+
+	# Store info in the multiplayer manager
+	MultiplayerManager.set_local_player(user_id, display_name, map_id)
+
+	# Connect to the Godot dedicated server
+	MultiplayerManager.connected_to_server.connect(_on_server_connected, CONNECT_ONE_SHOT)
+	MultiplayerManager.connection_failed.connect(_on_server_connection_failed, CONNECT_ONE_SHOT)
+	MultiplayerManager.connect_to_server()
+
+
+func _on_server_connected() -> void:
+	print("[Auth] Connected to game server — loading game scene.")
+	get_tree().change_scene_to_file(GAME_SCENE)
+
+
+func _on_server_connection_failed() -> void:
+	push_warning("[Auth] Could not connect to game server — loading game scene offline.")
+	# Still let the player into the game scene even without multiplayer
+	get_tree().change_scene_to_file(GAME_SCENE)

@@ -33,6 +33,8 @@ func fixed_update(delta: float) -> void:
 	var inputDir: Vector2 = _handle_movement(delta);
 	_update_animation(inputDir);
 	player.move_and_slide();
+	# Write sync vars so MultiplayerSynchronizer replicates them to other peers.
+	_write_sync_vars(inputDir);
 
 
 # ─── Private helpers ─────────────────────────────────────────────────────────
@@ -64,6 +66,14 @@ func _update_animation(inputDir: Vector2) -> void:
 
 	# Flip based on the snapped cardinal — never on a raw diagonal
 	player.sprite.flip_h = lastFacingDir.x < 0.0;
+
+
+## Write the four sync vars so MultiplayerSynchronizer replicates them.
+func _write_sync_vars(inputDir: Vector2) -> void:
+	player.sync_anim_state = "Run" if inputDir != Vector2.ZERO else "Idle";
+	player.sync_facing     = _mirror_blend(lastFacingDir);
+	player.sync_flip_h     = lastFacingDir.x < 0.0;
+	# sync_position is updated in Player._physics_process after move_and_slide.
 
 
 	# Pick whichever axis is dominant and snap to a unit cardinal vector

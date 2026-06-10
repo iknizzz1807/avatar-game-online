@@ -1,5 +1,12 @@
-extends Area2D
+extends ContextMenuTarget
 class_name FarmSlot
+
+# ═════════════════════════════════════════════════════════════════════════════
+# FARM SLOT
+# Extends ContextMenuTarget, which provides all right-click / context menu
+# wiring. This class only needs to declare WHAT actions are available and
+# HOW to react to them.
+# ═════════════════════════════════════════════════════════════════════════════
 
 enum PlotState {
 	EMPTY,
@@ -20,10 +27,10 @@ var currentSeedId: String = ""
 # For local testing, simulate a short growth time (e.g. 5 seconds)
 var LOCAL_GROWTH_DURATION: int = 5
 
+# ─── LIFECYCLE ────────────────────────────────────────────────────────────────
+
 func _ready() -> void:
-	# Ensure Area2D can detect clicks
-	input_pickable = true
-	input_event.connect(_on_input_event)
+	super._ready()  # ← sets input_pickable, connects _on_input_event, adds to group
 	_update_visuals()
 
 func _process(_delta: float) -> void:
@@ -47,11 +54,19 @@ func _process(_delta: float) -> void:
 	else:
 		timerLabel.visible = false
 
-# ─── USER INTERACTION ─────────────────────────────────────────────────────────
+# ─── INPUT ────────────────────────────────────────────────────────────────────
+# Override to add left-click on top of the right-click from ContextMenuTarget.
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		_handle_click()
+	if not (event is InputEventMouseButton and event.pressed):
+		return
+	match event.button_index:
+		MOUSE_BUTTON_LEFT:
+			_handle_click()
+		MOUSE_BUTTON_RIGHT:
+			_handle_right_click(event.global_position)  # inherited from ContextMenuTarget
+
+# ─── LEFT-CLICK BEHAVIOUR ────────────────────────────────────────────────────
 
 func _handle_click() -> void:
 	match currentState:
@@ -84,6 +99,63 @@ func _handle_click() -> void:
 			currentState = PlotState.EMPTY
 			currentSeedId = ""
 			_update_visuals()
+
+# ─── CONTEXT MENU — ContextMenuTarget interface ───────────────────────────────
+
+## Returns state-appropriate actions for this plot.
+## Add new actions by appending dicts here; no other file needs changing.
+func _build_actions() -> Array:
+	match currentState:
+		PlotState.EMPTY:
+			return [
+				{ "id": "plant",       "label": "🌱 Trồng cây" },
+			]
+		PlotState.SEEDED:
+			return [
+				{ "id": "water",       "label": "💧 Tưới nước" },
+				{ "id": "remove_seed", "label": "🗑 Nhổ hạt giống" },
+			]
+		PlotState.GROWING:
+			return [
+				{ "id": "inspect",     "label": "🔍 Kiểm tra cây", "enabled": false },
+			]
+		PlotState.READY:
+			return [
+				{ "id": "harvest",     "label": "🌾 Thu hoạch" },
+			]
+		_:
+			return []
+
+func _on_context_action(actionId: String, target: Object) -> void:
+	if target != self:
+		return
+	match actionId:
+		"plant":
+			print("[FarmSlot %d] Context: Planting seed." % plotId)
+			# TODO [SERVER SYNC]: NetworkManager.send_plant_request(plotId, selectedSeedId)
+			currentState = PlotState.SEEDED
+			currentSeedId = "tomato_seed"
+			_update_visuals()
+		"water":
+			print("[FarmSlot %d] Context: Watering plot." % plotId)
+			# TODO [SERVER SYNC]: NetworkManager.send_water_request(plotId)
+			currentState = PlotState.GROWING
+			readyAtUnixTime = int(Time.get_unix_time_from_system()) + LOCAL_GROWTH_DURATION
+			_update_visuals()
+		"remove_seed":
+			print("[FarmSlot %d] Context: Removing seed." % plotId)
+			# TODO [SERVER SYNC]: NetworkManager.send_remove_seed_request(plotId)
+			currentState = PlotState.EMPTY
+			currentSeedId = ""
+			_update_visuals()
+		"harvest":
+			print("[FarmSlot %d] Context: Harvesting." % plotId)
+			# TODO [SERVER SYNC]: NetworkManager.send_harvest_request(plotId)
+			currentState = PlotState.EMPTY
+			currentSeedId = ""
+			_update_visuals()
+		"inspect":
+			print("[FarmSlot %d] Context: Inspecting (GROWING – no action yet)." % plotId)
 
 # ─── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
 

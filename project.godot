@@ -78,3 +78,8 @@ move_down={
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
+
+[autoload]
+
+MultiplayerManager="*res://scripts/client/shared/multiplayer_manager.gd"
+ServerScene="res://scenes/server.tscn"

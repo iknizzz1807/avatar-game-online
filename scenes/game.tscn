@@ -63,3 +63,9 @@ position = Vector2(147, 59)
 [node name="Player" parent="." unique_id=349396540 instance=ExtResource("2_yqjtg")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=897578316]
+
+[ext_resource type="Script" uid="uid://player_registry_gd01" path="res://scripts/client/shared/player_registry.gd" id="3_registry"]
+
+[node name="PlayerRegistry" type="Node" parent="." unique_id=777000001]
+script = ExtResource("3_registry")
+players_container = NodePath("..")

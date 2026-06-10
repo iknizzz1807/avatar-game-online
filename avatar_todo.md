@@ -140,9 +140,9 @@
 - [X] 🟢 Chat bubble trên đầu nhân vật: hiện 4 giây rồi tự ẩn
 
 ### Farm Map
-- [ ] 🟡 Hiển thị 16 ô đất với đúng trạng thái (lấy từ Go Server khi load map)
-- [ ] 🟡 Ô đang GROWING: hiển thị countdown (tính từ `ready_at` Go Server trả về)
-- [ ] 🟡 Click ô → hành động phù hợp → gửi request Go Server → cập nhật UI theo response
+- [-X] 🟡 Hiển thị 16 ô đất với đúng trạng thái (lấy từ Go Server khi load map)
+- [-X] 🟡 Ô đang GROWING: hiển thị countdown (tính từ `ready_at` Go Server trả về)
+- [-X] 🟡 Click ô → hành động phù hợp → gửi request Go Server → cập nhật UI theo response
 
 ### Central Park
 - [ ] 🔴 Kết nối Godot Server → nhận danh sách player → spawn nhân vật từng người

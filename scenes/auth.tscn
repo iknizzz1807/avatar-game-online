@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://d1gfftnm3qh5w"]
 
+[ext_resource type="Script" uid="uid://auth_gd_001" path="res://scripts/client/prefabs/ui/auth.gd" id="1_authscr"]
+
 [node name="Auth" type="Control" unique_id=292367545]
 layout_mode = 3
 anchors_preset = 15
@@ -7,6 +9,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_authscr")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=111000001]
 
 [node name="Login" type="Control" parent="." unique_id=1750975188]
 layout_mode = 1

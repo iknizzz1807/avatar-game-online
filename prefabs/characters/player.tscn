@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bkua1vn7fon5m" path="res://prefabs/ui/screens/chat.tscn" id="5_hc1fl"]
 [ext_resource type="PackedScene" uid="uid://cvmb2balyxwr5" path="res://prefabs/ui/screens/inventory.tscn" id="6_kylil"]
 [ext_resource type="PackedScene" uid="uid://ccoxl121jeqgv" path="res://prefabs/ui/screens/farm_map.tscn" id="7_jd78j"]
+[ext_resource type="PackedScene" path="res://prefabs/ui/components/context_menu.tscn" id="8_ctxmenu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uwrxv"]
 size = Vector2(8, 6)
@@ -210,6 +211,20 @@ _data = {
 &"runUp": SubResource("Animation_ohyvs")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_player"]
+properties/0/path = NodePath(".:sync_position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:sync_anim_state")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath(".:sync_facing")
+properties/2/spawn = true
+properties/2/replication_mode = 2
+properties/3/path = NodePath(".:sync_flip_h")
+properties/3/spawn = true
+properties/3/replication_mode = 2
+
 [node name="Player" type="CharacterBody2D" unique_id=349396540]
 script = ExtResource("1_1ir3x")
 
@@ -250,6 +265,11 @@ visible = false
 
 [node name="Inventory" parent="CanvasLayer" unique_id=1276552801 instance=ExtResource("6_kylil")]
 visible = false
+
+[node name="ContextMenu" parent="CanvasLayer" unique_id=999000001 instance=ExtResource("8_ctxmenu")]
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=888000001]
+replication_config = SubResource("SceneReplicationConfig_player")
 
 [connection signal="inventory_requested" from="CanvasLayer/HUD" to="CanvasLayer/Inventory" method="open_inventory"]
 [connection signal="map_change_requested" from="CanvasLayer/HUD" to="CanvasLayer/FarmMap" method="open_map"]

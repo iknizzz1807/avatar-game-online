@@ -43,6 +43,7 @@ var stateMachine: StateMachine;
 @onready var animationTree: AnimationTree = $AnimationTree;
 @onready var sprite: Sprite2D = $Sprite2D;
 @onready var normalState: PlayerNormalState = $States/Normal;
+@onready var camera: Camera2D = $Camera2D;
 
 
 func _ready() -> void:
@@ -51,6 +52,10 @@ func _ready() -> void:
 
 	stateMachine.add_states(State.NORMAL, normalState);
 	stateMachine.set_initial_state(State.NORMAL);
+
+	# Enable the camera only for the local (authority) player.
+	# Remote players must NOT have an active camera.
+	camera.enabled = is_multiplayer_authority();
 
 
 func _process(delta: float) -> void:

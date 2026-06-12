@@ -227,12 +227,14 @@ properties/3/replication_mode = 2
 
 [node name="Player" type="CharacterBody2D" unique_id=349396540]
 script = ExtResource("1_1ir3x")
+MAX_SPEED = 50.0
+ACCELERATION = 100.0
+DECELERATION = 300.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=134696660]
 texture = ExtResource("1_72ieh")
 hframes = 4
 vframes = 4
-frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
 position = Vector2(0, 5)
@@ -270,6 +272,12 @@ visible = false
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=888000001]
 replication_config = SubResource("SceneReplicationConfig_player")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=777000002]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+enabled = false
 
 [connection signal="inventory_requested" from="CanvasLayer/HUD" to="CanvasLayer/Inventory" method="open_inventory"]
 [connection signal="map_change_requested" from="CanvasLayer/HUD" to="CanvasLayer/FarmMap" method="open_map"]

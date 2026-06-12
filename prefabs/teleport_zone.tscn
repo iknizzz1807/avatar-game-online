@@ -1,0 +1,31 @@
+[gd_scene format=4 uid="uid://teleport_zone_001"]
+
+[ext_resource type="Script" uid="uid://teleport_zone_gd_001" path="res://scripts/client/prefabs/teleport_zone.gd" id="1_tpzone"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tp"]
+size = Vector2(20, 32)
+
+[node name="TeleportZone" type="Area2D"]
+script = ExtResource("1_tpzone")
+target_map_id = "cave"
+spawn_position = Vector2(160, 100)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tp")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Glow" type="ColorRect" parent="Visual"]
+offset_left = -10.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 16.0
+color = Color(0.2, 0.6, 1, 0.55)
+
+[node name="Label" type="Label" parent="Visual"]
+offset_left = -24.0
+offset_top = -30.0
+offset_right = 24.0
+offset_bottom = -18.0
+text = "ENTER"
+horizontal_alignment = 1

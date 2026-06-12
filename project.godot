@@ -15,6 +15,12 @@ run/main_scene="uid://ckhiiatkgwlo8"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+MultiplayerManager="*res://scripts/client/shared/multiplayer_manager.gd"
+TeleportData="*res://scripts/client/shared/teleport_data.gd"
+ServerScene="res://scenes/server.tscn"
+
 [debug]
 
 gdscript/warnings/untyped_declaration=1
@@ -78,8 +84,3 @@ move_down={
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
-
-[autoload]
-
-MultiplayerManager="*res://scripts/client/shared/multiplayer_manager.gd"
-ServerScene="res://scenes/server.tscn"

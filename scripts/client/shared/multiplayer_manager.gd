@@ -135,6 +135,44 @@ func _client_player_left(peer_id: int) -> void:
 	print("[MultiplayerManager] Player left: peer=%d" % peer_id)
 	player_left.emit(peer_id)
 
+# ─── Farm Sync ──────────────────────────────────────────────────────────────
+
+## Send a farm action to the server (plant, water, harvest, remove)
+func send_farm_action(plot_id: int, action: String, data: String = "") -> void:
+	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
+	if server_node and multiplayer.has_multiplayer_peer():
+		server_node.request_farm_action.rpc_id(1, local_map_id, plot_id, action, data)
+
+@rpc("authority", "reliable")
+func sync_farm_slot(map_id: String, plot_id: int, state: int, seed_id: String, ready_at: int) -> void:
+	# Only care if we are on the same map
+	if map_id != local_map_id:
+		return
+	
+	# Find the FarmSlot by plotId
+	var slots = get_tree().get_nodes_in_group("farm_slots")
+	for slot in slots:
+		if slot.plotId == plot_id:
+			slot.sync_state(state, seed_id, ready_at)
+			break
+
+@rpc("authority", "reliable")
+func sync_all_farm_slots(map_id: String, slots_data: Dictionary) -> void:
+	if map_id != local_map_id:
+		return
+	
+	# slots_data is a dictionary with plot_id as int-like string or int
+	var slots = get_tree().get_nodes_in_group("farm_slots")
+	for slot in slots:
+		# Convert plotId to string because JSON keys might be strings, or check both
+		var plot_key = slot.plotId
+		if slots_data.has(plot_key):
+			var data = slots_data[plot_key]
+			slot.sync_state(data.get("state", 0), data.get("seed_id", ""), data.get("ready_at", 0))
+		elif slots_data.has(str(plot_key)):
+			var data = slots_data[str(plot_key)]
+			slot.sync_state(data.get("state", 0), data.get("seed_id", ""), data.get("ready_at", 0))
+
 
 ## The server relays another player's movement state to us.
 @rpc("authority", "unreliable_ordered")

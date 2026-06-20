@@ -30,6 +30,8 @@ var LOCAL_GROWTH_DURATION: int = 5
 # ─── LIFECYCLE ────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
+	if plotId == -1:
+		plotId = get_index()
 	super._ready()  # ← sets input_pickable, connects _on_input_event, adds to group
 	add_to_group("farm_slots")
 	_update_visuals()
@@ -43,15 +45,8 @@ func _process(_delta: float) -> void:
 			timerLabel.text = _format_time(timeLeft)
 			timerLabel.visible = true
 		else:
-			# --- LOCAL ONLY BEHAVIOR ---
-			# Locally, we automatically transition to READY when the timer hits 0.
-			# 
-			# TODO [SERVER SYNC]: 
-			# Do NOT auto-transition on the client! Phase 4 says Go Server runs a background 
-			# job and will push the "READY" event to the client. 
-			# We should just show "00:00" and wait for the network event.
-			currentState = PlotState.READY
-			_update_visuals()
+			timerLabel.text = "00:00"
+			timerLabel.visible = true
 	else:
 		timerLabel.visible = false
 
@@ -76,12 +71,7 @@ func _handle_click() -> void:
 				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
 				return
 			print("Local: Planting seed.")
-			# TODO [SERVER SYNC]: Send plant request to Go Server.
-			# e.g., NetworkManager.send_plant_request(plotId, selectedSeedId)
-			# Do NOT change state here in production, wait for the Server's "OK" response.
-			currentState = PlotState.SEEDED
-			currentSeedId = "tomato_seed"
-			_update_visuals()
+			MultiplayerManager.send_farm_action(plotId, "plant", "tomato_seed")
 			
 		PlotState.SEEDED:
 			# Delegate to the nearby local player so the watering animation plays first.
@@ -93,12 +83,7 @@ func _handle_click() -> void:
 			
 		PlotState.READY:
 			print("Local: Harvesting plot.")
-			# TODO [SERVER SYNC]: Send harvest request to Go Server.
-			# e.g., NetworkManager.send_harvest_request(plotId)
-			# The server will deduct the plant, add to inventory, and return "OK".
-			currentState = PlotState.EMPTY
-			currentSeedId = ""
-			_update_visuals()
+			MultiplayerManager.send_farm_action(plotId, "harvest")
 
 # ─── CONTEXT MENU — ContextMenuTarget interface ───────────────────────────────
 
@@ -145,25 +130,16 @@ func _on_context_action(actionId: String, target: Object) -> void:
 				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
 				return
 			print("[FarmSlot %d] Context: Planting seed." % plotId)
-			# TODO [SERVER SYNC]: NetworkManager.send_plant_request(plotId, selectedSeedId)
-			currentState = PlotState.SEEDED
-			currentSeedId = "tomato_seed"
-			_update_visuals()
+			MultiplayerManager.send_farm_action(plotId, "plant", "tomato_seed")
 		"water":
 			# Delegate to the nearby local player so the watering animation plays first.
 			_request_water_via_player()
 		"remove_seed":
 			print("[FarmSlot %d] Context: Removing seed." % plotId)
-			# TODO [SERVER SYNC]: NetworkManager.send_remove_seed_request(plotId)
-			currentState = PlotState.EMPTY
-			currentSeedId = ""
-			_update_visuals()
+			MultiplayerManager.send_farm_action(plotId, "remove")
 		"harvest":
 			print("[FarmSlot %d] Context: Harvesting." % plotId)
-			# TODO [SERVER SYNC]: NetworkManager.send_harvest_request(plotId)
-			currentState = PlotState.EMPTY
-			currentSeedId = ""
-			_update_visuals()
+			MultiplayerManager.send_farm_action(plotId, "harvest")
 		"inspect":
 			print("[FarmSlot %d] Context: Inspecting (GROWING – no action yet)." % plotId)
 
@@ -195,9 +171,12 @@ func water() -> void:
 	if currentState != PlotState.SEEDED:
 		return
 	print("[FarmSlot %d] Watered." % plotId)
-	# TODO [SERVER SYNC]: NetworkManager.send_water_request(plotId)
-	currentState = PlotState.GROWING
-	readyAtUnixTime = int(Time.get_unix_time_from_system()) + LOCAL_GROWTH_DURATION
+	MultiplayerManager.send_farm_action(plotId, "water")
+
+func sync_state(new_state: int, new_seed: String, new_ready_at: int) -> void:
+	currentState = new_state
+	currentSeedId = new_seed
+	readyAtUnixTime = new_ready_at
 	_update_visuals()
 
 

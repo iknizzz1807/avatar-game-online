@@ -64,5 +64,6 @@ func _physics_process(delta: float) -> void:
 		playback.travel(sync_anim_state)
 		_anim_tree.set("parameters/Idle/blend_position", sync_facing)
 		_anim_tree.set("parameters/Run/blend_position",  sync_facing)
+		_anim_tree.set("parameters/useWater/blend_position", sync_facing)
 
 	_sprite.flip_h = sync_flip_h

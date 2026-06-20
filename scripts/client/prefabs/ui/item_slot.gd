@@ -149,12 +149,10 @@ func _refresh() -> void:
 func _on_mouse_entered() -> void:
 	if not isSelected:
 		_apply_style(styleHover);
-		print("Current hover ", slotIndex);
 
 func _on_mouse_exited() -> void:
 	if not isSelected:
 		_apply_style(styleNormal);
-		print("Hovered out", slotIndex);
 
 func _apply_style(style: StyleBoxFlat) -> void:
 	add_theme_stylebox_override("panel", style);

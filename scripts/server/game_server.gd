@@ -88,27 +88,33 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 # ─── Client → Server RPCs ─────────────────────────────────────────────────────
 
-## Called by the client immediately after the ENet connection is established.
-## user_id and display_name come from the Go REST login response.
-## map_id is the player's current map (e.g. "world", "farm_42").
+## Called by the client immediately after the ENet connection is established,
+## and also every time the client loads a new map (scene).
 @rpc("any_peer", "reliable")
 func register_player(user_id: int, display_name: String, map_id: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 
 	if _players.has(sender_id):
-		push_warning("[GameServer] Peer %d tried to register twice — ignoring" % sender_id)
-		return
+		# Player is already registered. They just loaded a scene and want a state sync.
+		var old_map: String = _players[sender_id].get("map_id", "")
+		_players[sender_id]["map_id"] = map_id
+		
+		# If the map changed, broadcast to others
+		if old_map != map_id:
+			_broadcast_player_left(sender_id, old_map)
+			_broadcast_player_joined(sender_id, user_id, display_name, map_id)
+	else:
+		_players[sender_id] = {
+			"user_id":      user_id,
+			"display_name": display_name,
+			"map_id":       map_id,
+		}
+		print("[GameServer] Registered: %s (uid=%d, peer=%d, map=%s)" % [
+			display_name, user_id, sender_id, map_id
+		])
+		_broadcast_player_joined(sender_id, user_id, display_name, map_id)
 
-	_players[sender_id] = {
-		"user_id":      user_id,
-		"display_name": display_name,
-		"map_id":       map_id,
-	}
-	print("[GameServer] Registered: %s (uid=%d, peer=%d, map=%s)" % [
-		display_name, user_id, sender_id, map_id
-	])
-
-	# Tell the new peer about every player already on the same map
+	# Tell the peer about every player already on the map
 	for existing_peer_id: int in _players:
 		if existing_peer_id == sender_id:
 			continue
@@ -125,27 +131,6 @@ func register_player(user_id: int, display_name: String, map_id: String) -> void
 	# Send existing farm slot states for this map
 	if _farm_slots.has(map_id) and _farm_slots[map_id].size() > 0:
 		MultiplayerManager.sync_all_farm_slots.rpc_id(sender_id, map_id, _farm_slots[map_id])
-
-	# Tell everyone else on the same map about the new player
-	_broadcast_player_joined(sender_id, user_id, display_name, map_id)
-
-
-## Called by the client when the player changes maps.
-@rpc("any_peer", "reliable")
-func change_map(new_map_id: String) -> void:
-	var sender_id: int = multiplayer.get_remote_sender_id()
-	if not _players.has(sender_id):
-		return
-
-	var old_map: String = _players[sender_id].get("map_id", "")
-	_players[sender_id]["map_id"] = new_map_id
-
-	# Notify players on the old map that this peer left
-	_broadcast_player_left(sender_id, old_map)
-
-	# Notify players on the new map
-	var info: Dictionary = _players[sender_id]
-	_broadcast_player_joined(sender_id, info.get("user_id", -1), info.get("display_name", ""), new_map_id)
 
 
 ## Called by the client every physics frame to sync movement.

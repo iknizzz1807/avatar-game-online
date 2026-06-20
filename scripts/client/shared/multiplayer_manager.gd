@@ -26,10 +26,17 @@ signal player_left(peer_id: int)
 const DEFAULT_HOST: String = "127.0.0.1"
 const DEFAULT_PORT: int    = 7777
 
+## A list of scene names that should be treated as private/local instances.
+## The player's unique ID will be appended to the map_id to isolate them from other players.
+const INSTANCED_SCENES: Array[String] = [
+	"game",
+]
+
 # ─── Local player info (populated by auth flow before connecting) ─────────────
 var local_user_id:      int    = -1
 var local_display_name: String = ""
-var local_map_id:       String = "world"
+var local_scene_name:   String = "game"
+var local_map_id:       String = "game"
 
 # ─── Internal ─────────────────────────────────────────────────────────────────
 var _peer: ENetMultiplayerPeer = null
@@ -45,10 +52,18 @@ func _ready() -> void:
 
 ## Call this after a successful Go REST login.
 ## user_id / display_name come from the /api/auth/login response.
-func set_local_player(user_id: int, display_name: String, map_id: String = "world") -> void:
+func set_local_player(user_id: int, display_name: String, map_id: String = "game") -> void:
 	local_user_id      = user_id
 	local_display_name = display_name
-	local_map_id       = map_id
+	set_map(map_id)
+
+## Sets the scene name and automatically computes the map_id to isolate personal maps.
+func set_map(scene_name: String) -> void:
+	local_scene_name = scene_name
+	if scene_name in INSTANCED_SCENES:
+		local_map_id = scene_name + "_" + str(local_user_id)
+	else:
+		local_map_id = scene_name
 
 
 ## Connect to the dedicated Godot game server.
@@ -78,14 +93,7 @@ func disconnect_from_server() -> void:
 	print("[MultiplayerManager] Disconnected.")
 
 
-## Notify the server that the local player changed maps.
-func notify_map_changed(new_map_id: String) -> void:
-	local_map_id = new_map_id
-	if _peer == null or not multiplayer.has_multiplayer_peer():
-		return
-	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
-	if server_node:
-		server_node.change_map.rpc_id(1, new_map_id)
+
 
 
 # ─── Multiplayer callbacks ────────────────────────────────────────────────────

@@ -39,9 +39,9 @@ func _on_body_entered(body: Node) -> void:
 	# Store the desired spawn position so the new scene can read it.
 	TeleportData.spawn_position = spawn_position
 
-	# Tell the server (and other clients) we have changed maps.
+	# Tell the manager we have changed maps.
 	if MultiplayerManager:
-		MultiplayerManager.notify_map_changed(target_map_id)
+		MultiplayerManager.set_map(target_map_id)
 
 	# Load the target scene.
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % target_map_id)

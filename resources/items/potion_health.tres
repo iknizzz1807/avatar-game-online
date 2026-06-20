@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://3kvtluceawii"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = 41
+itemName = "Bình Máu"
+icon = "🧪"
+buyPrice = 150
+sellPrice = 50
+sellable = true
+type = "potion"
+stackable = true
+growSecs = 0
+yieldsId = 0

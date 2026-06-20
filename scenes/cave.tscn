@@ -1,11 +1,11 @@
 [gd_scene format=4 uid="uid://c6nt8uqgfen3n"]
 
 [ext_resource type="TileSet" uid="uid://bc04ursoiq68r" path="res://resources/tile_set.tres" id="1_uwrxv"]
-[ext_resource type="PackedScene" uid="uid://c0qrqh0hpvw52" path="res://prefabs/farm_slot.tscn" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://c3wsy7q6g5io4" path="res://prefabs/characters/player.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://d1de6slrwb6fu" path="res://scripts/client/shared/player_registry.gd" id="3_registry"]
 [ext_resource type="Script" uid="uid://ub6l8wnka6u7" path="res://scripts/client/shared/world_boundary.gd" id="4_wbscript"]
 [ext_resource type="PackedScene" path="res://prefabs/teleport_zone.tscn" id="5_tpzone"]
+[ext_resource type="PackedScene" uid="uid://dsnpi2uvy8058" path="res://prefabs/characters/npcs/shopkeeper.tscn" id="6_6sqbx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
 size = Vector2(432, 240)
@@ -24,62 +24,18 @@ position = Vector2(160, 56)
 shape = SubResource("RectangleShape2D_zone")
 debug_color = Color(0.5, 0.8, 1, 0.3)
 
-[node name="Slots" type="Node2D" parent="." unique_id=2014959015]
-
-[node name="FarmSlot" parent="Slots" unique_id=2131962941 instance=ExtResource("2_lnu2h")]
-position = Vector2(63, 12)
-
-[node name="FarmSlot2" parent="Slots" unique_id=129893656 instance=ExtResource("2_lnu2h")]
-position = Vector2(84, 12)
-
-[node name="FarmSlot3" parent="Slots" unique_id=196088100 instance=ExtResource("2_lnu2h")]
-position = Vector2(105, 12)
-
-[node name="FarmSlot4" parent="Slots" unique_id=161820058 instance=ExtResource("2_lnu2h")]
-position = Vector2(126, 12)
-
-[node name="FarmSlot5" parent="Slots" unique_id=1047430900 instance=ExtResource("2_lnu2h")]
-position = Vector2(147, 12)
-
-[node name="FarmSlot6" parent="Slots" unique_id=1513289336 instance=ExtResource("2_lnu2h")]
-position = Vector2(63, 35)
-
-[node name="FarmSlot7" parent="Slots" unique_id=75582761 instance=ExtResource("2_lnu2h")]
-position = Vector2(84, 35)
-
-[node name="FarmSlot8" parent="Slots" unique_id=364403039 instance=ExtResource("2_lnu2h")]
-position = Vector2(105, 35)
-
-[node name="FarmSlot9" parent="Slots" unique_id=1069415230 instance=ExtResource("2_lnu2h")]
-position = Vector2(126, 35)
-
-[node name="FarmSlot10" parent="Slots" unique_id=24958683 instance=ExtResource("2_lnu2h")]
-position = Vector2(147, 35)
-
-[node name="FarmSlot11" parent="Slots" unique_id=214349757 instance=ExtResource("2_lnu2h")]
-position = Vector2(63, 59)
-
-[node name="FarmSlot12" parent="Slots" unique_id=82548723 instance=ExtResource("2_lnu2h")]
-position = Vector2(84, 59)
-
-[node name="FarmSlot13" parent="Slots" unique_id=1598468687 instance=ExtResource("2_lnu2h")]
-position = Vector2(105, 59)
-
-[node name="FarmSlot14" parent="Slots" unique_id=2003862374 instance=ExtResource("2_lnu2h")]
-position = Vector2(126, 59)
-
-[node name="FarmSlot15" parent="Slots" unique_id=1970652643 instance=ExtResource("2_lnu2h")]
-position = Vector2(147, 59)
-
 [node name="TeleportToWorld" parent="." unique_id=700000002 instance=ExtResource("5_tpzone")]
-position = Vector2(30, 56)
+position = Vector2(306, 130)
 target_map_id = "game"
 spawn_position = Vector2(270, 56)
-
-[node name="Player" parent="." unique_id=349396541 instance=ExtResource("2_yqjtg")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=897578317]
 
 [node name="PlayerRegistry" type="Node" parent="." unique_id=777000002]
 script = ExtResource("3_registry")
 players_container = NodePath("..")
+
+[node name="Player" parent="." unique_id=349396541 instance=ExtResource("2_yqjtg")]
+
+[node name="Shopkeeper" parent="." unique_id=349396540 instance=ExtResource("6_6sqbx")]
+position = Vector2(121, -7)

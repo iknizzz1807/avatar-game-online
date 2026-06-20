@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bnohybpyqhadp"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = 22
+itemName = "Cá Vừa"
+icon = "🐠"
+sellPrice = 80
+sellable = true
+type = "fish"

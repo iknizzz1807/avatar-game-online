@@ -7,6 +7,7 @@ class_name Inventory
 
 signal sell_requested(itemId: int, quantity: int);
 signal close_requested();
+signal coins_changed(amount: int);
 
 # ═════════════════════════════════════════════════════════════════════════════
 # INSPECTOR — Example data (editable in the Godot editor)
@@ -44,11 +45,15 @@ var inventoryData: Array = [];
 var slots: Array[ItemSlot] = [];
 var selectedSlot: int = -1;
 
+# TODO(Backend): Sync coins from the Go server instead of local simulation
+var coins: int = 1000;
+
 # ═════════════════════════════════════════════════════════════════════════════
 # LIFECYCLE
 # ═════════════════════════════════════════════════════════════════════════════
 
 func _ready() -> void:
+	add_to_group("inventory");
 	closeButton.pressed.connect(_on_close_pressed);
 	tooltipSellButton.pressed.connect(_on_sell_pressed);
 	_collect_slots();
@@ -70,6 +75,31 @@ func set_inventory(data: Array) -> void:
 
 func open_inventory() -> void:
 	visible = true;
+
+## Attempts to add an item to the inventory. Returns true if successful.
+func add_item(item_id: int, quantity: int) -> bool:
+	var item_res = Items.get_item(item_id);
+	if not item_res:
+		return false;
+
+	# Try to find an existing stack if stackable
+	if item_res.stackable:
+		for i in range(inventoryData.size()):
+			if not inventoryData[i].is_empty() and inventoryData[i]["resource"].id == item_id:
+				# TODO(Backend): Sync item addition with Go server
+				inventoryData[i]["quantity"] += quantity;
+				_refresh_slots();
+				return true;
+				
+	# Find an empty slot
+	for i in range(inventoryData.size()):
+		if inventoryData[i].is_empty():
+			# TODO(Backend): Sync item addition with Go server
+			inventoryData[i] = { "resource": item_res, "quantity": quantity };
+			_refresh_slots();
+			return true;
+			
+	return false;
 
 # ═════════════════════════════════════════════════════════════════════════════
 # PRIVATE — build & refresh

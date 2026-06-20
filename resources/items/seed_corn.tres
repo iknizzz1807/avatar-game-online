@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cg8h8f0torsah"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = 3
+itemName = "Hạt Bắp"
+icon = "🌽"
+buyPrice = 120
+type = "seed"
+growSecs = 600
+yieldsId = 13

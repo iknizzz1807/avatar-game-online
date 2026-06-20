@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dvnsioytr4u2g"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = 13
+itemName = "Bắp"
+icon = "🌽"
+sellPrice = 260
+sellable = true
+type = "crop"

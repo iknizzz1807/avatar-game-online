@@ -70,7 +70,7 @@ func _on_skip_login_pressed() -> void:
 		"user": {
 			"id": random_id,
 			"display_name": "TestPlayer_" + str(random_id),
-			"current_map": "world"
+			"current_map": "game"
 		}
 	}
 	_on_login_success(dummy_data)
@@ -117,7 +117,10 @@ func _on_login_success(data: Dictionary) -> void:
 	var user: Dictionary    = data.get("user", {})
 	var user_id: int        = int(user.get("id", -1))
 	var display_name: String = user.get("display_name", user.get("username", "Player"))
-	var map_id: String      = user.get("current_map", "world")
+	
+	var map_id: String      = user.get("current_map", "game")
+	if map_id == "world" or map_id == "": # Backwards compatibility if backend returned "world"
+		map_id = "game"
 
 	print("[Auth] Logged in as %s (id=%d)" % [display_name, user_id])
 
@@ -131,11 +134,10 @@ func _on_login_success(data: Dictionary) -> void:
 
 
 func _on_server_connected() -> void:
-	print("[Auth] Connected to game server — loading game scene.")
-	get_tree().change_scene_to_file(GAME_SCENE)
+	print("[Auth] Connected to game server — loading map: " + MultiplayerManager.local_scene_name)
+	get_tree().change_scene_to_file("res://scenes/%s.tscn" % MultiplayerManager.local_scene_name)
 
 
 func _on_server_connection_failed() -> void:
-	push_warning("[Auth] Could not connect to game server — loading game scene offline.")
-	# Still let the player into the game scene even without multiplayer
-	get_tree().change_scene_to_file(GAME_SCENE)
+	push_warning("[Auth] Could not connect to game server — loading offline.")
+	get_tree().change_scene_to_file("res://scenes/%s.tscn" % MultiplayerManager.local_scene_name)

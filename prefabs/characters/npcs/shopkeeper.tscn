@@ -1,17 +1,8 @@
-[gd_scene format=3 uid="uid://c3wsy7q6g5io4"]
+[gd_scene format=3 uid="uid://dsnpi2uvy8058"]
 
-[ext_resource type="Script" uid="uid://dfn271f6vv8vo" path="res://scripts/client/prefabs/player/player.gd" id="1_1ir3x"]
-[ext_resource type="Texture2D" uid="uid://c51j2mga5duvm" path="res://sprites/Characters/Basic Charakter Spritesheet.png" id="1_72ieh"]
-[ext_resource type="Texture2D" uid="uid://elfswkp7g1wu" path="res://sprites/Characters/Basic Charakter Actions.png" id="2_kylil"]
-[ext_resource type="Script" uid="uid://ckp6awq26ndm5" path="res://scripts/client/prefabs/player/player_normal_state.gd" id="3_eimbo"]
-[ext_resource type="PackedScene" uid="uid://b0w6mcunr1u5d" path="res://prefabs/ui/screens/hud.tscn" id="4_p1jl7"]
-[ext_resource type="PackedScene" uid="uid://bkua1vn7fon5m" path="res://prefabs/ui/screens/chat.tscn" id="5_hc1fl"]
-[ext_resource type="PackedScene" uid="uid://cvmb2balyxwr5" path="res://prefabs/ui/screens/inventory.tscn" id="6_kylil"]
-[ext_resource type="PackedScene" uid="uid://ccoxl121jeqgv" path="res://prefabs/ui/screens/farm_map.tscn" id="7_jd78j"]
-[ext_resource type="PackedScene" path="res://prefabs/ui/components/context_menu.tscn" id="8_ctxmenu"]
-[ext_resource type="Script" path="res://scripts/client/prefabs/player/player_use_water_state.gd" id="9_uwst"]
-[ext_resource type="Script" uid="uid://bagfxkfa7im1l" path="res://scripts/shared/inventory_slot.gd" id="10_ku2fq"]
-[ext_resource type="PackedScene" path="res://prefabs/ui/screens/shop.tscn" id="10_shop"]
+[ext_resource type="Texture2D" uid="uid://c51j2mga5duvm" path="res://sprites/Characters/Basic Charakter Spritesheet.png" id="1_j6shj"]
+[ext_resource type="Texture2D" uid="uid://elfswkp7g1wu" path="res://sprites/Characters/Basic Charakter Actions.png" id="2_7v8ea"]
+[ext_resource type="Script" uid="uid://cx0tb3q0jlshm" path="res://scripts/client/prefabs/npcs/shopkeeper.gd" id="3_shop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uwrxv"]
 size = Vector2(8, 6)
@@ -134,7 +125,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_kylil")]
+"values": [ExtResource("2_7v8ea")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -188,7 +179,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_72ieh")]
+"values": [ExtResource("1_j6shj")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -241,7 +232,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_72ieh")]
+"values": [ExtResource("1_j6shj")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -295,7 +286,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_72ieh")]
+"values": [ExtResource("1_j6shj")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -349,7 +340,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_72ieh")]
+"values": [ExtResource("1_j6shj")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -403,7 +394,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_72ieh")]
+"values": [ExtResource("1_j6shj")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -457,7 +448,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_72ieh")]
+"values": [ExtResource("1_j6shj")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -497,7 +488,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_kylil")]
+"values": [ExtResource("2_7v8ea")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -550,7 +541,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_kylil")]
+"values": [ExtResource("2_7v8ea")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -638,7 +629,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_kylil")]
+"values": [ExtResource("2_7v8ea")]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_p1jl7"]
@@ -655,21 +646,19 @@ _data = {
 &"useWaterUp": SubResource("Animation_tcuwg")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_water"]
-radius = 14.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_interaction"]
+radius = 24.0
 
-[node name="Player" type="CharacterBody2D" unique_id=349396540]
+[node name="Shopkeeper" type="CharacterBody2D" unique_id=349396540]
 y_sort_enabled = true
-script = ExtResource("1_1ir3x")
-MAX_SPEED = 60.0
-ACCELERATION = 800.0
-DECELERATION = 800.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=134696660]
+modulate = Color(0.70000005, 1, 0, 1)
 y_sort_enabled = true
-texture = ExtResource("1_72ieh")
+texture = ExtResource("1_j6shj")
 hframes = 4
 vframes = 4
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
 position = Vector2(0, 5)
@@ -687,46 +676,8 @@ parameters/useWater/blend_position = Vector2(0, 0)
 root_node = NodePath("../..")
 libraries/ = SubResource("AnimationLibrary_p1jl7")
 
-[node name="States" type="Node" parent="." unique_id=1773475640]
+[node name="InteractionArea" type="Area2D" parent="." unique_id=725466986]
+script = ExtResource("3_shop")
 
-[node name="Normal" type="Node" parent="States" unique_id=2056939856]
-script = ExtResource("3_eimbo")
-
-[node name="UseWater" type="Node" parent="States" unique_id=2056939857]
-script = ExtResource("9_uwst")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=658738122]
-
-[node name="HUD" parent="CanvasLayer" unique_id=1281974293 instance=ExtResource("4_p1jl7")]
-
-[node name="Chat" parent="CanvasLayer" unique_id=1850566308 instance=ExtResource("5_hc1fl")]
-visible = false
-
-[node name="FarmMap" parent="CanvasLayer" unique_id=1765950099 instance=ExtResource("7_jd78j")]
-
-[node name="Inventory" parent="CanvasLayer" unique_id=1276552801 instance=ExtResource("6_kylil")]
-visible = false
-EXAMPLE_SLOTS = Array[ExtResource("10_ku2fq")]([])
-
-[node name="ContextMenu" parent="CanvasLayer" unique_id=999000001 instance=ExtResource("8_ctxmenu")]
-
-[node name="Shop" parent="CanvasLayer" unique_id=999000002 instance=ExtResource("10_shop")]
-visible = false
-
-[node name="WaterDetector" type="Area2D" parent="." unique_id=2056939858]
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterDetector" unique_id=2056939859]
-shape = SubResource("CircleShape2D_water")
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=777000002]
-enabled = false
-zoom = Vector2(2, 2)
-position_smoothing_enabled = true
-position_smoothing_speed = 8.0
-
-[node name="PetSpawner" type="Marker2D" parent="." unique_id=1140516596]
-position = Vector2(-30, -19)
-
-[connection signal="inventory_requested" from="CanvasLayer/HUD" to="CanvasLayer/Inventory" method="open_inventory"]
-[connection signal="map_change_requested" from="CanvasLayer/HUD" to="CanvasLayer/FarmMap" method="open_map"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=65324963]
+shape = SubResource("CircleShape2D_interaction")

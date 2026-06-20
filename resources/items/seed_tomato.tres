@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://i1ueq0v2xomc"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = 2
+itemName = "Hạt Cà Chua"
+icon = "🍅"
+buyPrice = 80
+type = "seed"
+growSecs = 300
+yieldsId = 12

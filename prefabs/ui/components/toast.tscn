@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://bngrkb6gmkfy"]
+
+[ext_resource type="Script" path="res://scripts/client/prefabs/ui/toast.gd" id="1_toast"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.15, 0.15, 0.2, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.5, 0.6, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[node name="Toast" type="PanelContainer" unique_id=1019051139]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -34.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_toast")
+script = ExtResource("1_toast")
+
+[node name="Label" type="Label" parent="." unique_id=356206167]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.98, 1)
+theme_override_font_sizes/font_size = 11
+text = "ℹ️  Toast message"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

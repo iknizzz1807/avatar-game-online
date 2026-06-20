@@ -31,6 +31,7 @@ var LOCAL_GROWTH_DURATION: int = 5
 
 func _ready() -> void:
 	super._ready()  # ← sets input_pickable, connects _on_input_event, adds to group
+	add_to_group("farm_slots")
 	_update_visuals()
 
 func _process(_delta: float) -> void:
@@ -71,6 +72,9 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void
 func _handle_click() -> void:
 	match currentState:
 		PlotState.EMPTY:
+			if not _is_player_nearby():
+				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
+				return
 			print("Local: Planting seed.")
 			# TODO [SERVER SYNC]: Send plant request to Go Server.
 			# e.g., NetworkManager.send_plant_request(plotId, selectedSeedId)
@@ -80,13 +84,9 @@ func _handle_click() -> void:
 			_update_visuals()
 			
 		PlotState.SEEDED:
-			print("Local: Watering plot.")
-			# TODO [SERVER SYNC]: Send water request to Go Server.
-			# e.g., NetworkManager.send_water_request(plotId)
-			# The server response should include the `readyAt` unix timestamp.
-			currentState = PlotState.GROWING
-			readyAtUnixTime = int(Time.get_unix_time_from_system()) + LOCAL_GROWTH_DURATION
-			_update_visuals()
+			# Delegate to the nearby local player so the watering animation plays first.
+			# The player's USE_WATER state calls water() when the animation finishes.
+			_request_water_via_player()
 			
 		PlotState.GROWING:
 			print("Local: Plot is growing, please wait.")
@@ -105,23 +105,33 @@ func _handle_click() -> void:
 ## Returns state-appropriate actions for this plot.
 ## Add new actions by appending dicts here; no other file needs changing.
 func _build_actions() -> Array:
+	var nearby := _is_player_nearby()
 	match currentState:
 		PlotState.EMPTY:
 			return [
-				{ "id": "plant",       "label": "🌱 Trồng cây" },
+				{ "id": "plant", "label": "🌱 Trồng cây",
+				  "enabled": nearby,
+				  "tooltip": "" if nearby else "Lại gần hơn để trồng cây" },
 			]
 		PlotState.SEEDED:
 			return [
-				{ "id": "water",       "label": "💧 Tưới nước" },
-				{ "id": "remove_seed", "label": "🗑 Nhổ hạt giống" },
+				{ "id": "water", "label": "💧 Tưới nước",
+				  "enabled": nearby,
+				  "tooltip": "" if nearby else "Lại gần hơn để tưới nước" },
+				{ "id": "remove_seed", "label": "🗑 Nhổ hạt giống",
+				  "enabled": nearby,
+				  "tooltip": "" if nearby else "Lại gần hơn để nhổ hạt giống" },
 			]
 		PlotState.GROWING:
 			return [
-				{ "id": "inspect",     "label": "🔍 Kiểm tra cây", "enabled": false },
+				{ "id": "inspect", "label": "🔍 Kiểm tra cây", "enabled": false,
+				  "tooltip": "Cây đang phát triển, hãy đợi thêm" },
 			]
 		PlotState.READY:
 			return [
-				{ "id": "harvest",     "label": "🌾 Thu hoạch" },
+				{ "id": "harvest", "label": "🌾 Thu hoạch",
+				  "enabled": nearby,
+				  "tooltip": "" if nearby else "Lại gần hơn để thu hoạch" },
 			]
 		_:
 			return []
@@ -131,17 +141,17 @@ func _on_context_action(actionId: String, target: Object) -> void:
 		return
 	match actionId:
 		"plant":
+			if not _is_player_nearby():
+				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
+				return
 			print("[FarmSlot %d] Context: Planting seed." % plotId)
 			# TODO [SERVER SYNC]: NetworkManager.send_plant_request(plotId, selectedSeedId)
 			currentState = PlotState.SEEDED
 			currentSeedId = "tomato_seed"
 			_update_visuals()
 		"water":
-			print("[FarmSlot %d] Context: Watering plot." % plotId)
-			# TODO [SERVER SYNC]: NetworkManager.send_water_request(plotId)
-			currentState = PlotState.GROWING
-			readyAtUnixTime = int(Time.get_unix_time_from_system()) + LOCAL_GROWTH_DURATION
-			_update_visuals()
+			# Delegate to the nearby local player so the watering animation plays first.
+			_request_water_via_player()
 		"remove_seed":
 			print("[FarmSlot %d] Context: Removing seed." % plotId)
 			# TODO [SERVER SYNC]: NetworkManager.send_remove_seed_request(plotId)
@@ -158,6 +168,38 @@ func _on_context_action(actionId: String, target: Object) -> void:
 			print("[FarmSlot %d] Context: Inspecting (GROWING – no action yet)." % plotId)
 
 # ─── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
+
+## Returns true when the local-authority player is overlapping this slot.
+func _is_player_nearby() -> bool:
+	for body in get_overlapping_bodies():
+		if body.is_in_group("local_player"):
+			return true
+	return false
+
+
+## Finds the local-authority player overlapping this slot and asks them to
+## perform the watering animation. The player will call water() when done.
+func _request_water_via_player() -> void:
+	if currentState != PlotState.SEEDED:
+		return
+	for body in get_overlapping_bodies():
+		if body.is_in_group("local_player") and body.has_method("request_water"):
+			body.request_water(self)
+			return
+	ToastManager.show_toast("Lại gần hơn để tưới nước.", ToastManager.Type.WARNING)
+
+
+## Called by PlayerUseWaterState after the watering animation finishes.
+## This is the only place that actually advances the plot to GROWING.
+func water() -> void:
+	if currentState != PlotState.SEEDED:
+		return
+	print("[FarmSlot %d] Watered." % plotId)
+	# TODO [SERVER SYNC]: NetworkManager.send_water_request(plotId)
+	currentState = PlotState.GROWING
+	readyAtUnixTime = int(Time.get_unix_time_from_system()) + LOCAL_GROWTH_DURATION
+	_update_visuals()
+
 
 func _update_visuals() -> void:
 	match currentState:

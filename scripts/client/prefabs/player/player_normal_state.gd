@@ -24,7 +24,7 @@ func end_state() -> void:
 # ─── Process (non-physics) ───────────────────────────────────────────────────
 
 func update(_delta: float) -> void:
-	pass ;
+	pass
 
 
 # ─── Physics update ──────────────────────────────────────────────────────────

@@ -7,9 +7,9 @@ FarmWorld Online là game **social simulation 2D top-down**, kết hợp giữa 
 
 ```
 [Nông trại] Trồng cây → Thu hoạch → Bán → Có Xu
-     ↓
+	 ↓
 [Công viên / Hồ câu] Tiêu Xu → Mua vật phẩm / Câu cá → Giao lưu
-     ↓
+	 ↓
 [Xã hội] Kết bạn → Flex trang phục / điểm câu → Quay lại farm
 ```
 
@@ -334,8 +334,8 @@ Click vào bảng → Mở popup tĩnh hiển thị thông tin: sự kiện, hư
 8. Server broadcast kết quả về client:
    a. Câu trượt: hiển thị "Cá không cắn..." → tự động bắt đầu lượt câu mới (nếu còn mồi)
    b. Câu trúng: hiển thị popup "Bạn câu được [Tên Cá]! +[X] Xu 🎉"
-      → Cộng Xu vào tài khoản (server-side)
-      → Animation ăn mừng
+	  → Cộng Xu vào tài khoản (server-side)
+	  → Animation ăn mừng
 9. Sau kết quả → Hỏi người chơi: "Câu tiếp?" [Tiếp tục] / [Đứng dậy]
    - Tiếp tục → lặp lại từ bước 5
    - Đứng dậy → Cập nhật trạng thái STANDING, trả ghế về trống
@@ -357,18 +357,18 @@ Click vào bảng → Mở popup tĩnh hiển thị thông tin: sự kiện, hư
 
 ```
 [Màn hình chủ]
-    ↓ Đăng ký / Đăng nhập
+	↓ Đăng ký / Đăng nhập
 [Chọn / Tạo nhân vật]
-    ↓
+	↓
 [Tutorial ngắn — hiển thị tooltip]
     "Bạn có 1.000 Xu! Hãy đến Nông Trại để bắt đầu kiếm thêm."
-    ↓
+	↓
 [Load vào Công Viên Trung Tâm]
-    ↓ Người chơi tự khám phá hoặc theo gợi ý
+	↓ Người chơi tự khám phá hoặc theo gợi ý
 [Nông Trại] → Trồng cây đầu tiên → Thu hoạch → Bán → Cảm giác tiến bộ
-    ↓
+	↓
 [Quay lại Công Viên] → Gặp người chơi khác → Chat
-    ↓
+	↓
 [Hồ Câu Cá] → Mua cần + mồi → Câu thử → Nhận thưởng RNG
 ```
 

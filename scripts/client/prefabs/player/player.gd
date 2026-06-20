@@ -36,6 +36,7 @@ var sync_flip_h:     bool    = false
 
 enum State {
 	NORMAL,
+	USE_WATER
 }
 
 var stateMachine: StateMachine;
@@ -43,7 +44,21 @@ var stateMachine: StateMachine;
 @onready var animationTree: AnimationTree = $AnimationTree;
 @onready var sprite: Sprite2D = $Sprite2D;
 @onready var normalState: PlayerNormalState = $States/Normal;
+@onready var useWaterState: PlayerUseWaterState = $States/UseWater;
 @onready var camera: Camera2D = $Camera2D;
+@onready var waterDetector: Area2D = $WaterDetector;
+
+## True when the player is overlapping at least one FarmSlot Area2D.
+var near_farm_slot: bool:
+	get:
+		for body in waterDetector.get_overlapping_areas():
+			if body.is_in_group("farm_slots"):
+				return true
+		return false
+
+## The farm slot that triggered the current USE_WATER action.
+## Set by request_water(); cleared by PlayerUseWaterState after the animation.
+var _pending_water_slot: FarmSlot = null
 
 
 func _ready() -> void:
@@ -51,11 +66,16 @@ func _ready() -> void:
 	stateMachine.state_to_state_name = func(s: int) -> String: return State.keys()[s];
 
 	stateMachine.add_states(State.NORMAL, normalState);
+	stateMachine.add_states(State.USE_WATER, useWaterState);
 	stateMachine.set_initial_state(State.NORMAL);
 
 	# Enable the camera only for the local (authority) player.
 	# Remote players must NOT have an active camera.
-	camera.enabled = is_multiplayer_authority();
+	camera.enabled = is_multiplayer_authority()
+
+	# Tag the local-authority player so FarmSlot can find it via get_overlapping_bodies().
+	if is_multiplayer_authority():
+		add_to_group("local_player")
 
 
 func _process(delta: float) -> void:
@@ -72,3 +92,16 @@ func _physics_process(delta: float) -> void:
 	stateMachine.physics_update(delta);
 	# Keep sync vars up to date so MultiplayerSynchronizer can broadcast them.
 	sync_position = global_position;
+
+
+# ─── Farming ─────────────────────────────────────────────────────────────────
+
+## Called by FarmSlot when the player left-clicks or context-menus "water" on it.
+## Stores the target slot and begins the USE_WATER animation state.
+## Safe to call only while in NORMAL state and near the slot.
+func request_water(slot: FarmSlot) -> void:
+	if stateMachine.currentState != State.NORMAL:
+		ToastManager.show_toast("Không thể tưới ngay lúc này.", ToastManager.Type.WARNING)
+		return
+	_pending_water_slot = slot
+	stateMachine.change_state(State.USE_WATER, { "facing": normalState.lastFacingDir })

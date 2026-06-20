@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://2xow8i3himyb"]
+
+[ext_resource type="Script" uid="uid://bgfuqjb3mfphl" path="res://scripts/client/prefabs/cow.gd" id="1_u43e7"]
+[ext_resource type="Texture2D" uid="uid://jiydnql4cja5" path="res://sprites/Characters/Free Cow Sprites.png" id="2_ca1wc"]
+[ext_resource type="Script" path="res://scripts/client/shared/components/wander_component.gd" id="3_ca1wc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
+size = Vector2(22, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_loljv"]
+atlas = ExtResource("2_ca1wc")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g27lk"]
+atlas = ExtResource("2_ca1wc")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x7nul"]
+atlas = ExtResource("2_ca1wc")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vplvk"]
+atlas = ExtResource("2_ca1wc")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wf3ie"]
+atlas = ExtResource("2_ca1wc")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kvpfn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_loljv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g27lk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x7nul")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vplvk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wf3ie")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="Cow" type="CharacterBody2D" unique_id=395373895]
+y_sort_enabled = true
+script = ExtResource("1_u43e7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1472108503]
+shape = SubResource("RectangleShape2D_gee14")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1136349248]
+y_sort_enabled = true
+position = Vector2(0, -7)
+sprite_frames = SubResource("SpriteFrames_kvpfn")
+animation = &"walk"
+autoplay = "idle"
+frame_progress = 0.73044443
+
+[node name="WanderComponent" type="Node" parent="." unique_id=1136349250 node_paths=PackedStringArray("animatedSprite")]
+script = ExtResource("3_ca1wc")
+walk_speed = 10.0
+idle_time_min = 4.0
+idle_time_max = 6.0
+animatedSprite = NodePath("../Sprite2D")

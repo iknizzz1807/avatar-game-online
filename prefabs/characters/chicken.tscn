@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://bp6jg2msbrw6a"]
+
+[ext_resource type="Script" path="res://scripts/client/prefabs/chicken.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/client/shared/components/wander_component.gd" id="2_wander"]
+[ext_resource type="Script" path="res://scripts/client/shared/components/production_timer_component.gd" id="3_prodtimer"]
+[ext_resource type="Texture2D" uid="uid://5jjp0rhowu2r" path="res://sprites/Characters/Free Chicken Sprites.png" id="4_xr63w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gee14"]
+size = Vector2(9, 7)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0tnpc"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtaks"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gee14"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvpfn"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dinhu"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kvpfn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0tnpc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtaks")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gee14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvpfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dinhu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvuet")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="Chicken" type="CharacterBody2D" unique_id=395373895]
+y_sort_enabled = true
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1472108503]
+position = Vector2(-1.5, 2.5)
+shape = SubResource("RectangleShape2D_gee14")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1136349248]
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_kvpfn")
+animation = &"idle"
+
+[node name="WanderComponent" type="Node" parent="." unique_id=1136349250 node_paths=PackedStringArray("animatedSprite")]
+script = ExtResource("2_wander")
+animatedSprite = NodePath("../Sprite2D")
+
+[node name="ProductionTimerComponent" type="Node" parent="." unique_id=1136349251]
+script = ExtResource("3_prodtimer")

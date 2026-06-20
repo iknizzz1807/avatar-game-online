@@ -48,6 +48,7 @@ func _ready() -> void:
 ##         "id":      String   – unique action key, e.g. "plant"
 ##         "label":   String   – display text, e.g. "🌱 Trồng cây"
 ##         "enabled": bool     – (optional, default true) greys out the button
+##         "tooltip": String   – (optional) shown on hover when button is disabled
 ##     }
 ##
 ## [param target]     The game object that was right-clicked. Passed back via
@@ -61,22 +62,39 @@ func show_menu(actions: Array, target: Object, screen_pos: Vector2) -> void:
 	_clear_items();
 
 	for actionData: Dictionary in actions:
-		var id: String = actionData.get("id", "");
-		var label: String = actionData.get("label", id);
-		var enabled: bool = actionData.get("enabled", true);
+		var id: String      = actionData.get("id", "");
+		var label: String   = actionData.get("label", id);
+		var enabled: bool   = actionData.get("enabled", true);
+		var tooltip: String = actionData.get("tooltip", "");
 
 		var btn: Button = Button.new();
-		btn.text = label;
-		btn.disabled = not enabled;
-		btn.flat = false;
-		btn.alignment = HORIZONTAL_ALIGNMENT_LEFT;
-		btn.focus_mode = Control.FOCUS_NONE;
+		btn.text        = label;
+		btn.disabled    = not enabled;
+		btn.flat        = false;
+		btn.alignment   = HORIZONTAL_ALIGNMENT_LEFT;
+		btn.focus_mode  = Control.FOCUS_NONE;
+		# Use Godot's built-in tooltip for enabled buttons; we handle disabled ones manually.
+		if enabled and tooltip != "":
+			btn.tooltip_text = tooltip;
 
 		# Capture loop variable
 		var capturedId: String = id;
 		btn.pressed.connect(func() -> void: _on_action_pressed(capturedId));
 
 		itemList.add_child(btn);
+
+		# For disabled buttons: show a small inline hint label on hover
+		if not enabled and tooltip != "":
+			var hint := Label.new();
+			hint.text = "  ⚠ " + tooltip;
+			hint.add_theme_color_override("font_color", Color(0.9, 0.75, 0.3, 1.0));
+			hint.add_theme_font_size_override("font_size", 11);
+			hint.visible = false;
+			hint.mouse_filter = Control.MOUSE_FILTER_IGNORE;
+			itemList.add_child(hint);
+
+			btn.mouse_entered.connect(func() -> void: hint.show());
+			btn.mouse_exited.connect(func() -> void: hint.hide());
 
 	# Position the menu; clamp so it never goes off-screen.
 	_place_at(screen_pos);

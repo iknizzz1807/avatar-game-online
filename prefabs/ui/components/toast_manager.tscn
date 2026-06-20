@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bbli4d1bg7f0o"]
+
+[ext_resource type="Script" uid="uid://dv6arisgp7sd7" path="res://scripts/client/shared/toast_manager.gd" id="1_tmgr"]
+
+[node name="ToastManager" type="CanvasLayer" unique_id=146366617]
+layer = 128
+script = ExtResource("1_tmgr")
+
+[node name="ToastContainer" type="VBoxContainer" parent="." unique_id=802332572]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -185.0
+offset_top = -416.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 6
+alignment = 2

@@ -1,0 +1,5 @@
+Godot Engine v4.6.1.stable.official.14d19694e - https://godotengine.org
+
+[GameServer] Listening on port 7777 (max 64 clients)
+[WorldBoundary] 4 walls built from shape rect: [P: (-56.0, -64.0), S: (432.0, 240.0)]
+[WorldBoundary] Camera limits → L:-56  T:-64  R:376  B:176

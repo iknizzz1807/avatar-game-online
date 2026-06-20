@@ -92,7 +92,6 @@ func _enter_walk() -> void:
 	direction   = Vector2(cos(angle), sin(angle))
 	velocity_wish = direction * walk_speed
 
-	print("walking");
 	animatedSprite.flip_h = direction.x < 0.0
 	animatedSprite.play("walk")
 

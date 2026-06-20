@@ -111,7 +111,7 @@ func register_player(user_id: int, display_name: String, map_id: String) -> void
 		var other: Dictionary = _players[existing_peer_id]
 		if other.get("map_id", "") != map_id:
 			continue
-		_client_player_joined.rpc_id(sender_id,
+		MultiplayerManager._client_player_joined.rpc_id(sender_id,
 			existing_peer_id,
 			other.get("user_id", -1),
 			other.get("display_name", ""),
@@ -140,18 +140,24 @@ func change_map(new_map_id: String) -> void:
 	_broadcast_player_joined(sender_id, info.get("user_id", -1), info.get("display_name", ""), new_map_id)
 
 
-# ─── Server → Client RPCs ────────────────────────────────────────────────────
+## Called by the client every physics frame to sync movement.
+@rpc("any_peer", "unreliable_ordered")
+func sync_player_state(pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if not _players.has(sender_id):
+		return
+		
+	var map_id: String = _players[sender_id].get("map_id", "")
+	
+	# Relay to everyone else on the same map
+	for target_id: int in _players:
+		if target_id == sender_id:
+			continue
+		if _players[target_id].get("map_id", "") != map_id:
+			continue
+		MultiplayerManager.update_remote_player.rpc_id(target_id, sender_id, pos, anim_state, facing, flip_h)
 
-## Sent to a specific peer to tell them about an existing player on their map.
-@rpc("authority", "reliable")
-func _client_player_joined(_peer_id: int, _user_id: int, _display_name: String, _map_id: String) -> void:
-	pass  # implemented on the client (MultiplayerManager)
 
-
-## Sent to a specific peer to tell them a player has left.
-@rpc("authority", "reliable")
-func _client_player_left(_peer_id: int) -> void:
-	pass  # implemented on the client (MultiplayerManager)
 
 
 # ─── Broadcast helpers ───────────────────────────────────────────────────────
@@ -162,7 +168,7 @@ func _broadcast_player_joined(peer_id: int, user_id: int, display_name: String, 
 			continue
 		if _players[target_id].get("map_id", "") != map_id:
 			continue
-		_client_player_joined.rpc_id(target_id, peer_id, user_id, display_name, map_id)
+		MultiplayerManager._client_player_joined.rpc_id(target_id, peer_id, user_id, display_name, map_id)
 
 
 func _broadcast_player_left(peer_id: int, map_id: String) -> void:
@@ -171,4 +177,4 @@ func _broadcast_player_left(peer_id: int, map_id: String) -> void:
 			continue
 		if _players[target_id].get("map_id", "") != map_id:
 			continue
-		_client_player_left.rpc_id(target_id, peer_id)
+		MultiplayerManager._client_player_left.rpc_id(target_id, peer_id)

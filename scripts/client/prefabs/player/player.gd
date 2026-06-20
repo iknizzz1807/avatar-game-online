@@ -60,8 +60,20 @@ var near_farm_slot: bool:
 ## Set by request_water(); cleared by PlayerUseWaterState after the animation.
 var _pending_water_slot: FarmSlot = null
 
+@onready var pet_spawn: Marker2D = $PetSpawner
+
+const PET_SCENE: PackedScene = preload("res://prefabs/characters/pet.tscn")
 
 func _ready() -> void:
+	if multiplayer.has_multiplayer_peer():
+		set_multiplayer_authority(multiplayer.get_unique_id())
+		
+	var pet : Node2D = PET_SCENE.instantiate()
+	pet.follow_target = self
+	pet.top_level = true
+	add_child(pet)
+	pet.global_position = pet_spawn.global_position;
+	
 	stateMachine = StateMachine.new(self);
 	stateMachine.state_to_state_name = func(s: int) -> String: return State.keys()[s];
 
@@ -90,8 +102,14 @@ func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority():
 		return;
 	stateMachine.physics_update(delta);
-	# Keep sync vars up to date so MultiplayerSynchronizer can broadcast them.
+	# Keep sync vars up to date locally
 	sync_position = global_position;
+	
+	# Send our state to the server if connected
+	if multiplayer.has_multiplayer_peer() and multiplayer.get_peers().size() > 0:
+		var server_node = get_tree().root.get_node_or_null("ServerScene")
+		if server_node:
+			server_node.sync_player_state.rpc_id(1, sync_position, sync_anim_state, sync_facing, sync_flip_h)
 
 
 # ─── Farming ─────────────────────────────────────────────────────────────────

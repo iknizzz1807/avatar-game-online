@@ -38,7 +38,15 @@ const INTERP_SPEED: float = 20.0
 @onready var _name_label: Label        = $NameLabel
 
 
+const PET_SCENE: PackedScene = preload("res://prefabs/characters/pet.tscn")
+
 func _ready() -> void:
+	var pet = PET_SCENE.instantiate()
+	pet.follow_target = self
+	pet.top_level = true
+	add_child(pet)
+	pet.global_position = sync_position
+	
 	# Initialise position immediately so we don't lerp from world origin.
 	global_position = sync_position
 	if _name_label:

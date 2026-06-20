@@ -94,15 +94,17 @@ func _on_connected_to_server() -> void:
 	print("[MultiplayerManager] Connected! My peer ID: %d" % multiplayer.get_unique_id())
 	connected_to_server.emit()
 
-	# Register with the server immediately
+
+## Called by the game scene when it is fully loaded and ready to receive players.
+func send_registration() -> void:
 	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
-	if server_node:
+	if server_node and multiplayer.has_multiplayer_peer() and multiplayer.get_peers().size() > 0:
 		server_node.register_player.rpc_id(1,
 			local_user_id,
 			local_display_name,
 			local_map_id
 		)
-	else:
+	elif not server_node:
 		push_error("[MultiplayerManager] ServerScene not found in tree — cannot register.")
 
 
@@ -132,3 +134,18 @@ func _client_player_joined(peer_id: int, user_id: int, display_name: String, _ma
 func _client_player_left(peer_id: int) -> void:
 	print("[MultiplayerManager] Player left: peer=%d" % peer_id)
 	player_left.emit(peer_id)
+
+
+## The server relays another player's movement state to us.
+@rpc("authority", "unreliable_ordered")
+func update_remote_player(peer_id: int, pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
+	var registry = get_tree().root.get_node_or_null("Game/PlayerRegistry")
+	if not registry:
+		return
+		
+	var remote_player = registry.get_remote_player(peer_id)
+	if remote_player:
+		remote_player.sync_position = pos
+		remote_player.sync_anim_state = anim_state
+		remote_player.sync_facing = facing
+		remote_player.sync_flip_h = flip_h

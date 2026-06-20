@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://c6u8y4qdflwfx"]
+
+[ext_resource type="Script" uid="uid://bjdtr8faj6b07" path="res://scripts/client/prefabs/pet.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://5jjp0rhowu2r" path="res://sprites/Characters/Free Chicken Sprites.png" id="4_xr63w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0tnpc"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtaks"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gee14"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvpfn"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dinhu"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
+atlas = ExtResource("4_xr63w")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kvpfn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0tnpc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtaks")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gee14")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvpfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dinhu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvuet")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="Pet" type="CharacterBody2D" unique_id=100179183]
+y_sort_enabled = true
+script = ExtResource("1_script")
+follow_speed = 200.0
+follow_distance = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=877613909]
+position = Vector2(-1.5, 2.5)
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=745219897]
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_kvpfn")
+animation = &"idle"

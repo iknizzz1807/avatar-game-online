@@ -21,6 +21,7 @@ const GAME_SCENE: String = "res://scenes/game.tscn"
 @onready var _login_user:  LineEdit = $Login/VBoxContainer/GridContainer/TextEdit
 @onready var _login_pass:  LineEdit = $Login/VBoxContainer/GridContainer/TextEdit2
 @onready var _login_btn:   Button   = $Login/VBoxContainer/Button
+@onready var _skip_btn:    Button   = $Login/VBoxContainer/SkipButton
 
 # Sign-up panel
 @onready var _signup_user: LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit
@@ -36,11 +37,22 @@ func _ready() -> void:
 
 	_login_btn.pressed.connect(_on_login_pressed)
 	_signup_btn.pressed.connect(_on_signup_pressed)
+	_skip_btn.pressed.connect(_on_skip_login_pressed)
 	_http.request_completed.connect(_on_request_completed)
 
-	# Show login by default
 	_login_panel.visible  = true
 	_signup_panel.visible = false
+
+	# If this is the dedicated server, hide the auth UI to avoid confusion!
+	if "--server" in OS.get_cmdline_args():
+		_login_panel.visible = false
+		_signup_panel.visible = false
+		var label = Label.new()
+		label.text = "DEDICATED SERVER\n(Do not login here)"
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		label.set_anchors_preset(Control.PRESET_FULL_RECT)
+		add_child(label)
 
 
 # ─── Button handlers ──────────────────────────────────────────────────────────
@@ -50,6 +62,18 @@ func _on_login_pressed() -> void:
 		API_BASE + "/api/auth/login",
 		{ "username": _login_user.text.strip_edges(), "password": _login_pass.text }
 	)
+
+func _on_skip_login_pressed() -> void:
+	var random_id = randi() % 10000 + 1
+	var dummy_data = {
+		"token": "dummy_token",
+		"user": {
+			"id": random_id,
+			"display_name": "TestPlayer_" + str(random_id),
+			"current_map": "world"
+		}
+	}
+	_on_login_success(dummy_data)
 
 
 func _on_signup_pressed() -> void:

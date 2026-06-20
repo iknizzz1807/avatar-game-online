@@ -24,6 +24,8 @@ func _ready() -> void:
 
 	MultiplayerManager.player_joined.connect(_on_player_joined)
 	MultiplayerManager.player_left.connect(_on_player_left)
+	
+	MultiplayerManager.send_registration()
 
 
 # ─── Signal handlers ──────────────────────────────────────────────────────────

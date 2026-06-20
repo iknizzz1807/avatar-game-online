@@ -1,8 +1,8 @@
-[gd_scene format=3 uid="uid://server_scene001"]
+[gd_scene format=3 uid="uid://bfrkmjvguohx0"]
 
-[ext_resource type="Script" uid="uid://game_server_gd01" path="res://scripts/server/game_server.gd" id="1_server"]
+[ext_resource type="Script" uid="uid://b80ifkgj86xey" path="res://scripts/server/game_server.gd" id="1_server"]
 
-[node name="ServerScene" type="Node"]
+[node name="ServerScene" type="Node" unique_id=377471991]
 script = ExtResource("1_server")
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=1984154290]

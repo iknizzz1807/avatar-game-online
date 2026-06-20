@@ -1,0 +1,6 @@
+WARNING: res://scenes/server.tscn:3 - ext_resource, invalid UID: uid://game_server_gd01 - using text path instead: res://scripts/server/game_server.gd
+   at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://prefabs/characters/remote_player.tscn:3 - ext_resource, invalid UID: uid://remote_player_gd01 - using text path instead: res://scripts/client/prefabs/player/remote_player.gd
+   at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://prefabs/teleport_zone.tscn:3 - ext_resource, invalid UID: uid://teleport_zone_gd_001 - using text path instead: res://scripts/client/prefabs/teleport_zone.gd
+   at: load (scene/resources/resource_format_text.cpp:500)

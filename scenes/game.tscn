@@ -80,8 +80,6 @@ position = Vector2(147, 59)
 position = Vector2(374, 136)
 spawn_position = Vector2(50, 56)
 
-[node name="Player" parent="." unique_id=349396540 instance=ExtResource("2_yqjtg")]
-
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=897578316]
 
 [node name="PlayerRegistry" type="Node" parent="." unique_id=777000001]
@@ -118,3 +116,5 @@ position = Vector2(316, 8)
 
 [node name="Cow3" parent="Decoration" unique_id=1852386865 instance=ExtResource("9_0tnpc")]
 position = Vector2(300, 56)
+
+[node name="Player" parent="." unique_id=349396540 instance=ExtResource("2_yqjtg")]

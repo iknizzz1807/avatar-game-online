@@ -727,14 +727,16 @@ monitorable = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WaterDetector" unique_id=2056939859]
 shape = SubResource("CircleShape2D_water")
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=888000001]
-replication_config = SubResource("SceneReplicationConfig_player")
+
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=777000002]
 enabled = false
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
+
+[node name="PetSpawner" type="Marker2D" parent="." unique_id=1140516596]
+position = Vector2(-30, -19)
 
 [connection signal="inventory_requested" from="CanvasLayer/HUD" to="CanvasLayer/Inventory" method="open_inventory"]
 [connection signal="map_change_requested" from="CanvasLayer/HUD" to="CanvasLayer/FarmMap" method="open_map"]

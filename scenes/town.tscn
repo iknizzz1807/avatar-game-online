@@ -1,0 +1,233 @@
+[gd_scene format=3 uid="uid://town_scene_001"]
+
+[ext_resource type="PackedScene" uid="uid://c3wsy7q6g5io4" path="res://prefabs/characters/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://prefabs/teleport_zone.tscn" id="2_tpzone"]
+[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/House.png" id="3_house"]
+[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Road copiar.png" id="4_road"]
+[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Fence's copiar.png" id="5_fence"]
+[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Maple Tree.png" id="6_tree"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Plants.png" id="7_plants"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Chest.png" id="8_chest"]
+[ext_resource type="Script" uid="uid://ub6l8wnka6u7" path="res://scripts/client/shared/world_boundary.gd" id="9_wbscript"]
+[ext_resource type="Script" uid="uid://d1de6slrwb6fu" path="res://scripts/client/shared/player_registry.gd" id="10_registry"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(520, 340)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_hall"]
+size = Vector2(82, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_house"]
+size = Vector2(50, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_tree"]
+size = Vector2(24, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_town_crate"]
+size = Vector2(30, 20)
+
+[node name="Town" type="Node2D"]
+y_sort_enabled = true
+
+[node name="WorldBoundary" type="Node2D" parent="."]
+script = ExtResource("9_wbscript")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(180, 90)
+shape = SubResource("RectangleShape2D_zone")
+debug_color = Color(0.5, 0.8, 1, 0.3)
+
+[node name="PlayerRegistry" type="Node" parent="."]
+script = ExtResource("10_registry")
+players_container = NodePath("..")
+
+[node name="StaticCollisions" type="StaticBody2D" parent="."]
+
+[node name="TownHallCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(192, 28)
+shape = SubResource("RectangleShape2D_town_hall")
+
+[node name="HouseLeftCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(54, 42)
+shape = SubResource("RectangleShape2D_town_house")
+
+[node name="HouseRightCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(326, 48)
+shape = SubResource("RectangleShape2D_town_house")
+
+[node name="MarketChestCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(112, 120)
+shape = SubResource("RectangleShape2D_town_crate")
+
+[node name="TreeACollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(-26, 6)
+shape = SubResource("RectangleShape2D_town_tree")
+
+[node name="TreeBCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(380, 10)
+shape = SubResource("RectangleShape2D_town_tree")
+
+[node name="TreeCCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(12, 174)
+shape = SubResource("RectangleShape2D_town_tree")
+
+[node name="TreeDCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(366, 174)
+shape = SubResource("RectangleShape2D_town_tree")
+
+[node name="Ground" type="Polygon2D" parent="."]
+z_index = -20
+color = Color(0.380392, 0.588235, 0.266667, 1)
+polygon = PackedVector2Array(-80, -80, 440, -80, 440, 260, -80, 260)
+
+[node name="TownSquare" type="Polygon2D" parent="."]
+z_index = -18
+color = Color(0.658824, 0.517647, 0.341176, 1)
+polygon = PackedVector2Array(96, 38, 286, 38, 286, 116, 96, 116)
+
+[node name="VerticalRoad" type="Polygon2D" parent="."]
+z_index = -17
+color = Color(0.72549, 0.584314, 0.376471, 1)
+polygon = PackedVector2Array(166, -80, 218, -80, 218, 250, 166, 250)
+
+[node name="HorizontalRoad" type="Polygon2D" parent="."]
+z_index = -17
+color = Color(0.72549, 0.584314, 0.376471, 1)
+polygon = PackedVector2Array(-70, 66, 430, 66, 430, 106, -70, 106)
+
+[node name="Decor" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="TownHall" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(192, -2)
+texture = ExtResource("3_house")
+region_enabled = true
+region_rect = Rect2(0, 0, 96, 80)
+
+[node name="HouseLeft" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(54, 12)
+texture = ExtResource("3_house")
+region_enabled = true
+region_rect = Rect2(96, 0, 64, 64)
+
+[node name="HouseRight" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(326, 18)
+texture = ExtResource("3_house")
+region_enabled = true
+region_rect = Rect2(160, 0, 64, 64)
+
+[node name="MarketChest" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(112, 112)
+texture = ExtResource("8_chest")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="TreeA" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(-26, -14)
+texture = ExtResource("6_tree")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="TreeB" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(380, -10)
+texture = ExtResource("6_tree")
+region_enabled = true
+region_rect = Rect2(48, 0, 48, 48)
+
+[node name="TreeC" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(12, 154)
+texture = ExtResource("6_tree")
+region_enabled = true
+region_rect = Rect2(96, 0, 48, 48)
+
+[node name="TreeD" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(366, 154)
+texture = ExtResource("6_tree")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="FenceNorthA" type="Sprite2D" parent="Decor"]
+position = Vector2(116, 28)
+texture = ExtResource("5_fence")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 16)
+
+[node name="FenceNorthB" type="Sprite2D" parent="Decor"]
+position = Vector2(268, 28)
+texture = ExtResource("5_fence")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 16)
+
+[node name="RoadTextureA" type="Sprite2D" parent="Decor"]
+z_index = -15
+position = Vector2(192, 80)
+texture = ExtResource("4_road")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+
+[node name="RoadTextureB" type="Sprite2D" parent="Decor"]
+z_index = -15
+position = Vector2(154, 80)
+texture = ExtResource("4_road")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 32)
+
+[node name="RoadTextureC" type="Sprite2D" parent="Decor"]
+z_index = -15
+position = Vector2(230, 80)
+texture = ExtResource("4_road")
+region_enabled = true
+region_rect = Rect2(0, 32, 32, 32)
+
+[node name="FlowerA" type="Sprite2D" parent="Decor"]
+position = Vector2(84, 136)
+texture = ExtResource("7_plants")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="FlowerB" type="Sprite2D" parent="Decor"]
+position = Vector2(306, 122)
+texture = ExtResource("7_plants")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="FlowerC" type="Sprite2D" parent="Decor"]
+position = Vector2(250, 132)
+texture = ExtResource("7_plants")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="BackToFarm" parent="." instance=ExtResource("2_tpzone")]
+position = Vector2(192, 170)
+target_map_id = "game"
+spawn_position = Vector2(210, 95)
+
+[node name="Label" parent="BackToFarm/Visual" index="1"]
+text = "FARM"
+
+[node name="ToPark" parent="." instance=ExtResource("2_tpzone")]
+position = Vector2(382, 84)
+target_map_id = "park"
+spawn_position = Vector2(40, 96)
+
+[node name="Label" parent="ToPark/Visual" index="1"]
+text = "PARK"
+
+[node name="ToFishPond" parent="." instance=ExtResource("2_tpzone")]
+position = Vector2(22, 84)
+target_map_id = "fish_pond"
+spawn_position = Vector2(330, 110)
+
+[node name="Label" parent="ToFishPond/Visual" index="1"]
+text = "POND"
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(192, 118)

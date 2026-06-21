@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://d1gfftnm3qh5w"]
 
 [ext_resource type="Script" uid="uid://dx33q0sewox4a" path="res://scripts/client/prefabs/ui/auth.gd" id="1_authscr"]
+[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
 content_margin_left = 28.0
@@ -108,6 +109,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_authscr")
 
 [node name="Background" type="ColorRect" parent="." unique_id=100000001]

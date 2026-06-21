@@ -1,6 +1,42 @@
 [gd_scene format=3 uid="uid://byjvxs4buyyy2"]
 
 [ext_resource type="Script" uid="uid://dvpu2el1uwnq2" path="res://scripts/client/prefabs/ui/shop.gd" id="1_shopgd"]
+[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.145098, 0.101961, 0.0705882, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72549, 0.52549, 0.286275, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.34)
+shadow_size = 12
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.352941, 0.235294, 0.137255, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.141176, 0.0901961, 0.0509804, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
 [node name="Shop" type="Control" unique_id=850276504]
 layout_mode = 3
@@ -9,6 +45,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_theme")
 script = ExtResource("1_shopgd")
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=420997689]
@@ -24,6 +61,7 @@ offset_right = 150.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1968584580]
 layout_mode = 2
@@ -34,6 +72,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBox" type="VBoxContainer" parent="Panel/MarginContainer" unique_id=724803468]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="TitleBar" type="HBoxContainer" parent="Panel/MarginContainer/VBox" unique_id=1758222694]
 layout_mode = 2
@@ -41,12 +80,19 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Panel/MarginContainer/VBox/TitleBar" unique_id=1465331563]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Cửa Hàng"
+theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
+theme_override_font_sizes/font_size = 16
+text = "Cua hang"
 horizontal_alignment = 1
 
 [node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBox/TitleBar" unique_id=44507835]
+custom_minimum_size = Vector2(30, 28)
 layout_mode = 2
-text = " X "
+theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+text = "X"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBox" unique_id=268017537]
 layout_mode = 2

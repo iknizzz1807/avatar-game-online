@@ -1,0 +1,189 @@
+[gd_scene format=3 uid="uid://park_scene_001"]
+
+[ext_resource type="PackedScene" uid="uid://c3wsy7q6g5io4" path="res://prefabs/characters/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://prefabs/teleport_zone.tscn" id="2_tpzone"]
+[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Maple Tree.png" id="3_tree"]
+[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Fence's copiar.png" id="4_fence"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Plants.png" id="5_plants"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Furniture.png" id="6_furniture"]
+[ext_resource type="Script" uid="uid://ub6l8wnka6u7" path="res://scripts/client/shared/world_boundary.gd" id="7_wbscript"]
+[ext_resource type="Script" uid="uid://d1de6slrwb6fu" path="res://scripts/client/shared/player_registry.gd" id="8_registry"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(520, 340)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_park_tree"]
+size = Vector2(24, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_park_bench"]
+size = Vector2(30, 12)
+
+[node name="Park" type="Node2D"]
+y_sort_enabled = true
+
+[node name="WorldBoundary" type="Node2D" parent="."]
+script = ExtResource("7_wbscript")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
+position = Vector2(180, 90)
+shape = SubResource("RectangleShape2D_zone")
+debug_color = Color(0.5, 0.8, 1, 0.3)
+
+[node name="PlayerRegistry" type="Node" parent="."]
+script = ExtResource("8_registry")
+players_container = NodePath("..")
+
+[node name="StaticCollisions" type="StaticBody2D" parent="."]
+
+[node name="TreeACollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(22, 8)
+shape = SubResource("RectangleShape2D_park_tree")
+
+[node name="TreeBCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(96, 18)
+shape = SubResource("RectangleShape2D_park_tree")
+
+[node name="TreeCCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(292, 18)
+shape = SubResource("RectangleShape2D_park_tree")
+
+[node name="TreeDCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(372, 6)
+shape = SubResource("RectangleShape2D_park_tree")
+
+[node name="TreeECollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(44, 178)
+shape = SubResource("RectangleShape2D_park_tree")
+
+[node name="TreeFCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(340, 180)
+shape = SubResource("RectangleShape2D_park_tree")
+
+[node name="BenchLeftCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(122, 60)
+shape = SubResource("RectangleShape2D_park_bench")
+
+[node name="BenchRightCollision" type="CollisionShape2D" parent="StaticCollisions"]
+position = Vector2(264, 60)
+shape = SubResource("RectangleShape2D_park_bench")
+
+[node name="Grass" type="Polygon2D" parent="."]
+z_index = -20
+color = Color(0.337255, 0.603922, 0.286275, 1)
+polygon = PackedVector2Array(-80, -80, 440, -80, 440, 260, -80, 260)
+
+[node name="WalkPath" type="Polygon2D" parent="."]
+z_index = -18
+color = Color(0.705882, 0.568627, 0.384314, 1)
+polygon = PackedVector2Array(-80, 86, 70, 70, 192, 96, 320, 70, 440, 86, 440, 126, 318, 108, 192, 136, 70, 108, -80, 126)
+
+[node name="PicnicArea" type="Polygon2D" parent="."]
+z_index = -17
+color = Color(0.454902, 0.686275, 0.352941, 1)
+polygon = PackedVector2Array(112, 22, 272, 22, 272, 74, 112, 74)
+
+[node name="Decor" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="TreeA" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(22, -12)
+texture = ExtResource("3_tree")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="TreeB" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(96, -2)
+texture = ExtResource("3_tree")
+region_enabled = true
+region_rect = Rect2(48, 0, 48, 48)
+
+[node name="TreeC" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(292, -2)
+texture = ExtResource("3_tree")
+region_enabled = true
+region_rect = Rect2(96, 0, 48, 48)
+
+[node name="TreeD" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(372, -14)
+texture = ExtResource("3_tree")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="TreeE" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(44, 158)
+texture = ExtResource("3_tree")
+region_enabled = true
+region_rect = Rect2(48, 0, 48, 48)
+
+[node name="TreeF" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(340, 160)
+texture = ExtResource("3_tree")
+region_enabled = true
+region_rect = Rect2(96, 0, 48, 48)
+
+[node name="BenchLeft" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(122, 56)
+texture = ExtResource("6_furniture")
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 16)
+
+[node name="BenchRight" type="Sprite2D" parent="Decor"]
+y_sort_enabled = true
+position = Vector2(264, 56)
+texture = ExtResource("6_furniture")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 16)
+
+[node name="FlowerBedA" type="Sprite2D" parent="Decor"]
+position = Vector2(106, 126)
+texture = ExtResource("5_plants")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="FlowerBedB" type="Sprite2D" parent="Decor"]
+position = Vector2(278, 126)
+texture = ExtResource("5_plants")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="FlowerBedC" type="Sprite2D" parent="Decor"]
+position = Vector2(150, 148)
+texture = ExtResource("5_plants")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="FlowerBedD" type="Sprite2D" parent="Decor"]
+position = Vector2(234, 148)
+texture = ExtResource("5_plants")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="FenceA" type="Sprite2D" parent="Decor"]
+position = Vector2(164, 18)
+texture = ExtResource("4_fence")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 16)
+
+[node name="FenceB" type="Sprite2D" parent="Decor"]
+position = Vector2(220, 18)
+texture = ExtResource("4_fence")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 16)
+
+[node name="BackToTown" parent="." instance=ExtResource("2_tpzone")]
+position = Vector2(28, 96)
+target_map_id = "town"
+spawn_position = Vector2(352, 84)
+
+[node name="Label" parent="BackToTown/Visual" index="1"]
+text = "TOWN"
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(192, 118)

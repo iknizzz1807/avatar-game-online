@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://relekbcj6wwg" path="res://sprites/Objects/Free_Chicken_House.png" id="7_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://bp6jg2msbrw6a" path="res://prefabs/characters/chicken.tscn" id="8_gee14"]
 [ext_resource type="PackedScene" uid="uid://2xow8i3himyb" path="res://prefabs/characters/cow.tscn" id="9_0tnpc"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Grass_Biom_things.png" id="10_grassprops"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Plants.png" id="11_plants"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Chest.png" id="12_chest"]
+[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_tools_and_meterials.png" id="13_tools"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
 size = Vector2(432, 240)
@@ -80,6 +84,14 @@ position = Vector2(147, 59)
 position = Vector2(374, 136)
 spawn_position = Vector2(50, 56)
 
+[node name="TeleportToTown" parent="." unique_id=700000003 instance=ExtResource("5_tpzone")]
+position = Vector2(-36, 118)
+target_map_id = "town"
+spawn_position = Vector2(192, 118)
+
+[node name="Label" parent="TeleportToTown/Visual" index="1"]
+text = "TOWN"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=897578316]
 
 [node name="PlayerRegistry" type="Node" parent="." unique_id=777000001]
@@ -116,5 +128,92 @@ position = Vector2(316, 8)
 
 [node name="Cow3" parent="Decoration" unique_id=1852386865 instance=ExtResource("9_0tnpc")]
 position = Vector2(300, 56)
+
+[node name="FarmDetails" type="Node2D" parent="Decoration" unique_id=810000001]
+y_sort_enabled = true
+
+[node name="ToolCrate" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000002]
+y_sort_enabled = true
+position = Vector2(184, 68)
+texture = ExtResource("12_chest")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 48)
+
+[node name="WateringTools" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000003]
+y_sort_enabled = true
+position = Vector2(30, 76)
+texture = ExtResource("13_tools")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="FarmBushLeft" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000004]
+y_sort_enabled = true
+position = Vector2(36, -6)
+texture = ExtResource("10_grassprops")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="FarmBushRight" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000005]
+y_sort_enabled = true
+position = Vector2(182, -4)
+texture = ExtResource("10_grassprops")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="FlowerPatchA" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000006]
+y_sort_enabled = true
+position = Vector2(38, 52)
+texture = ExtResource("11_plants")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="FlowerPatchB" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000007]
+y_sort_enabled = true
+position = Vector2(184, 30)
+texture = ExtResource("11_plants")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[node name="FlowerPatchC" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000008]
+y_sort_enabled = true
+position = Vector2(224, 74)
+texture = ExtResource("11_plants")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="PastureBushA" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000009]
+y_sort_enabled = true
+position = Vector2(232, -16)
+texture = ExtResource("10_grassprops")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 16)
+
+[node name="PastureBushB" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000010]
+y_sort_enabled = true
+position = Vector2(334, -6)
+texture = ExtResource("10_grassprops")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="PastureBushC" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000011]
+y_sort_enabled = true
+position = Vector2(350, 76)
+texture = ExtResource("10_grassprops")
+region_enabled = true
+region_rect = Rect2(64, 0, 16, 16)
+
+[node name="CaveMarkerFlowers" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000012]
+y_sort_enabled = true
+position = Vector2(360, 120)
+texture = ExtResource("11_plants")
+region_enabled = true
+region_rect = Rect2(48, 0, 16, 16)
+
+[node name="CornerFlowers" type="Sprite2D" parent="Decoration/FarmDetails" unique_id=810000013]
+y_sort_enabled = true
+position = Vector2(-28, 82)
+texture = ExtResource("11_plants")
+region_enabled = true
+region_rect = Rect2(64, 0, 16, 16)
 
 [node name="Player" parent="." unique_id=349396540 instance=ExtResource("2_yqjtg")]

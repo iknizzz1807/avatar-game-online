@@ -270,7 +270,7 @@ func _apply_server_plots(plots: Array, broadcast: bool) -> void:
 				slot.sync_state(state, seed_id, ready_at)
 				break
 		if broadcast and index == plotId:
-			MultiplayerManager.send_farm_slot_state(index, state, seed_id, ready_at)
+			MultiplayerManager.notify_farm_changed(index)
 
 
 func _plot_status_to_state(status: String) -> int:

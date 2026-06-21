@@ -17,6 +17,7 @@ func Initialize(cfg *config.Config) error {
 	if err != nil {
 		return err
 	}
+	DB.SetMaxOpenConns(1)
 
 	if err = DB.Ping(); err != nil {
 		return err

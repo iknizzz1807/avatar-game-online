@@ -51,6 +51,14 @@ func _ready() -> void:
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 
 
+func get_server_host() -> String:
+	return _read_arg_or_env("game-host", "GAME_HOST", DEFAULT_HOST)
+
+
+func get_server_port() -> int:
+	return int(_read_arg_or_env("game-port", "GAME_PORT", str(DEFAULT_PORT)))
+
+
 # ─── Public API ───────────────────────────────────────────────────────────────
 
 ## Call this after a successful Go REST login.
@@ -103,10 +111,14 @@ func _server_map_to_scene(map_id: String) -> String:
 
 
 ## Connect to the dedicated Godot game server.
-func connect_to_server(host: String = DEFAULT_HOST, port: int = DEFAULT_PORT) -> void:
+func connect_to_server(host: String = "", port: int = 0) -> void:
 	if _peer != null:
 		push_warning("[MultiplayerManager] Already connected — disconnect first.")
 		return
+	if host.is_empty():
+		host = get_server_host()
+	if port <= 0:
+		port = get_server_port()
 
 	_peer = ENetMultiplayerPeer.new()
 	var err: int = _peer.create_client(host, port)
@@ -205,10 +217,20 @@ func send_farm_action(plot_id: int, action: String, data: String = "") -> void:
 		server_node.request_farm_action.rpc_id(1, local_map_id, plot_id, action, data)
 
 
-func send_farm_slot_state(plot_id: int, state: int, seed_id: String = "", ready_at: int = 0) -> void:
+func notify_farm_changed(plot_id: int) -> void:
 	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
 	if server_node and multiplayer.has_multiplayer_peer():
-		server_node.relay_farm_slot_state.rpc_id(1, local_map_id, plot_id, state, seed_id, ready_at)
+		server_node.notify_farm_changed.rpc_id(1, plot_id)
+
+
+@rpc("authority", "reliable")
+func farm_changed(map_id: String, _plot_id: int) -> void:
+	if map_id != local_map_id:
+		return
+	for slot in get_tree().get_nodes_in_group("farm_slots"):
+		if slot.has_method("_load_farm_from_server"):
+			slot.call_deferred("_load_farm_from_server")
+			return
 
 @rpc("authority", "reliable")
 func sync_farm_slot(map_id: String, plot_id: int, state: int, seed_id: String, ready_at: int) -> void:
@@ -255,3 +277,21 @@ func update_remote_player(peer_id: int, pos: Vector2, anim_state: String, facing
 		remote_player.sync_anim_state = anim_state
 		remote_player.sync_facing = facing
 		remote_player.sync_flip_h = flip_h
+
+
+@rpc("authority", "reliable")
+func force_position(pos: Vector2) -> void:
+	for player in get_tree().get_nodes_in_group("local_player"):
+		player.global_position = pos
+		if "sync_position" in player:
+			player.sync_position = pos
+		return
+
+
+func _read_arg_or_env(arg_name: String, env_name: String, default_value: String) -> String:
+	var prefix := "--" + arg_name + "="
+	for arg in OS.get_cmdline_args():
+		if arg.begins_with(prefix):
+			return arg.substr(prefix.length())
+	var env_value := OS.get_environment(env_name)
+	return env_value if not env_value.is_empty() else default_value

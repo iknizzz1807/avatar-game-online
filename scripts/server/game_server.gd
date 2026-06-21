@@ -16,7 +16,7 @@ extends Node
 
 const PORT: int = 7777
 const MAX_CLIENTS: int = 64
-const API_BASE: String = "http://127.0.0.1:8080"
+var api_base: String = "http://127.0.0.1:8080"
 const CHAT_MAX_CHARS: int = 100
 const CHAT_WINDOW_SECONDS: float = 5.0
 const CHAT_MAX_IN_WINDOW: int = 3
@@ -33,6 +33,7 @@ var _last_movement: Dictionary = {}
 
 
 func _ready() -> void:
+	api_base = _read_arg_or_env("api-base", "API_BASE", api_base)
 	if not _is_server_mode():
 		# Not running as a dedicated server — do nothing.
 		# The node still exists so the scene can be referenced from the editor.
@@ -159,7 +160,7 @@ func _verify_token(token: String) -> Dictionary:
 		"Content-Type: application/json",
 		"Authorization: Bearer " + token,
 	])
-	var err := http.request(API_BASE + "/api/user/me", headers, HTTPClient.METHOD_GET)
+	var err := http.request(api_base + "/api/user/me", headers, HTTPClient.METHOD_GET)
 	if err != OK:
 		http.queue_free()
 		return {}
@@ -196,6 +197,9 @@ func sync_player_state(pos: Vector2, anim_state: String, facing: Vector2, flip_h
 	if not _players.has(sender_id):
 		return
 	if not _is_movement_valid(sender_id, pos):
+		var last: Dictionary = _last_movement.get(sender_id, {})
+		var last_pos: Vector2 = last.get("pos", pos)
+		MultiplayerManager.force_position.rpc_id(sender_id, last_pos)
 		return
 		
 	var map_id: String = _players[sender_id].get("map_id", "")
@@ -230,39 +234,23 @@ func _is_movement_valid(peer_id: int, pos: Vector2) -> bool:
 # ─── Farm Sync RPCs ──────────────────────────────────────────────────────────
 
 @rpc("any_peer", "reliable")
-func request_farm_action(map_id: String, plot_id: int, action: String, data: String) -> void:
+func request_farm_action(_map_id: String, plot_id: int, _action: String, _data: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if not _players.has(sender_id):
 		return
-	map_id = _players[sender_id].get("map_id", "")
-	# Legacy visual-only path. Authoritative farm mutations now happen through
-	# the Go REST server; new clients call relay_farm_slot_state with persisted data.
-	var state := 0
-	var seed_id := ""
-	match action:
-		"plant":
-			state = 1 # PlotState.SEEDED
-			seed_id = data
-		"water":
-			state = 2 # PlotState.GROWING
-		"remove", "harvest":
-			state = 0 # PlotState.EMPTY
-	relay_farm_slot_state(map_id, plot_id, state, seed_id, 0)
+	notify_farm_changed(plot_id)
 
 
 @rpc("any_peer", "reliable")
-func relay_farm_slot_state(map_id: String, plot_id: int, state: int, seed_id: String, ready_at: int) -> void:
+func notify_farm_changed(plot_id: int) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if not _players.has(sender_id):
 		return
-	map_id = _players[sender_id].get("map_id", "")
-	# Broadcast to everyone on this map (including sender)
+	var map_id: String = _players[sender_id].get("map_id", "")
 	for peer_id: int in _players:
 		var p: Dictionary = _players[peer_id]
 		if p.get("map_id", "") == map_id:
-			MultiplayerManager.sync_farm_slot.rpc_id(
-				peer_id, map_id, plot_id, state, seed_id, ready_at
-			)
+			MultiplayerManager.farm_changed.rpc_id(peer_id, map_id, plot_id)
 
 
 @rpc("any_peer", "reliable")
@@ -296,6 +284,15 @@ func _allow_chat(peer_id: int) -> bool:
 	fresh.append(now)
 	_chat_times[peer_id] = fresh
 	return true
+
+
+func _read_arg_or_env(arg_name: String, env_name: String, default_value: String) -> String:
+	var prefix := "--" + arg_name + "="
+	for arg in OS.get_cmdline_args():
+		if arg.begins_with(prefix):
+			return arg.substr(prefix.length())
+	var env_value := OS.get_environment(env_name)
+	return env_value if not env_value.is_empty() else default_value
 
 
 # ─── Broadcast helpers ───────────────────────────────────────────────────────

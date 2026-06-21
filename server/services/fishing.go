@@ -10,7 +10,7 @@ import (
 )
 
 type FishingResult struct {
-	Type   string `json:"type"`   // 'fail', 'small', 'medium', 'large'
+	Type   string `json:"type"`    // 'fail', 'small', 'medium', 'large'
 	ItemID string `json:"item_id"` // fish item ID or empty if fail
 	Coins  int    `json:"coins"`
 }

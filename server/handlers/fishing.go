@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/avatar-game/server/middleware"
 	"github.com/avatar-game/server/services"
 	"github.com/avatar-game/server/utils"
-	"github.com/avatar-game/server/middleware"
+	"github.com/gin-gonic/gin"
 )
 
 func GetFishingStatus(c *gin.Context) {
@@ -21,19 +21,19 @@ func GetFishingStatus(c *gin.Context) {
 
 func StartFishing(c *gin.Context) {
 	userID := middleware.GetUserID(c)
-	
+
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	seatIndex, ok := data["seat_index"].(float64)
 	if !ok {
 		c.JSON(400, gin.H{"error": "seat_index required"})
 		return
 	}
-	
+
 	err := services.StartFishing(userID, int(seatIndex))
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})

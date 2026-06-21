@@ -1,11 +1,11 @@
 package models
 
 type InventoryItem struct {
-	ID        int    `json:"id"`
-	UserID    int    `json:"user_id"`
-	ItemID    string `json:"item_id"`
-	Quantity  int    `json:"quantity"`
-	Item      *Item  `json:"item,omitempty"`
+	ID       int    `json:"id"`
+	UserID   int    `json:"user_id"`
+	ItemID   string `json:"item_id"`
+	Quantity int    `json:"quantity"`
+	Item     *Item  `json:"item,omitempty"`
 }
 
 type InventoryResponse struct {

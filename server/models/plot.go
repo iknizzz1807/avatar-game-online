@@ -3,11 +3,11 @@ package models
 import "time"
 
 type Plot struct {
-	ID         int        `json:"id"`
-	UserID     int        `json:"user_id"`
-	PlotIndex  int        `json:"plot_index"`
-	Status     string     `json:"status"` // 'EMPTY', 'SEEDED', 'GROWING', 'READY'
-	SeedID     *string    `json:"seed_id,omitempty"`
+	ID        int        `json:"id"`
+	UserID    int        `json:"user_id"`
+	PlotIndex int        `json:"plot_index"`
+	Status    string     `json:"status"` // 'EMPTY', 'SEEDED', 'GROWING', 'READY'
+	SeedID    *string    `json:"seed_id,omitempty"`
 	ReadyAt   *time.Time `json:"ready_at,omitempty"`
 }
 
@@ -19,10 +19,10 @@ const (
 )
 
 type PlotResponse struct {
-	PlotIndex int      `json:"plot_index"`
-	Status    string   `json:"status"`
-	SeedID    *string  `json:"seed_id,omitempty"`
-	ReadyAt   *int64   `json:"ready_at,omitempty"`
+	PlotIndex int     `json:"plot_index"`
+	Status    string  `json:"status"`
+	SeedID    *string `json:"seed_id,omitempty"`
+	ReadyAt   *int64  `json:"ready_at,omitempty"`
 }
 
 func (p *Plot) ToResponse() PlotResponse {

@@ -43,5 +43,14 @@ func _on_body_entered(body: Node) -> void:
 	if MultiplayerManager:
 		MultiplayerManager.set_map(target_map_id)
 
+	if ApiClient.has_auth_token():
+		var response: Dictionary = await ApiClient.request_json(
+			"/api/user/map",
+			HTTPClient.METHOD_PUT,
+			{ "map": MultiplayerManager.get_server_map_name(target_map_id) }
+		)
+		if not response.get("ok", false):
+			push_warning("[TeleportZone] Could not persist map change to Go server.")
+
 	# Load the target scene.
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % target_map_id)

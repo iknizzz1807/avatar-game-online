@@ -14,17 +14,17 @@ class_name Toast
 # Font size, padding, corner radius, shadow — all live in the .tscn StyleBox.
 
 var TYPE_STYLES: Dictionary = {
-	ToastManager.Type.INFO:    { "bg": Color(0.15, 0.15, 0.20, 0.92), "border": Color(0.50, 0.50, 0.60, 0.80), "icon": "ℹ️" },
-	ToastManager.Type.SUCCESS: { "bg": Color(0.10, 0.28, 0.15, 0.92), "border": Color(0.30, 0.75, 0.45, 0.90), "icon": "✅" },
-	ToastManager.Type.WARNING: { "bg": Color(0.30, 0.22, 0.05, 0.92), "border": Color(0.90, 0.65, 0.15, 0.90), "icon": "⚠️" },
-	ToastManager.Type.ERROR:   { "bg": Color(0.30, 0.08, 0.08, 0.92), "border": Color(0.90, 0.30, 0.30, 0.90), "icon": "❌" },
+	0: { "bg": Color(0.15, 0.15, 0.20, 0.92), "border": Color(0.50, 0.50, 0.60, 0.80), "icon": "ℹ️" },
+	1: { "bg": Color(0.10, 0.28, 0.15, 0.92), "border": Color(0.30, 0.75, 0.45, 0.90), "icon": "✅" },
+	2: { "bg": Color(0.30, 0.22, 0.05, 0.92), "border": Color(0.90, 0.65, 0.15, 0.90), "icon": "⚠️" },
+	3: { "bg": Color(0.30, 0.08, 0.08, 0.92), "border": Color(0.90, 0.30, 0.30, 0.90), "icon": "❌" },
 }
 
 @onready var _label: Label = $Label
 
 ## Apply message text and type-specific colour/icon.
 ## Called by ToastManager immediately after instantiation.
-func setup(message: String, type: ToastManager.Type) -> void:
+func setup(message: String, type: int) -> void:
 	var style: Dictionary = TYPE_STYLES[type]
 
 	# Colour the panel — duplicate the base StyleBox so each toast is independent

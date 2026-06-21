@@ -10,7 +10,6 @@ extends Control
 #   3. Transitions to game.tscn
 # ═════════════════════════════════════════════════════════════════════════════
 
-const API_BASE: String   = "http://127.0.0.1:8080"
 const GAME_SCENE: String = "res://scenes/game.tscn"
 
 # ─── Nodes ────────────────────────────────────────────────────────────────────
@@ -38,8 +37,6 @@ func _ready() -> void:
 	_login_btn.pressed.connect(_on_login_pressed)
 	_signup_btn.pressed.connect(_on_signup_pressed)
 	_skip_btn.pressed.connect(_on_skip_login_pressed)
-	_http.request_completed.connect(_on_request_completed)
-
 	_login_panel.visible  = true
 	_signup_panel.visible = false
 
@@ -58,10 +55,12 @@ func _ready() -> void:
 # ─── Button handlers ──────────────────────────────────────────────────────────
 
 func _on_login_pressed() -> void:
-	_send_request(
-		API_BASE + "/api/auth/login",
+	var response: Dictionary = await ApiClient.request_json(
+		"/api/auth/login",
+		HTTPClient.METHOD_POST,
 		{ "username": _login_user.text.strip_edges(), "password": _login_pass.text }
 	)
+	_handle_auth_response(response)
 
 func _on_skip_login_pressed() -> void:
 	var random_id = randi() % 10000 + 1
@@ -77,38 +76,20 @@ func _on_skip_login_pressed() -> void:
 
 
 func _on_signup_pressed() -> void:
-	_send_request(
-		API_BASE + "/api/auth/register",
-		{ "username": _signup_user.text.strip_edges(), "password": _signup_pass.text }
+	var username := _signup_user.text.strip_edges()
+	var response: Dictionary = await ApiClient.request_json(
+		"/api/auth/register",
+		HTTPClient.METHOD_POST,
+		{ "username": username, "password": _signup_pass.text, "display_name": username }
 	)
+	_handle_auth_response(response)
 
 
-func _send_request(url: String, body: Dictionary) -> void:
-	var json_body: String  = JSON.stringify(body)
-	var headers: PackedStringArray = PackedStringArray([
-		"Content-Type: application/json"
-	])
-	_http.request(url, headers, HTTPClient.METHOD_POST, json_body)
-
-
-# ─── HTTP response ────────────────────────────────────────────────────────────
-
-func _on_request_completed(result: int, response_code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
-	if result != HTTPRequest.RESULT_SUCCESS:
-		push_error("[Auth] HTTP error: result=%d" % result)
+func _handle_auth_response(response: Dictionary) -> void:
+	if not response.get("ok", false):
+		push_error("[Auth] Server error %d: %s" % [response.get("code", 0), response.get("error", "unknown")])
 		return
-
-	var json_text: String = body.get_string_from_utf8()
-	var parsed = JSON.parse_string(json_text)
-	if not parsed is Dictionary:
-		push_error("[Auth] Invalid JSON response")
-		return
-
-	if response_code != 200:
-		push_error("[Auth] Server error %d: %s" % [response_code, parsed.get("error", "unknown")])
-		return
-
-	_on_login_success(parsed)
+	_on_login_success(response.get("body", {}))
 
 
 func _on_login_success(data: Dictionary) -> void:
@@ -119,12 +100,12 @@ func _on_login_success(data: Dictionary) -> void:
 	var display_name: String = user.get("display_name", user.get("username", "Player"))
 	
 	var map_id: String      = user.get("current_map", "game")
-	if map_id == "world" or map_id == "": # Backwards compatibility if backend returned "world"
-		map_id = "game"
 
 	print("[Auth] Logged in as %s (id=%d)" % [display_name, user_id])
 
 	# Store info in the multiplayer manager
+	ApiClient.set_auth_token(token)
+	MultiplayerManager.set_auth_token(token)
 	MultiplayerManager.set_local_player(user_id, display_name, map_id)
 
 	# Connect to the Godot dedicated server

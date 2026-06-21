@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/avatar-game/server/middleware"
 	"github.com/avatar-game/server/services"
 	"github.com/avatar-game/server/utils"
-	"github.com/avatar-game/server/middleware"
+	"github.com/gin-gonic/gin"
 )
 
 type RegisterRequest struct {
@@ -120,9 +120,14 @@ func ChangeMap(c *gin.Context) {
 	}
 
 	validMaps := map[string]bool{
-		"farm":          true,
-		"central_park":  true,
-		"fishing_lake":  true,
+		"farm":         true,
+		"central_park": true,
+		"fishing_lake": true,
+		"game":         true,
+		"park":         true,
+		"fish_pond":    true,
+		"town":         true,
+		"cave":         true,
 	}
 
 	if !validMaps[req.Map] {

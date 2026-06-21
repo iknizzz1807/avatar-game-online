@@ -122,6 +122,10 @@ func GetInventoryCount(userID int) (int, error) {
 }
 
 func SellItem(userID int, itemID string, quantity int) (int, error) {
+	if quantity <= 0 {
+		return 0, utils.ErrCodeInvalidInput
+	}
+
 	has, qty := HasItem(userID, itemID)
 	if !has || qty < quantity {
 		return 0, utils.ErrCodeInvalidInput

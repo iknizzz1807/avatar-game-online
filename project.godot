@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 MultiplayerManager="*res://scripts/client/shared/multiplayer_manager.gd"
+ApiClient="*res://scripts/client/shared/api_client.gd"
 TeleportData="*res://scripts/client/shared/teleport_data.gd"
 ToastManager="*res://prefabs/ui/components/toast_manager.tscn"
 ServerScene="res://scenes/server.tscn"

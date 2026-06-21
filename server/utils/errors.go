@@ -13,8 +13,8 @@ func (e ErrorCode) Error() string {
 }
 
 const (
-	ErrCodeInsufficientFunds  ErrorCode = "INSUFFICIENT_FUNDS"
-	ErrCodeInventoryFull      ErrorCode = "INVENTORY_FULL"
+	ErrCodeInsufficientFunds ErrorCode = "INSUFFICIENT_FUNDS"
+	ErrCodeInventoryFull     ErrorCode = "INVENTORY_FULL"
 	ErrCodePlotNotEmpty      ErrorCode = "PLOT_NOT_EMPTY"
 	ErrCodePlotNotSeeded     ErrorCode = "PLOT_NOT_SEEDED"
 	ErrCodePlotNotReady      ErrorCode = "PLOT_NOT_READY"
@@ -40,7 +40,7 @@ var errorMessages = map[ErrorCode]string{
 	ErrCodeInvalidInput:      "Dữ liệu không hợp lệ.",
 	ErrCodeUnauthorized:      "Bạn chưa đăng nhập.",
 	ErrCodeUserNotFound:      "Tài khoản không tồn tại.",
-	ErrCodeUsernameExists:     "Tên đăng nhập đã được sử dụng.",
+	ErrCodeUsernameExists:    "Tên đăng nhập đã được sử dụng.",
 	ErrCodeWrongPassword:     "Mật khẩu không đúng.",
 }
 

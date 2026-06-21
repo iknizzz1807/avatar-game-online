@@ -37,10 +37,35 @@ func GetPlots(userID int) ([]models.PlotResponse, error) {
 }
 
 func SeedPlot(userID int, plotIndex int, seedID string) error {
-	// Skip all validation for now, just test update
-	_, err := db.DB.Exec(
-		"UPDATE plots SET status = 'SEEDED', seed_id = ? WHERE user_id = ? AND plot_index = ?",
-		seedID, userID, plotIndex,
+	if plotIndex < 0 || plotIndex >= 16 {
+		return utils.ErrCodeInvalidInput
+	}
+
+	item, err := GetItemByID(seedID)
+	if err != nil || item.Type != models.ItemTypeSeed {
+		return utils.ErrCodeInvalidInput
+	}
+
+	var status string
+	err = db.DB.QueryRow("SELECT status FROM plots WHERE user_id = ? AND plot_index = ?", userID, plotIndex).Scan(&status)
+	if err != nil {
+		return err
+	}
+	if status != models.PlotStatusEmpty {
+		return utils.ErrCodePlotNotEmpty
+	}
+
+	hasSeed, qty := HasItem(userID, seedID)
+	if !hasSeed || qty < 1 {
+		return utils.ErrCodeInvalidInput
+	}
+	if err := RemoveItem(userID, seedID, 1); err != nil {
+		return err
+	}
+
+	_, err = db.DB.Exec(
+		"UPDATE plots SET status = ?, seed_id = ?, ready_at = NULL WHERE user_id = ? AND plot_index = ?",
+		models.PlotStatusSeeded, seedID, userID, plotIndex,
 	)
 	return err
 }

@@ -35,6 +35,8 @@ func _ready() -> void:
 	super._ready()  # ← sets input_pickable, connects _on_input_event, adds to group
 	add_to_group("farm_slots")
 	_update_visuals()
+	if plotId == 0:
+		call_deferred("_load_farm_from_server")
 
 func _process(_delta: float) -> void:
 	if currentState == PlotState.GROWING:
@@ -70,8 +72,7 @@ func _handle_click() -> void:
 			if not _is_player_nearby():
 				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
 				return
-			print("Local: Planting seed.")
-			MultiplayerManager.send_farm_action(plotId, "plant", "tomato_seed")
+			_request_server_action("plant", "seed_tomato")
 			
 		PlotState.SEEDED:
 			# Delegate to the nearby local player so the watering animation plays first.
@@ -82,8 +83,7 @@ func _handle_click() -> void:
 			print("Local: Plot is growing, please wait.")
 			
 		PlotState.READY:
-			print("Local: Harvesting plot.")
-			MultiplayerManager.send_farm_action(plotId, "harvest")
+			_request_server_action("harvest")
 
 # ─── CONTEXT MENU — ContextMenuTarget interface ───────────────────────────────
 
@@ -129,17 +129,14 @@ func _on_context_action(actionId: String, target: Object) -> void:
 			if not _is_player_nearby():
 				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
 				return
-			print("[FarmSlot %d] Context: Planting seed." % plotId)
-			MultiplayerManager.send_farm_action(plotId, "plant", "tomato_seed")
+			_request_server_action("plant", "seed_tomato")
 		"water":
 			# Delegate to the nearby local player so the watering animation plays first.
 			_request_water_via_player()
 		"remove_seed":
-			print("[FarmSlot %d] Context: Removing seed." % plotId)
-			MultiplayerManager.send_farm_action(plotId, "remove")
+			ToastManager.show_toast("Chưa hỗ trợ nhổ hạt giống trên server.", ToastManager.Type.WARNING)
 		"harvest":
-			print("[FarmSlot %d] Context: Harvesting." % plotId)
-			MultiplayerManager.send_farm_action(plotId, "harvest")
+			_request_server_action("harvest")
 		"inspect":
 			print("[FarmSlot %d] Context: Inspecting (GROWING – no action yet)." % plotId)
 
@@ -170,8 +167,7 @@ func _request_water_via_player() -> void:
 func water() -> void:
 	if currentState != PlotState.SEEDED:
 		return
-	print("[FarmSlot %d] Watered." % plotId)
-	MultiplayerManager.send_farm_action(plotId, "water")
+	_request_server_action("water")
 
 func sync_state(new_state: int, new_seed: String, new_ready_at: int) -> void:
 	currentState = new_state
@@ -212,3 +208,73 @@ func _format_time(seconds: int) -> String:
 	var minutes: int = seconds / 60
 	var remainingSeconds: int = seconds % 60
 	return str(minutes).pad_zeros(2) + ":" + str(remainingSeconds).pad_zeros(2)
+
+
+func _load_farm_from_server() -> void:
+	if not ApiClient.has_auth_token():
+		return
+	var response: Dictionary = await ApiClient.request_json("/api/farm/plots")
+	if not response.get("ok", false):
+		ToastManager.show_toast("Không tải được nông trại.", ToastManager.Type.WARNING)
+		return
+	_apply_server_plots(ApiClient.response_data(response).get("plots", []), false)
+
+
+func _request_server_action(action: String, seed_id: String = "") -> void:
+	if not ApiClient.has_auth_token():
+		ToastManager.show_toast("Cần đăng nhập server để thao tác nông trại.", ToastManager.Type.WARNING)
+		return
+
+	var endpoint := ""
+	var body := { "plot_index": plotId }
+	match action:
+		"plant":
+			endpoint = "/api/farm/seed"
+			body["seed_id"] = seed_id
+		"water":
+			endpoint = "/api/farm/water"
+		"harvest":
+			endpoint = "/api/farm/harvest"
+		_:
+			return
+
+	var response: Dictionary = await ApiClient.request_json(endpoint, HTTPClient.METHOD_POST, body)
+	if not response.get("ok", false):
+		ToastManager.show_toast("Thao tác nông trại thất bại.", ToastManager.Type.WARNING)
+		return
+
+	var data: Dictionary = ApiClient.response_data(response)
+	_apply_server_plots(data.get("plots", []), true)
+	if data.has("inventory"):
+		for inv in get_tree().get_nodes_in_group("inventory"):
+			if inv.has_method("set_server_inventory"):
+				inv.set_server_inventory(data.get("inventory", []))
+
+
+func _apply_server_plots(plots: Array, broadcast: bool) -> void:
+	for plot in plots:
+		if not plot is Dictionary:
+			continue
+		var plot_data: Dictionary = plot
+		var index: int = int(plot_data.get("plot_index", -1))
+		var state: int = _plot_status_to_state(plot_data.get("status", "EMPTY"))
+		var seed_id: String = plot_data.get("seed_id", "")
+		var ready_at: int = int(plot_data.get("ready_at", 0))
+		for slot in get_tree().get_nodes_in_group("farm_slots"):
+			if slot.plotId == index:
+				slot.sync_state(state, seed_id, ready_at)
+				break
+		if broadcast and index == plotId:
+			MultiplayerManager.send_farm_slot_state(index, state, seed_id, ready_at)
+
+
+func _plot_status_to_state(status: String) -> int:
+	match status:
+		"SEEDED":
+			return PlotState.SEEDED
+		"GROWING":
+			return PlotState.GROWING
+		"READY":
+			return PlotState.READY
+		_:
+			return PlotState.EMPTY

@@ -3,13 +3,13 @@ package main
 import (
 	"log"
 
-	"github.com/gin-gonic/gin"
 	"github.com/avatar-game/server/config"
 	"github.com/avatar-game/server/db"
 	"github.com/avatar-game/server/handlers"
 	"github.com/avatar-game/server/middleware"
 	"github.com/avatar-game/server/services"
 	"github.com/avatar-game/server/utils"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {

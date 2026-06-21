@@ -24,8 +24,12 @@ signal map_change_requested();
 # ═════════════════════════════════════════════════════════════════════════════
 
 func _ready() -> void:
+	add_to_group("hud")
 	inventoryButton.pressed.connect(_on_inventory_button_pressed);
 	mapButton.pressed.connect(_on_map_button_pressed);
+	ApiClient.coins_changed.connect(update_xu)
+	if ApiClient.current_coins > 0:
+		update_xu(ApiClient.current_coins)
 
 # ═════════════════════════════════════════════════════════════════════════════
 # PUBLIC API

@@ -42,20 +42,20 @@ func show_toast(message: String, type: Type = Type.INFO, duration: float = DEFAU
 	if _container.get_child_count() >= MAX_TOASTS:
 		_container.get_child(0).queue_free()
 
-	var toast: Toast = TOAST_SCENE.instantiate()
+	var toast: PanelContainer = TOAST_SCENE.instantiate()
 	_container.add_child(toast)
 	toast.setup(message, type)
 	_animate(toast, duration)
 
 # ── Private ───────────────────────────────────────────────────────────────────
 
-func _animate(toast: Toast, duration: float) -> void:
+func _animate(toast: PanelContainer, duration: float) -> void:
 	# Wait one frame for the container to position the toast
 	await get_tree().process_frame
 	if not is_instance_valid(toast):
 		return
 
-	var target_y := toast.position.y
+	var target_y: float = toast.position.y
 
 	var tween := create_tween()
 	tween.set_ease(Tween.EASE_OUT)

@@ -35,6 +35,7 @@ const INSTANCED_SCENES: Array[String] = [
 # ─── Local player info (populated by auth flow before connecting) ─────────────
 var local_user_id:      int    = -1
 var local_display_name: String = ""
+var local_auth_token:   String = ""
 var local_scene_name:   String = "game"
 var local_map_id:       String = "game"
 
@@ -55,15 +56,48 @@ func _ready() -> void:
 func set_local_player(user_id: int, display_name: String, map_id: String = "game") -> void:
 	local_user_id      = user_id
 	local_display_name = display_name
-	set_map(map_id)
+	set_map(_server_map_to_scene(map_id))
+
+
+func set_auth_token(token: String) -> void:
+	local_auth_token = token
 
 ## Sets the scene name and automatically computes the map_id to isolate personal maps.
 func set_map(scene_name: String) -> void:
+	scene_name = _server_map_to_scene(scene_name)
 	local_scene_name = scene_name
 	if scene_name in INSTANCED_SCENES:
 		local_map_id = scene_name + "_" + str(local_user_id)
 	else:
 		local_map_id = scene_name
+
+
+func get_server_map_name(scene_name: String = "") -> String:
+	if scene_name.is_empty():
+		scene_name = local_scene_name
+	match scene_name:
+		"game":
+			return "farm"
+		"park":
+			return "central_park"
+		"fish_pond":
+			return "fishing_lake"
+		_:
+			return scene_name
+
+
+func _server_map_to_scene(map_id: String) -> String:
+	match map_id:
+		"farm":
+			return "game"
+		"central_park", "world":
+			return "park"
+		"fishing_lake":
+			return "fish_pond"
+		"":
+			return "game"
+		_:
+			return map_id
 
 
 ## Connect to the dedicated Godot game server.
@@ -150,6 +184,12 @@ func send_farm_action(plot_id: int, action: String, data: String = "") -> void:
 	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
 	if server_node and multiplayer.has_multiplayer_peer():
 		server_node.request_farm_action.rpc_id(1, local_map_id, plot_id, action, data)
+
+
+func send_farm_slot_state(plot_id: int, state: int, seed_id: String = "", ready_at: int = 0) -> void:
+	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
+	if server_node and multiplayer.has_multiplayer_peer():
+		server_node.relay_farm_slot_state.rpc_id(1, local_map_id, plot_id, state, seed_id, ready_at)
 
 @rpc("authority", "reliable")
 func sync_farm_slot(map_id: String, plot_id: int, state: int, seed_id: String, ready_at: int) -> void:

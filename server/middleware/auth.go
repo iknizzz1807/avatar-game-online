@@ -3,8 +3,8 @@ package middleware
 import (
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/avatar-game/server/utils"
+	"github.com/gin-gonic/gin"
 )
 
 func AuthMiddleware() gin.HandlerFunc {

@@ -20,10 +20,6 @@ const MAX_CLIENTS: int = 64
 # peer_id → { user_id, display_name, map_id }
 var _players: Dictionary = {}
 
-# ─── Farm Sync State ──────────────────────────────────────────────────────────
-# Format: _farm_slots[map_id][plot_id] = { state, seed_id, ready_at }
-var _farm_slots: Dictionary = {}
-
 # Reference to the spawner so we can call spawn/despawn
 @onready var _spawner: MultiplayerSpawner = $MultiplayerSpawner
 
@@ -128,11 +124,6 @@ func register_player(user_id: int, display_name: String, map_id: String) -> void
 			map_id
 		)
 
-	# Send existing farm slot states for this map
-	if _farm_slots.has(map_id) and _farm_slots[map_id].size() > 0:
-		MultiplayerManager.sync_all_farm_slots.rpc_id(sender_id, map_id, _farm_slots[map_id])
-
-
 ## Called by the client every physics frame to sync movement.
 @rpc("any_peer", "unreliable_ordered")
 func sync_player_state(pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
@@ -153,41 +144,29 @@ func sync_player_state(pos: Vector2, anim_state: String, facing: Vector2, flip_h
 
 @rpc("any_peer", "reliable")
 func request_farm_action(map_id: String, plot_id: int, action: String, data: String) -> void:
-	var sender_id: int = multiplayer.get_remote_sender_id()
-	
-	if not _farm_slots.has(map_id):
-		_farm_slots[map_id] = {}
-		
-	var current_slot = _farm_slots[map_id].get(plot_id, {
-		"state": 0, # PlotState.EMPTY
-		"seed_id": "",
-		"ready_at": 0
-	})
-	
+	# Legacy visual-only path. Authoritative farm mutations now happen through
+	# the Go REST server; new clients call relay_farm_slot_state with persisted data.
+	var state := 0
+	var seed_id := ""
 	match action:
 		"plant":
-			current_slot.state = 1 # PlotState.SEEDED
-			current_slot.seed_id = data
+			state = 1 # PlotState.SEEDED
+			seed_id = data
 		"water":
-			current_slot.state = 2 # PlotState.GROWING
-			# For testing, we use a 5-second growth time.
-			# Using Godot's Time to get server-side unix time
-			var now = int(Time.get_unix_time_from_system())
-			current_slot.ready_at = now + 5 
+			state = 2 # PlotState.GROWING
 		"remove", "harvest":
-			current_slot.state = 0 # PlotState.EMPTY
-			current_slot.seed_id = ""
-			current_slot.ready_at = 0
-			
-	# Save updated state
-	_farm_slots[map_id][plot_id] = current_slot
-	
+			state = 0 # PlotState.EMPTY
+	relay_farm_slot_state(map_id, plot_id, state, seed_id, 0)
+
+
+@rpc("any_peer", "reliable")
+func relay_farm_slot_state(map_id: String, plot_id: int, state: int, seed_id: String, ready_at: int) -> void:
 	# Broadcast to everyone on this map (including sender)
 	for peer_id: int in _players:
 		var p: Dictionary = _players[peer_id]
 		if p.get("map_id", "") == map_id:
 			MultiplayerManager.sync_farm_slot.rpc_id(
-				peer_id, map_id, plot_id, current_slot.state, current_slot.seed_id, current_slot.ready_at
+				peer_id, map_id, plot_id, state, seed_id, ready_at
 			)
 
 

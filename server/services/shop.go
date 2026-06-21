@@ -38,6 +38,9 @@ func BuyItem(userID int, itemID string, quantity int) error {
 	if err != nil {
 		return utils.ErrCodeInvalidInput
 	}
+	if item.BuyPrice <= 0 || (item.Type != models.ItemTypeSeed && item.Type != models.ItemTypeFishingRod && item.Type != models.ItemTypeBait) {
+		return utils.ErrCodeInvalidInput
+	}
 
 	totalPrice := item.BuyPrice * quantity
 	if err := SubtractCoins(userID, totalPrice); err != nil {

@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/avatar-game/server/middleware"
 	"github.com/avatar-game/server/services"
 	"github.com/avatar-game/server/utils"
-	"github.com/avatar-game/server/middleware"
+	"github.com/gin-gonic/gin"
 )
 
 func GetPlots(c *gin.Context) {
@@ -26,25 +26,25 @@ type SeedRequest struct {
 
 func SeedPlot(c *gin.Context) {
 	userID := middleware.GetUserID(c)
-	
+
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(400, gin.H{"debug": "error", "message": err.Error()})
 		return
 	}
-	
+
 	plotIndex, ok := data["plot_index"].(float64)
 	if !ok {
 		c.JSON(400, gin.H{"debug": "error", "message": "plot_index not found or not number"})
 		return
 	}
-	
+
 	seedID, ok := data["seed_id"].(string)
 	if !ok {
 		c.JSON(400, gin.H{"debug": "error", "message": "seed_id not found or not string"})
 		return
 	}
-	
+
 	err := services.SeedPlot(userID, int(plotIndex), seedID)
 	if err != nil {
 		c.JSON(400, gin.H{"debug": "service_error", "message": err.Error()})
@@ -58,19 +58,19 @@ func SeedPlot(c *gin.Context) {
 
 func WaterPlot(c *gin.Context) {
 	userID := middleware.GetUserID(c)
-	
+
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	plotIndex, ok := data["plot_index"].(float64)
 	if !ok {
 		c.JSON(400, gin.H{"error": "plot_index required"})
 		return
 	}
-	
+
 	err := services.WaterPlot(userID, int(plotIndex))
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -84,19 +84,19 @@ func WaterPlot(c *gin.Context) {
 
 func HarvestPlot(c *gin.Context) {
 	userID := middleware.GetUserID(c)
-	
+
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	
+
 	plotIndex, ok := data["plot_index"].(float64)
 	if !ok {
 		c.JSON(400, gin.H{"error": "plot_index required"})
 		return
 	}
-	
+
 	harvestID, err := services.HarvestPlot(userID, int(plotIndex))
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})

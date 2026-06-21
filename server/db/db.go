@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"log"
 
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/avatar-game/server/config"
 	"github.com/avatar-game/server/models"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var DB *sql.DB
@@ -103,6 +103,10 @@ func seedItems() error {
 		{ID: "seed_carrot", Name: "Cà rốt", Type: models.ItemTypeSeed, BuyPrice: 50, SellPrice: 90, GrowTimeSeconds: intPtr(120), Stackable: true, MaxStack: 99},
 		{ID: "seed_tomato", Name: "Cà chua", Type: models.ItemTypeSeed, BuyPrice: 80, SellPrice: 160, GrowTimeSeconds: intPtr(300), Stackable: true, MaxStack: 99},
 		{ID: "seed_corn", Name: "Bắp", Type: models.ItemTypeSeed, BuyPrice: 120, SellPrice: 260, GrowTimeSeconds: intPtr(600), Stackable: true, MaxStack: 99},
+		// Harvests
+		{ID: "harvest_carrot", Name: "Cà rốt", Type: models.ItemTypeHarvest, BuyPrice: 0, SellPrice: 90, Stackable: true, MaxStack: 99},
+		{ID: "harvest_tomato", Name: "Cà chua", Type: models.ItemTypeHarvest, BuyPrice: 0, SellPrice: 160, Stackable: true, MaxStack: 99},
+		{ID: "harvest_corn", Name: "Bắp", Type: models.ItemTypeHarvest, BuyPrice: 0, SellPrice: 260, Stackable: true, MaxStack: 99},
 		// Fishing items
 		{ID: "rod_bamboo", Name: "Cần câu tre", Type: models.ItemTypeFishingRod, BuyPrice: 200, SellPrice: 100, Stackable: false, MaxStack: 1},
 		{ID: "bait_normal", Name: "Mồi câu", Type: models.ItemTypeBait, BuyPrice: 20, SellPrice: 5, Stackable: true, MaxStack: 99},

@@ -32,9 +32,12 @@ const BUBBLE_DURATION: float = 4.0;
 # ═════════════════════════════════════════════════════════════════════════════
 
 func _ready() -> void:
+	add_to_group("chat_ui")
 	sendButton.pressed.connect(_on_send_pressed);
 	messageInput.text_submitted.connect(_on_text_submitted);
 	messageInput.max_length = MAX_CHARS;
+	message_sent.connect(MultiplayerManager.send_chat_message)
+	MultiplayerManager.chat_received.connect(receive_message)
 
 # ═════════════════════════════════════════════════════════════════════════════
 # PUBLIC API

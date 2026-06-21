@@ -20,6 +20,7 @@ var _container: Node
 
 
 func _ready() -> void:
+	add_to_group("player_registry")
 	_container = get_node(players_container)
 
 	MultiplayerManager.player_joined.connect(_on_player_joined)

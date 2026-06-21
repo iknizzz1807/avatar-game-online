@@ -23,6 +23,8 @@ signal player_joined(peer_id: int, user_id: int, display_name: String)
 ## Emitted when the server tells us a player left (or disconnected).
 signal player_left(peer_id: int)
 
+signal chat_received(sender_name: String, text: String)
+
 const DEFAULT_HOST: String = "127.0.0.1"
 const DEFAULT_PORT: int    = 7777
 
@@ -141,11 +143,14 @@ func _on_connected_to_server() -> void:
 func send_registration() -> void:
 	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
 	if server_node and multiplayer.has_multiplayer_peer() and multiplayer.get_peers().size() > 0:
-		server_node.register_player.rpc_id(1,
-			local_user_id,
-			local_display_name,
-			local_map_id
-		)
+		if not local_auth_token.is_empty() and local_auth_token != "dummy_token":
+			server_node.register_player_with_token.rpc_id(1, local_auth_token, local_map_id)
+		else:
+			server_node.register_player.rpc_id(1,
+				local_user_id,
+				local_display_name,
+				local_map_id
+			)
 	elif not server_node:
 		push_error("[MultiplayerManager] ServerScene not found in tree — cannot register.")
 
@@ -176,6 +181,20 @@ func _client_player_joined(peer_id: int, user_id: int, display_name: String, _ma
 func _client_player_left(peer_id: int) -> void:
 	print("[MultiplayerManager] Player left: peer=%d" % peer_id)
 	player_left.emit(peer_id)
+
+
+func send_chat_message(text: String) -> void:
+	var trimmed := text.strip_edges()
+	if trimmed.is_empty():
+		return
+	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
+	if server_node and multiplayer.has_multiplayer_peer():
+		server_node.receive_chat.rpc_id(1, trimmed)
+
+
+@rpc("authority", "reliable")
+func broadcast_chat(_sender_peer_id: int, sender_name: String, text: String) -> void:
+	chat_received.emit(sender_name, text)
 
 # ─── Farm Sync ──────────────────────────────────────────────────────────────
 
@@ -225,7 +244,8 @@ func sync_all_farm_slots(map_id: String, slots_data: Dictionary) -> void:
 ## The server relays another player's movement state to us.
 @rpc("authority", "unreliable_ordered")
 func update_remote_player(peer_id: int, pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
-	var registry = get_tree().root.get_node_or_null("Game/PlayerRegistry")
+	var registries := get_tree().get_nodes_in_group("player_registry")
+	var registry = registries[0] if not registries.is_empty() else null
 	if not registry:
 		return
 		

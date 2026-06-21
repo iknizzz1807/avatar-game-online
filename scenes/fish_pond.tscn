@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" path="res://sprites/Characters/Tools.png" id="7_tools"]
 [ext_resource type="Script" uid="uid://ub6l8wnka6u7" path="res://scripts/client/shared/world_boundary.gd" id="8_wbscript"]
 [ext_resource type="Script" uid="uid://d1de6slrwb6fu" path="res://scripts/client/shared/player_registry.gd" id="9_registry"]
+[ext_resource type="Script" path="res://scripts/client/prefabs/fishing_spot.gd" id="10_fishspot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
 size = Vector2(520, 340)
@@ -24,6 +25,9 @@ size = Vector2(190, 34)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pond_tree"]
 size = Vector2(24, 18)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fishing_spot"]
+radius = 18.0
 
 [node name="FishPond" type="Node2D"]
 y_sort_enabled = true
@@ -183,6 +187,29 @@ spawn_position = Vector2(40, 84)
 
 [node name="Label" parent="BackToTown/Visual" index="1"]
 text = "TOWN"
+
+[node name="FishingSpot0" type="Area2D" parent="."]
+position = Vector2(118, 154)
+script = ExtResource("10_fishspot")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot0"]
+shape = SubResource("CircleShape2D_fishing_spot")
+
+[node name="FishingSpot1" type="Area2D" parent="."]
+position = Vector2(226, 170)
+script = ExtResource("10_fishspot")
+seat_index = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot1"]
+shape = SubResource("CircleShape2D_fishing_spot")
+
+[node name="FishingSpot2" type="Area2D" parent="."]
+position = Vector2(324, 126)
+script = ExtResource("10_fishspot")
+seat_index = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot2"]
+shape = SubResource("CircleShape2D_fishing_spot")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 position = Vector2(190, 148)

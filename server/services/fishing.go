@@ -54,6 +54,14 @@ func StartFishing(userID int, seatIndex int) error {
 		return utils.ErrCodeInvalidInput
 	}
 
+	var activeUserSession int
+	if err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&activeUserSession); err != nil {
+		return err
+	}
+	if activeUserSession > 0 {
+		return utils.ErrCodeInvalidInput
+	}
+
 	// Check if seat is occupied
 	var occupied int
 	err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE seat_index = ? AND ended_at IS NULL", seatIndex).Scan(&occupied)
@@ -81,29 +89,35 @@ func StartFishing(userID int, seatIndex int) error {
 		return err
 	}
 
+	// Keep the user_id uniqueness constraint compatible with repeat sessions.
+	if _, err := db.DB.Exec("DELETE FROM fishing_sessions WHERE user_id = ? AND ended_at IS NOT NULL", userID); err != nil {
+		return err
+	}
+
 	// Create fishing session
-	_, err = db.DB.Exec(
+	result, err := db.DB.Exec(
 		"INSERT INTO fishing_sessions (user_id, seat_index, started_at) VALUES (?, ?, ?)",
 		userID, seatIndex, time.Now(),
 	)
 	if err != nil {
 		return err
 	}
+	sessionID, _ := result.LastInsertId()
 
 	// Start async fishing timer
-	go runFishingSession(userID, seatIndex)
+	go runFishingSession(userID, int(sessionID))
 
 	return nil
 }
 
-func runFishingSession(userID int, seatIndex int) {
+func runFishingSession(userID int, sessionID int) {
 	// Random time between 10-20 seconds
 	randomDuration := time.Duration(10+rand.Intn(11)) * time.Second
 	time.Sleep(randomDuration)
 
 	// Calculate result
 	result := calculateFishingResult()
-	processFishingResult(userID, seatIndex, result)
+	processFishingResult(userID, sessionID, result)
 }
 
 func calculateFishingResult() FishingResult {
@@ -120,9 +134,15 @@ func calculateFishingResult() FishingResult {
 	}
 }
 
-func processFishingResult(userID int, seatIndex int, result FishingResult) {
+func processFishingResult(userID int, sessionID int, result FishingResult) {
+	var active int
+	err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE id = ? AND user_id = ? AND ended_at IS NULL", sessionID, userID).Scan(&active)
+	if err != nil || active == 0 {
+		return
+	}
+
 	// End the fishing session
-	db.DB.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE user_id = ? AND ended_at IS NULL", userID)
+	db.DB.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE id = ? AND user_id = ? AND ended_at IS NULL", sessionID, userID)
 
 	// Add rewards
 	if result.Coins > 0 {

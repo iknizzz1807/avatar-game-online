@@ -16,9 +16,14 @@ extends Node
 
 const PORT: int = 7777
 const MAX_CLIENTS: int = 64
+const API_BASE: String = "http://127.0.0.1:8080"
+const CHAT_MAX_CHARS: int = 100
+const CHAT_WINDOW_SECONDS: float = 5.0
+const CHAT_MAX_IN_WINDOW: int = 3
 
 # peer_id → { user_id, display_name, map_id }
 var _players: Dictionary = {}
+var _chat_times: Dictionary = {}
 
 # Reference to the spawner so we can call spawn/despawn
 @onready var _spawner: MultiplayerSpawner = $MultiplayerSpawner
@@ -89,6 +94,21 @@ func _on_peer_disconnected(peer_id: int) -> void:
 @rpc("any_peer", "reliable")
 func register_player(user_id: int, display_name: String, map_id: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
+	_register_verified_player(sender_id, user_id, display_name, map_id)
+
+
+@rpc("any_peer", "reliable")
+func register_player_with_token(token: String, map_id: String) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	var user: Dictionary = await _verify_token(token)
+	if user.is_empty():
+		push_warning("[GameServer] Rejected unauthenticated peer %d" % sender_id)
+		multiplayer.multiplayer_peer.disconnect_peer(sender_id)
+		return
+	_register_verified_player(sender_id, int(user.get("id", -1)), user.get("display_name", "Player"), map_id)
+
+
+func _register_verified_player(sender_id: int, user_id: int, display_name: String, map_id: String) -> void:
 
 	if _players.has(sender_id):
 		# Player is already registered. They just loaded a scene and want a state sync.
@@ -123,6 +143,28 @@ func register_player(user_id: int, display_name: String, map_id: String) -> void
 			other.get("display_name", ""),
 			map_id
 		)
+
+
+func _verify_token(token: String) -> Dictionary:
+	var http := HTTPRequest.new()
+	add_child(http)
+	var headers := PackedStringArray([
+		"Content-Type: application/json",
+		"Authorization: Bearer " + token,
+	])
+	var err := http.request(API_BASE + "/api/user/me", headers, HTTPClient.METHOD_GET)
+	if err != OK:
+		http.queue_free()
+		return {}
+	var response = await http.request_completed
+	http.queue_free()
+	var result: int = response[0]
+	var code: int = response[1]
+	var body: PackedByteArray = response[3]
+	if result != HTTPRequest.RESULT_SUCCESS or code != 200:
+		return {}
+	var parsed = JSON.parse_string(body.get_string_from_utf8())
+	return parsed if parsed is Dictionary else {}
 
 ## Called by the client every physics frame to sync movement.
 @rpc("any_peer", "unreliable_ordered")
@@ -168,6 +210,39 @@ func relay_farm_slot_state(map_id: String, plot_id: int, state: int, seed_id: St
 			MultiplayerManager.sync_farm_slot.rpc_id(
 				peer_id, map_id, plot_id, state, seed_id, ready_at
 			)
+
+
+@rpc("any_peer", "reliable")
+func receive_chat(text: String) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if not _players.has(sender_id):
+		return
+	var trimmed := text.strip_edges().left(CHAT_MAX_CHARS)
+	if trimmed.is_empty() or not _allow_chat(sender_id):
+		return
+	var sender: Dictionary = _players[sender_id]
+	var map_id: String = sender.get("map_id", "")
+	var display_name: String = sender.get("display_name", "Player")
+	for target_id: int in _players:
+		if target_id == sender_id:
+			continue
+		if _players[target_id].get("map_id", "") == map_id:
+			MultiplayerManager.broadcast_chat.rpc_id(target_id, sender_id, display_name, trimmed)
+
+
+func _allow_chat(peer_id: int) -> bool:
+	var now := Time.get_ticks_msec() / 1000.0
+	var times: Array = _chat_times.get(peer_id, [])
+	var fresh: Array = []
+	for t in times:
+		if now - float(t) <= CHAT_WINDOW_SECONDS:
+			fresh.append(t)
+	if fresh.size() >= CHAT_MAX_IN_WINDOW:
+		_chat_times[peer_id] = fresh
+		return false
+	fresh.append(now)
+	_chat_times[peer_id] = fresh
+	return true
 
 
 # ─── Broadcast helpers ───────────────────────────────────────────────────────

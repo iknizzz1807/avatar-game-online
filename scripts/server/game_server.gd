@@ -20,10 +20,13 @@ const API_BASE: String = "http://127.0.0.1:8080"
 const CHAT_MAX_CHARS: int = 100
 const CHAT_WINDOW_SECONDS: float = 5.0
 const CHAT_MAX_IN_WINDOW: int = 3
+const MOVEMENT_MAX_SPEED: float = 260.0
+const MOVEMENT_GRACE_DISTANCE: float = 80.0
 
 # peer_id → { user_id, display_name, map_id }
 var _players: Dictionary = {}
 var _chat_times: Dictionary = {}
+var _last_movement: Dictionary = {}
 
 # Reference to the spawner so we can call spawn/despawn
 @onready var _spawner: MultiplayerSpawner = $MultiplayerSpawner
@@ -84,6 +87,8 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	_broadcast_player_left(peer_id, map_id)
 
 	_players.erase(peer_id)
+	_last_movement.erase(peer_id)
+	_chat_times.erase(peer_id)
 	print("[GameServer] Player %s (peer %d) unregistered" % [info.get("display_name", "?"), peer_id])
 
 
@@ -105,7 +110,8 @@ func register_player_with_token(token: String, map_id: String) -> void:
 		push_warning("[GameServer] Rejected unauthenticated peer %d" % sender_id)
 		multiplayer.multiplayer_peer.disconnect_peer(sender_id)
 		return
-	_register_verified_player(sender_id, int(user.get("id", -1)), user.get("display_name", "Player"), map_id)
+	var verified_map_id: String = _map_id_from_user(user)
+	_register_verified_player(sender_id, int(user.get("id", -1)), user.get("display_name", "Player"), verified_map_id)
 
 
 func _register_verified_player(sender_id: int, user_id: int, display_name: String, map_id: String) -> void:
@@ -117,6 +123,7 @@ func _register_verified_player(sender_id: int, user_id: int, display_name: Strin
 		
 		# If the map changed, broadcast to others
 		if old_map != map_id:
+			_last_movement.erase(sender_id)
 			_broadcast_player_left(sender_id, old_map)
 			_broadcast_player_joined(sender_id, user_id, display_name, map_id)
 	else:
@@ -166,11 +173,29 @@ func _verify_token(token: String) -> Dictionary:
 	var parsed = JSON.parse_string(body.get_string_from_utf8())
 	return parsed if parsed is Dictionary else {}
 
+
+func _map_id_from_user(user: Dictionary) -> String:
+	var user_id: int = int(user.get("id", -1))
+	var current_map: String = user.get("current_map", "central_park")
+	match current_map:
+		"farm", "game":
+			return "game_" + str(user_id)
+		"central_park":
+			return "park"
+		"fishing_lake":
+			return "fish_pond"
+		"":
+			return "park"
+		_:
+			return current_map
+
 ## Called by the client every physics frame to sync movement.
 @rpc("any_peer", "unreliable_ordered")
 func sync_player_state(pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if not _players.has(sender_id):
+		return
+	if not _is_movement_valid(sender_id, pos):
 		return
 		
 	var map_id: String = _players[sender_id].get("map_id", "")
@@ -182,10 +207,34 @@ func sync_player_state(pos: Vector2, anim_state: String, facing: Vector2, flip_h
 		if _players[target_id].get("map_id", "") == map_id:
 			MultiplayerManager.update_remote_player.rpc_id(target_id, sender_id, pos, anim_state, facing, flip_h)
 
+
+func _is_movement_valid(peer_id: int, pos: Vector2) -> bool:
+	var now: float = Time.get_ticks_msec() / 1000.0
+	if not _last_movement.has(peer_id):
+		_last_movement[peer_id] = { "pos": pos, "time": now }
+		return true
+
+	var last: Dictionary = _last_movement[peer_id]
+	var last_pos: Vector2 = last.get("pos", pos)
+	var last_time: float = float(last.get("time", now))
+	var dt: float = maxf(now - last_time, 1.0 / 60.0)
+	var allowed_distance: float = MOVEMENT_MAX_SPEED * dt + MOVEMENT_GRACE_DISTANCE
+	var distance: float = last_pos.distance_to(pos)
+	if distance > allowed_distance:
+		push_warning("[GameServer] Ignored suspicious movement from peer %d: %.2fpx in %.3fs" % [peer_id, distance, dt])
+		return false
+
+	_last_movement[peer_id] = { "pos": pos, "time": now }
+	return true
+
 # ─── Farm Sync RPCs ──────────────────────────────────────────────────────────
 
 @rpc("any_peer", "reliable")
 func request_farm_action(map_id: String, plot_id: int, action: String, data: String) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if not _players.has(sender_id):
+		return
+	map_id = _players[sender_id].get("map_id", "")
 	# Legacy visual-only path. Authoritative farm mutations now happen through
 	# the Go REST server; new clients call relay_farm_slot_state with persisted data.
 	var state := 0
@@ -203,6 +252,10 @@ func request_farm_action(map_id: String, plot_id: int, action: String, data: Str
 
 @rpc("any_peer", "reliable")
 func relay_farm_slot_state(map_id: String, plot_id: int, state: int, seed_id: String, ready_at: int) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if not _players.has(sender_id):
+		return
+	map_id = _players[sender_id].get("map_id", "")
 	# Broadcast to everyone on this map (including sender)
 	for peer_id: int in _players:
 		var p: Dictionary = _players[peer_id]

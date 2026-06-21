@@ -43,13 +43,19 @@ func SeedPlot(userID int, plotIndex int, seedID string) error {
 		return utils.ErrCodeInvalidInput
 	}
 
-	item, err := GetItemByID(seedID)
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	item, err := getItemByIDTx(tx, seedID)
 	if err != nil || item.Type != models.ItemTypeSeed {
 		return utils.ErrCodeInvalidInput
 	}
 
 	var status string
-	err = db.DB.QueryRow("SELECT status FROM plots WHERE user_id = ? AND plot_index = ?", userID, plotIndex).Scan(&status)
+	err = tx.QueryRow("SELECT status FROM plots WHERE user_id = ? AND plot_index = ?", userID, plotIndex).Scan(&status)
 	if err != nil {
 		return err
 	}
@@ -57,19 +63,25 @@ func SeedPlot(userID int, plotIndex int, seedID string) error {
 		return utils.ErrCodePlotNotEmpty
 	}
 
-	hasSeed, qty := HasItem(userID, seedID)
+	hasSeed, qty, err := hasItemTx(tx, userID, seedID)
+	if err != nil {
+		return err
+	}
 	if !hasSeed || qty < 1 {
 		return utils.ErrCodeInvalidInput
 	}
-	if err := RemoveItem(userID, seedID, 1); err != nil {
+	if err := removeItemTx(tx, userID, seedID, 1); err != nil {
 		return err
 	}
 
-	_, err = db.DB.Exec(
+	_, err = tx.Exec(
 		"UPDATE plots SET status = ?, seed_id = ?, ready_at = NULL WHERE user_id = ? AND plot_index = ?",
 		models.PlotStatusSeeded, seedID, userID, plotIndex,
 	)
-	return err
+	if err != nil {
+		return err
+	}
+	return tx.Commit()
 }
 
 func WaterPlot(userID int, plotIndex int) error {
@@ -112,9 +124,15 @@ func HarvestPlot(userID int, plotIndex int) (string, error) {
 		return "", utils.ErrCodeInvalidInput
 	}
 
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return "", err
+	}
+	defer tx.Rollback()
+
 	var status, seedID string
 	var readyAt *time.Time
-	err := db.DB.QueryRow("SELECT status, seed_id, ready_at FROM plots WHERE user_id = ? AND plot_index = ?", userID, plotIndex).Scan(&status, &seedID, &readyAt)
+	err = tx.QueryRow("SELECT status, seed_id, ready_at FROM plots WHERE user_id = ? AND plot_index = ?", userID, plotIndex).Scan(&status, &seedID, &readyAt)
 	if err != nil {
 		return "", err
 	}
@@ -137,26 +155,32 @@ func HarvestPlot(userID int, plotIndex int) (string, error) {
 		return "", utils.ErrCodeInvalidInput
 	}
 
-	count, err := GetInventoryCount(userID)
+	count, err := inventoryCountTx(tx, userID)
 	if err != nil {
 		return "", err
 	}
 
-	hasItem, _ := HasItem(userID, harvestID)
+	hasItem, _, err := hasItemTx(tx, userID, harvestID)
+	if err != nil {
+		return "", err
+	}
 	if count >= 20 && !hasItem {
 		return "", utils.ErrCodeInventoryFull
 	}
 
-	if err := AddItem(userID, harvestID, 1); err != nil {
+	if err := addItemTx(tx, userID, harvestID, 1); err != nil {
 		return "", err
 	}
 
-	_, err = db.DB.Exec(
+	_, err = tx.Exec(
 		"UPDATE plots SET status = ?, seed_id = NULL, ready_at = NULL WHERE user_id = ? AND plot_index = ?",
 		models.PlotStatusEmpty, userID, plotIndex,
 	)
 
-	return harvestID, err
+	if err != nil {
+		return "", err
+	}
+	return harvestID, tx.Commit()
 }
 
 func StartFarmTicker() {

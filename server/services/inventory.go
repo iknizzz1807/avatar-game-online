@@ -126,12 +126,21 @@ func SellItem(userID int, itemID string, quantity int) (int, error) {
 		return 0, utils.ErrCodeInvalidInput
 	}
 
-	has, qty := HasItem(userID, itemID)
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return 0, err
+	}
+	defer tx.Rollback()
+
+	has, qty, err := hasItemTx(tx, userID, itemID)
+	if err != nil {
+		return 0, err
+	}
 	if !has || qty < quantity {
 		return 0, utils.ErrCodeInvalidInput
 	}
 
-	item, err := GetItemByID(itemID)
+	item, err := getItemByIDTx(tx, itemID)
 	if err != nil {
 		return 0, err
 	}
@@ -140,16 +149,14 @@ func SellItem(userID int, itemID string, quantity int) (int, error) {
 		return 0, utils.ErrCodeInvalidInput
 	}
 
-	err = RemoveItem(userID, itemID, quantity)
-	if err != nil {
+	if err := removeItemTx(tx, userID, itemID, quantity); err != nil {
 		return 0, err
 	}
 
 	totalEarned := item.SellPrice * quantity
-	err = AddCoins(userID, totalEarned)
-	if err != nil {
+	if err := addCoinsTx(tx, userID, totalEarned); err != nil {
 		return 0, err
 	}
 
-	return totalEarned, nil
+	return totalEarned, tx.Commit()
 }

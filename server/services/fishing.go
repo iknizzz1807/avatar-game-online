@@ -64,8 +64,14 @@ func StartFishing(userID int, seatIndex int) (FishingStartResult, error) {
 		return result, utils.ErrCodeInvalidInput
 	}
 
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return result, err
+	}
+	defer tx.Rollback()
+
 	var activeUserSession int
-	if err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&activeUserSession); err != nil {
+	if err := tx.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&activeUserSession); err != nil {
 		return result, err
 	}
 	if activeUserSession > 0 {
@@ -74,7 +80,7 @@ func StartFishing(userID int, seatIndex int) (FishingStartResult, error) {
 
 	// Check if seat is occupied
 	var occupied int
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE seat_index = ? AND ended_at IS NULL", seatIndex).Scan(&occupied)
+	err = tx.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE seat_index = ? AND ended_at IS NULL", seatIndex).Scan(&occupied)
 	if err != nil {
 		return result, err
 	}
@@ -83,29 +89,35 @@ func StartFishing(userID int, seatIndex int) (FishingStartResult, error) {
 	}
 
 	// Check for fishing rod
-	hasRod, _ := HasItem(userID, "rod_bamboo")
+	hasRod, _, err := hasItemTx(tx, userID, "rod_bamboo")
+	if err != nil {
+		return result, err
+	}
 	if !hasRod {
 		return result, utils.ErrCodeNoFishingRod
 	}
 
 	// Check for bait
-	hasBait, baitQty := HasItem(userID, "bait_normal")
+	hasBait, baitQty, err := hasItemTx(tx, userID, "bait_normal")
+	if err != nil {
+		return result, err
+	}
 	if !hasBait || baitQty < 1 {
 		return result, utils.ErrCodeNoBait
 	}
 
 	// Remove bait
-	if err := RemoveItem(userID, "bait_normal", 1); err != nil {
+	if err := removeItemTx(tx, userID, "bait_normal", 1); err != nil {
 		return result, err
 	}
 
 	// Keep the user_id uniqueness constraint compatible with repeat sessions.
-	if _, err := db.DB.Exec("DELETE FROM fishing_sessions WHERE user_id = ? AND ended_at IS NOT NULL", userID); err != nil {
+	if _, err := tx.Exec("DELETE FROM fishing_sessions WHERE user_id = ? AND ended_at IS NOT NULL", userID); err != nil {
 		return result, err
 	}
 
 	finishAt := time.Now().Add(time.Duration(10+rand.Intn(11)) * time.Second)
-	_, err = db.DB.Exec(
+	_, err = tx.Exec(
 		"INSERT INTO fishing_sessions (user_id, seat_index, started_at, finish_at) VALUES (?, ?, ?, ?)",
 		userID, seatIndex, time.Now(), finishAt,
 	)
@@ -114,7 +126,7 @@ func StartFishing(userID int, seatIndex int) (FishingStartResult, error) {
 	}
 
 	result.FinishAt = finishAt.Unix()
-	return result, nil
+	return result, tx.Commit()
 }
 
 func calculateFishingResult() FishingResult {
@@ -133,9 +145,15 @@ func calculateFishingResult() FishingResult {
 
 func ClaimFishing(userID int) (FishingResult, error) {
 	result := FishingResult{}
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return result, err
+	}
+	defer tx.Rollback()
+
 	var sessionID int
 	var finishAt time.Time
-	err := db.DB.QueryRow("SELECT id, finish_at FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&sessionID, &finishAt)
+	err = tx.QueryRow("SELECT id, finish_at FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&sessionID, &finishAt)
 	if err != nil {
 		return result, err
 	}
@@ -146,37 +164,51 @@ func ClaimFishing(userID int) (FishingResult, error) {
 	result = calculateFishingResult()
 
 	// End the fishing session
-	db.DB.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE id = ? AND user_id = ? AND ended_at IS NULL", sessionID, userID)
+	if _, err := tx.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE id = ? AND user_id = ? AND ended_at IS NULL", sessionID, userID); err != nil {
+		return result, err
+	}
 
 	// Add rewards
 	if result.Coins > 0 {
-		AddCoins(userID, result.Coins)
+		if err := addCoinsTx(tx, userID, result.Coins); err != nil {
+			return result, err
+		}
 	}
 
 	if result.ItemID != "" {
-		AddItem(userID, result.ItemID, 1)
+		if err := addItemTx(tx, userID, result.ItemID, 1); err != nil {
+			return result, err
+		}
 	}
 
-	return result, nil
+	return result, tx.Commit()
 }
 
 func StopFishing(userID int) error {
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
 	// Get current session
 	var sessionID, baitQty int
-	err := db.DB.QueryRow("SELECT id FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&sessionID)
+	err = tx.QueryRow("SELECT id FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&sessionID)
 	if err != nil {
 		return err
 	}
 
 	// Delete session
-	_, err = db.DB.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE id = ?", sessionID)
+	_, err = tx.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE id = ?", sessionID)
 	if err != nil {
 		return err
 	}
 
 	// Return 1 bait
 	baitQty = 1
-	AddItem(userID, "bait_normal", baitQty)
+	if err := addItemTx(tx, userID, "bait_normal", baitQty); err != nil {
+		return err
+	}
 
-	return nil
+	return tx.Commit()
 }

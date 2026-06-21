@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/avatar-game/server/db"
 	"github.com/avatar-game/server/models"
 	"github.com/avatar-game/server/utils"
 )
@@ -42,29 +43,33 @@ func BuyItem(userID int, itemID string, quantity int) error {
 		return utils.ErrCodeInvalidInput
 	}
 
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
 	totalPrice := item.BuyPrice * quantity
-	if err := SubtractCoins(userID, totalPrice); err != nil {
+	if err := subtractCoinsTx(tx, userID, totalPrice); err != nil {
 		return err
 	}
 
-	// Check inventory space
-	count, err := GetInventoryCount(userID)
+	count, err := inventoryCountTx(tx, userID)
 	if err != nil {
 		return err
 	}
 
-	hasItem, _ := HasItem(userID, itemID)
+	hasItem, _, err := hasItemTx(tx, userID, itemID)
+	if err != nil {
+		return err
+	}
 	if count >= 20 && !hasItem {
-		// Refund coins
-		AddCoins(userID, totalPrice)
 		return utils.ErrCodeInventoryFull
 	}
 
-	if err := AddItem(userID, itemID, quantity); err != nil {
-		// Refund on error
-		AddCoins(userID, totalPrice)
+	if err := addItemTx(tx, userID, itemID, quantity); err != nil {
 		return err
 	}
 
-	return nil
+	return tx.Commit()
 }

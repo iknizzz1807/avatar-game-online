@@ -23,7 +23,7 @@ const CHAT_MAX_IN_WINDOW: int = 3
 const MOVEMENT_MAX_SPEED: float = 260.0
 const MOVEMENT_GRACE_DISTANCE: float = 80.0
 
-# peer_id → { user_id, display_name, map_id }
+# peer_id → { user_id, display_name, map_id, auth_token }
 var _players: Dictionary = {}
 var _chat_times: Dictionary = {}
 var _last_movement: Dictionary = {}
@@ -112,15 +112,17 @@ func register_player_with_token(token: String, map_id: String) -> void:
 		multiplayer.multiplayer_peer.disconnect_peer(sender_id)
 		return
 	var verified_map_id: String = _map_id_from_user(user)
-	_register_verified_player(sender_id, int(user.get("id", -1)), user.get("display_name", "Player"), verified_map_id)
+	_register_verified_player(sender_id, int(user.get("id", -1)), user.get("display_name", "Player"), verified_map_id, token)
 
 
-func _register_verified_player(sender_id: int, user_id: int, display_name: String, map_id: String) -> void:
+func _register_verified_player(sender_id: int, user_id: int, display_name: String, map_id: String, auth_token: String = "") -> void:
 
 	if _players.has(sender_id):
 		# Player is already registered. They just loaded a scene and want a state sync.
 		var old_map: String = _players[sender_id].get("map_id", "")
 		_players[sender_id]["map_id"] = map_id
+		if not auth_token.is_empty():
+			_players[sender_id]["auth_token"] = auth_token
 		
 		# If the map changed, broadcast to others
 		if old_map != map_id:
@@ -132,6 +134,7 @@ func _register_verified_player(sender_id: int, user_id: int, display_name: Strin
 			"user_id":      user_id,
 			"display_name": display_name,
 			"map_id":       map_id,
+			"auth_token":   auth_token,
 		}
 		print("[GameServer] Registered: %s (uid=%d, peer=%d, map=%s)" % [
 			display_name, user_id, sender_id, map_id
@@ -151,6 +154,65 @@ func _register_verified_player(sender_id: int, user_id: int, display_name: Strin
 			other.get("display_name", ""),
 			map_id
 		)
+
+
+@rpc("any_peer", "reliable")
+func request_map_change(scene_name: String) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if not _players.has(sender_id):
+		return
+
+	var info: Dictionary = _players[sender_id]
+	var token: String = info.get("auth_token", "")
+	var server_map_name := _server_map_from_scene(scene_name)
+	if token.is_empty() or not _is_allowed_server_map(server_map_name):
+		MultiplayerManager.map_change_denied.rpc_id(sender_id)
+		return
+
+	if not await _update_user_map(token, server_map_name):
+		MultiplayerManager.map_change_denied.rpc_id(sender_id)
+		return
+
+	MultiplayerManager.map_change_approved.rpc_id(sender_id, scene_name)
+
+
+func _is_allowed_server_map(server_map_name: String) -> bool:
+	return server_map_name in [
+		"farm",
+		"central_park",
+		"fishing_lake",
+		"town",
+		"cave",
+	]
+
+
+func _server_map_from_scene(scene_name: String) -> String:
+	match scene_name:
+		"game":
+			return "farm"
+		"park":
+			return "central_park"
+		"fish_pond":
+			return "fishing_lake"
+		_:
+			return scene_name
+
+
+func _update_user_map(token: String, server_map_name: String) -> bool:
+	var http := HTTPRequest.new()
+	add_child(http)
+	var headers := PackedStringArray([
+		"Content-Type: application/json",
+		"Authorization: Bearer " + token,
+	])
+	var body := JSON.stringify({ "map": server_map_name })
+	var err := http.request(api_base + "/api/user/map", headers, HTTPClient.METHOD_PUT, body)
+	if err != OK:
+		http.queue_free()
+		return false
+	var response = await http.request_completed
+	http.queue_free()
+	return int(response[0]) == HTTPRequest.RESULT_SUCCESS and int(response[1]) == 200
 
 
 func _verify_token(token: String) -> Dictionary:
@@ -235,22 +297,16 @@ func _is_movement_valid(peer_id: int, pos: Vector2) -> bool:
 
 @rpc("any_peer", "reliable")
 func request_farm_action(_map_id: String, plot_id: int, _action: String, _data: String) -> void:
-	var sender_id: int = multiplayer.get_remote_sender_id()
-	if not _players.has(sender_id):
-		return
-	notify_farm_changed(plot_id)
+	# Farm state is authoritative in the Go API. Client-triggered broadcast was
+	# intentionally disabled to avoid reload amplification/DDoS from forged RPCs.
+	pass
 
 
 @rpc("any_peer", "reliable")
 func notify_farm_changed(plot_id: int) -> void:
-	var sender_id: int = multiplayer.get_remote_sender_id()
-	if not _players.has(sender_id):
-		return
-	var map_id: String = _players[sender_id].get("map_id", "")
-	for peer_id: int in _players:
-		var p: Dictionary = _players[peer_id]
-		if p.get("map_id", "") == map_id:
-			MultiplayerManager.farm_changed.rpc_id(peer_id, map_id, plot_id)
+	# Kept as a harmless no-op for older clients; do not broadcast client-supplied
+	# farm events. The actor already applies the Go API response locally.
+	pass
 
 
 @rpc("any_peer", "reliable")

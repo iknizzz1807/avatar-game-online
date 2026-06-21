@@ -24,6 +24,7 @@ signal player_joined(peer_id: int, user_id: int, display_name: String)
 signal player_left(peer_id: int)
 
 signal chat_received(sender_name: String, text: String)
+signal map_change_result(result: Dictionary)
 
 const DEFAULT_HOST: String = "127.0.0.1"
 const DEFAULT_PORT: int    = 7777
@@ -204,9 +205,29 @@ func send_chat_message(text: String) -> void:
 		server_node.receive_chat.rpc_id(1, trimmed)
 
 
+func request_map_change(scene_name: String) -> bool:
+	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
+	if not server_node or not multiplayer.has_multiplayer_peer():
+		return false
+	server_node.request_map_change.rpc_id(1, scene_name)
+	var result: Dictionary = await map_change_result
+	return result.get("approved", false) and result.get("scene_name", "") == scene_name
+
+
 @rpc("authority", "reliable")
 func broadcast_chat(_sender_peer_id: int, sender_name: String, text: String) -> void:
 	chat_received.emit(sender_name, text)
+
+
+@rpc("authority", "reliable")
+func map_change_approved(scene_name: String) -> void:
+	set_map(scene_name)
+	map_change_result.emit({ "approved": true, "scene_name": scene_name })
+
+
+@rpc("authority", "reliable")
+func map_change_denied() -> void:
+	map_change_result.emit({ "approved": false, "scene_name": "" })
 
 # ─── Farm Sync ──────────────────────────────────────────────────────────────
 

@@ -123,6 +123,7 @@ func HarvestPlot(userID int, plotIndex int) (string, error) {
 	if plotIndex < 0 || plotIndex >= 16 {
 		return "", utils.ErrCodeInvalidInput
 	}
+	checkAndUpdateReadyPlots()
 
 	tx, err := db.DB.Begin()
 	if err != nil {

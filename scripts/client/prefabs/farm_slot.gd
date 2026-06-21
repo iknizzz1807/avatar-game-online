@@ -48,11 +48,9 @@ func _process(_delta: float) -> void:
 			timerLabel.text = _format_time(timeLeft)
 			timerLabel.visible = true
 		else:
-			timerLabel.text = "00:00"
-			timerLabel.visible = true
-			if not _ready_refresh_requested and ApiClient.has_auth_token():
-				_ready_refresh_requested = true
-				call_deferred("_load_farm_from_server")
+			currentState = PlotState.READY
+			_ready_refresh_requested = false
+			_update_visuals()
 	else:
 		timerLabel.visible = false
 
@@ -269,8 +267,6 @@ func _apply_server_plots(plots: Array, broadcast: bool) -> void:
 			if slot.plotId == index:
 				slot.sync_state(state, seed_id, ready_at)
 				break
-		if broadcast and index == plotId:
-			MultiplayerManager.notify_farm_changed(index)
 
 
 func _plot_status_to_state(status: String) -> int:

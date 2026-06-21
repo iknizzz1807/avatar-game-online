@@ -39,18 +39,14 @@ func _on_body_entered(body: Node) -> void:
 	# Store the desired spawn position so the new scene can read it.
 	TeleportData.spawn_position = spawn_position
 
-	# Tell the manager we have changed maps.
-	if MultiplayerManager:
+	if MultiplayerManager and multiplayer.has_multiplayer_peer():
+		var approved: bool = await MultiplayerManager.request_map_change(target_map_id)
+		if not approved:
+			_teleporting = false
+			push_warning("[TeleportZone] Server denied map change.")
+			return
+	elif MultiplayerManager:
 		MultiplayerManager.set_map(target_map_id)
-
-	if ApiClient.has_auth_token():
-		var response: Dictionary = await ApiClient.request_json(
-			"/api/user/map",
-			HTTPClient.METHOD_PUT,
-			{ "map": MultiplayerManager.get_server_map_name(target_map_id) }
-		)
-		if not response.get("ok", false):
-			push_warning("[TeleportZone] Could not persist map change to Go server.")
 
 	# Load the target scene.
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % target_map_id)

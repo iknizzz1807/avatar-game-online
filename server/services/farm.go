@@ -9,6 +9,8 @@ import (
 )
 
 func GetPlots(userID int) ([]models.PlotResponse, error) {
+	checkAndUpdateReadyPlots()
+
 	rows, err := db.DB.Query(`
 		SELECT plot_index, status, seed_id, ready_at
 		FROM plots

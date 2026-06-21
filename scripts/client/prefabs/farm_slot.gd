@@ -23,6 +23,7 @@ var plotId: int = -1
 var currentState: int = PlotState.EMPTY
 var readyAtUnixTime: int = 0
 var currentSeedId: String = ""
+var _ready_refresh_requested: bool = false
 
 # For local testing, simulate a short growth time (e.g. 5 seconds)
 var LOCAL_GROWTH_DURATION: int = 5
@@ -49,6 +50,9 @@ func _process(_delta: float) -> void:
 		else:
 			timerLabel.text = "00:00"
 			timerLabel.visible = true
+			if not _ready_refresh_requested and ApiClient.has_auth_token():
+				_ready_refresh_requested = true
+				call_deferred("_load_farm_from_server")
 	else:
 		timerLabel.visible = false
 
@@ -173,6 +177,7 @@ func sync_state(new_state: int, new_seed: String, new_ready_at: int) -> void:
 	currentState = new_state
 	currentSeedId = new_seed
 	readyAtUnixTime = new_ready_at
+	_ready_refresh_requested = false
 	_update_visuals()
 
 

@@ -2,6 +2,41 @@
 
 [ext_resource type="Script" uid="uid://dxldafm8g0j7b" path="res://scripts/client/prefabs/ui/farm_map.gd" id="1_farmscr"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0.145098, 0.101961, 0.0705882, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72549, 0.52549, 0.286275, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.34)
+shadow_size = 12
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.352941, 0.235294, 0.137255, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.141176, 0.0901961, 0.0509804, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [node name="FarmMap" type="Control" unique_id=1765950099]
 visible = false
 layout_mode = 3
@@ -26,6 +61,7 @@ offset_right = 190.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="MC" type="MarginContainer" parent="Panel" unique_id=1540136965]
 layout_mode = 2
@@ -44,12 +80,21 @@ layout_mode = 2
 [node name="TitleLabel" type="Label" parent="Panel/MC/VBox/TitleBar" unique_id=1004291294]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "🌾 Trang trại"
+theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
+theme_override_font_sizes/font_size = 16
+text = "Trang trai"
 
 [node name="CloseButton" type="Button" parent="Panel/MC/VBox/TitleBar" unique_id=1959287390]
+custom_minimum_size = Vector2(30, 28)
 layout_mode = 2
-text = "✕"
+theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+text = "X"
 
 [node name="GridContainer" type="GridContainer" parent="Panel/MC/VBox" unique_id=1954868852]
 layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 columns = 4

@@ -2,6 +2,54 @@
 
 [ext_resource type="Script" uid="uid://cdiqtxr50p7jq" path="res://scripts/client/prefabs/ui/chat.gd" id="1_chatscr"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.129412, 0.0901961, 0.0588235, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.72549, 0.52549, 0.286275, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+content_margin_left = 8.0
+content_margin_top = 5.0
+content_margin_right = 8.0
+content_margin_bottom = 5.0
+bg_color = Color(0.956863, 0.905882, 0.772549, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.392157, 0.25098, 0.137255, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+content_margin_left = 12.0
+content_margin_top = 5.0
+content_margin_right = 12.0
+content_margin_bottom = 5.0
+bg_color = Color(0.282353, 0.498039, 0.25098, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.129412, 0.258824, 0.12549, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
 [node name="Chat" type="Control" unique_id=1850566308]
 layout_mode = 3
 anchors_preset = 15
@@ -25,6 +73,7 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
 [node name="VBox" type="VBoxContainer" parent="Panel" unique_id=676671306]
 layout_mode = 2
@@ -32,7 +81,8 @@ theme_override_constants/separation = 6
 
 [node name="TitleLabel" type="Label" parent="Panel/VBox" unique_id=2107173136]
 layout_mode = 2
-text = "💬 Chat"
+theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
+text = "Chat"
 
 [node name="Scroll" type="ScrollContainer" parent="Panel/VBox" unique_id=439116968]
 custom_minimum_size = Vector2(0, 130)
@@ -52,8 +102,15 @@ theme_override_constants/separation = 6
 [node name="MessageInput" type="LineEdit" parent="Panel/VBox/InputRow" unique_id=1879568835]
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "Nhập tin nhắn..."
+theme_override_colors/font_color = Color(0.188235, 0.121569, 0.0705882, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
+theme_override_styles/focus = SubResource("StyleBoxFlat_input")
+placeholder_text = "Nhap tin nhan..."
 
 [node name="SendButton" type="Button" parent="Panel/VBox/InputRow" unique_id=1029285633]
 layout_mode = 2
-text = "Gửi"
+theme_override_colors/font_color = Color(1, 0.964706, 0.843137, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+text = "Gui"

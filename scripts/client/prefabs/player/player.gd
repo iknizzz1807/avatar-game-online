@@ -36,7 +36,8 @@ var sync_flip_h:     bool    = false
 
 enum State {
 	NORMAL,
-	USE_WATER
+	USE_WATER,
+	FISHING,
 }
 
 var stateMachine: StateMachine;
@@ -44,7 +45,8 @@ var stateMachine: StateMachine;
 @onready var animationTree: AnimationTree = $AnimationTree;
 @onready var sprite: Sprite2D = $Sprite2D;
 @onready var normalState: PlayerNormalState = $States/Normal;
-@onready var useWaterState: PlayerUseWaterState = $States/UseWater;
+@onready var useWaterState: StateNode = $States/UseWater;
+@onready var fishingState: StateNode = $States/Fishing;
 @onready var camera: Camera2D = $Camera2D;
 @onready var waterDetector: Area2D = $WaterDetector;
 
@@ -58,7 +60,7 @@ var near_farm_slot: bool:
 
 ## The farm slot that triggered the current USE_WATER action.
 ## Set by request_water(); cleared by PlayerUseWaterState after the animation.
-var _pending_water_slot: FarmSlot = null
+var _pending_water_slot: Node = null
 
 @onready var pet_spawn: Marker2D = $PetSpawner
 
@@ -79,6 +81,7 @@ func _ready() -> void:
 
 	stateMachine.add_states(State.NORMAL, normalState);
 	stateMachine.add_states(State.USE_WATER, useWaterState);
+	stateMachine.add_states(State.FISHING, fishingState);
 	stateMachine.set_initial_state(State.NORMAL);
 
 	# Enable the camera only for the local (authority) player.
@@ -117,9 +120,20 @@ func _physics_process(delta: float) -> void:
 ## Called by FarmSlot when the player left-clicks or context-menus "water" on it.
 ## Stores the target slot and begins the USE_WATER animation state.
 ## Safe to call only while in NORMAL state and near the slot.
-func request_water(slot: FarmSlot) -> void:
+func request_water(slot: Node) -> void:
 	if stateMachine.currentState != State.NORMAL:
 		ToastManager.show_toast("Không thể tưới ngay lúc này.", ToastManager.Type.WARNING)
 		return
 	_pending_water_slot = slot
 	stateMachine.change_state(State.USE_WATER, { "facing": normalState.lastFacingDir })
+
+
+func start_fishing(facing: Vector2 = Vector2.DOWN) -> void:
+	if stateMachine.currentState == State.FISHING:
+		return
+	stateMachine.change_state(State.FISHING, { "facing": facing })
+
+
+func stop_fishing() -> void:
+	if stateMachine.currentState == State.FISHING:
+		stateMachine.change_state(State.NORMAL)

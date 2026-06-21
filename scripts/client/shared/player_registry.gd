@@ -36,11 +36,13 @@ func _on_player_joined(peer_id: int, user_id: int, display_name: String) -> void
 		push_warning("[PlayerRegistry] Player peer=%d already exists — skipping spawn." % peer_id)
 		return
 
-	var node: RemotePlayer = REMOTE_PLAYER_SCENE.instantiate() as RemotePlayer
+	var node: Node = REMOTE_PLAYER_SCENE.instantiate()
 	node.name             = "RemotePlayer_%d" % peer_id
 	node.peer_id          = peer_id
 	node.user_id          = user_id
 	node.display_name_text = display_name
+	if node.has_method("configure_context_menu"):
+		node.configure_context_menu(user_id, display_name)
 
 	_container.add_child(node)
 	_remote_players[peer_id] = node
@@ -51,7 +53,7 @@ func _on_player_left(peer_id: int) -> void:
 	if not _remote_players.has(peer_id):
 		return
 
-	var node: RemotePlayer = _remote_players[peer_id]
+	var node: Node = _remote_players[peer_id]
 	node.queue_free()
 	_remote_players.erase(peer_id)
 	print("[PlayerRegistry] Removed RemotePlayer peer=%d" % peer_id)
@@ -60,8 +62,8 @@ func _on_player_left(peer_id: int) -> void:
 # ─── Public helpers ───────────────────────────────────────────────────────────
 
 ## Returns the RemotePlayer node for a given peer_id, or null.
-func get_remote_player(peer_id: int) -> RemotePlayer:
-	return _remote_players.get(peer_id, null) as RemotePlayer
+func get_remote_player(peer_id: int) -> Node:
+	return _remote_players.get(peer_id, null)
 
 
 ## Returns all currently tracked remote players.

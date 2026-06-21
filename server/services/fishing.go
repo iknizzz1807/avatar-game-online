@@ -15,6 +15,10 @@ type FishingResult struct {
 	Coins  int    `json:"coins"`
 }
 
+type FishingStartResult struct {
+	FinishAt int64 `json:"finish_at"`
+}
+
 func GetFishingStatus(userID int) (models.FishingStatusResponse, error) {
 	status := models.FishingStatusResponse{
 		IsFishing: false,
@@ -40,84 +44,77 @@ func GetFishingStatus(userID int) (models.FishingStatusResponse, error) {
 
 	// Check if current user is fishing
 	var currentSeat int
-	err = db.DB.QueryRow("SELECT seat_index FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&currentSeat)
+	var finishAt *time.Time
+	err = db.DB.QueryRow("SELECT seat_index, finish_at FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&currentSeat, &finishAt)
 	if err == nil {
 		status.IsFishing = true
 		status.SeatIndex = &currentSeat
+		if finishAt != nil {
+			unix := finishAt.Unix()
+			status.FinishAt = &unix
+		}
 	}
 
 	return status, nil
 }
 
-func StartFishing(userID int, seatIndex int) error {
+func StartFishing(userID int, seatIndex int) (FishingStartResult, error) {
+	result := FishingStartResult{}
 	if seatIndex < 0 || seatIndex >= models.MaxFishingSeats {
-		return utils.ErrCodeInvalidInput
+		return result, utils.ErrCodeInvalidInput
 	}
 
 	var activeUserSession int
 	if err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&activeUserSession); err != nil {
-		return err
+		return result, err
 	}
 	if activeUserSession > 0 {
-		return utils.ErrCodeInvalidInput
+		return result, utils.ErrCodeInvalidInput
 	}
 
 	// Check if seat is occupied
 	var occupied int
 	err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE seat_index = ? AND ended_at IS NULL", seatIndex).Scan(&occupied)
 	if err != nil {
-		return err
+		return result, err
 	}
 	if occupied > 0 {
-		return utils.ErrCodeSeatOccupied
+		return result, utils.ErrCodeSeatOccupied
 	}
 
 	// Check for fishing rod
 	hasRod, _ := HasItem(userID, "rod_bamboo")
 	if !hasRod {
-		return utils.ErrCodeNoFishingRod
+		return result, utils.ErrCodeNoFishingRod
 	}
 
 	// Check for bait
 	hasBait, baitQty := HasItem(userID, "bait_normal")
 	if !hasBait || baitQty < 1 {
-		return utils.ErrCodeNoBait
+		return result, utils.ErrCodeNoBait
 	}
 
 	// Remove bait
 	if err := RemoveItem(userID, "bait_normal", 1); err != nil {
-		return err
+		return result, err
 	}
 
 	// Keep the user_id uniqueness constraint compatible with repeat sessions.
 	if _, err := db.DB.Exec("DELETE FROM fishing_sessions WHERE user_id = ? AND ended_at IS NOT NULL", userID); err != nil {
-		return err
+		return result, err
 	}
 
-	// Create fishing session
-	result, err := db.DB.Exec(
-		"INSERT INTO fishing_sessions (user_id, seat_index, started_at) VALUES (?, ?, ?)",
-		userID, seatIndex, time.Now(),
+	finishAt := time.Now().Add(time.Duration(10+rand.Intn(11)) * time.Second)
+	_, err = db.DB.Exec(
+		"INSERT INTO fishing_sessions (user_id, seat_index, started_at, finish_at) VALUES (?, ?, ?, ?)",
+		userID, seatIndex, time.Now(), finishAt,
 	)
 	if err != nil {
-		return err
+		return result, err
 	}
-	sessionID, _ := result.LastInsertId()
 
-	// Start async fishing timer
-	go runFishingSession(userID, int(sessionID))
-
-	return nil
-}
-
-func runFishingSession(userID int, sessionID int) {
-	// Random time between 10-20 seconds
-	randomDuration := time.Duration(10+rand.Intn(11)) * time.Second
-	time.Sleep(randomDuration)
-
-	// Calculate result
-	result := calculateFishingResult()
-	processFishingResult(userID, sessionID, result)
+	result.FinishAt = finishAt.Unix()
+	return result, nil
 }
 
 func calculateFishingResult() FishingResult {
@@ -134,12 +131,19 @@ func calculateFishingResult() FishingResult {
 	}
 }
 
-func processFishingResult(userID int, sessionID int, result FishingResult) {
-	var active int
-	err := db.DB.QueryRow("SELECT COUNT(*) FROM fishing_sessions WHERE id = ? AND user_id = ? AND ended_at IS NULL", sessionID, userID).Scan(&active)
-	if err != nil || active == 0 {
-		return
+func ClaimFishing(userID int) (FishingResult, error) {
+	result := FishingResult{}
+	var sessionID int
+	var finishAt time.Time
+	err := db.DB.QueryRow("SELECT id, finish_at FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&sessionID, &finishAt)
+	if err != nil {
+		return result, err
 	}
+	if time.Now().Before(finishAt) {
+		return result, utils.ErrCodeInvalidInput
+	}
+
+	result = calculateFishingResult()
 
 	// End the fishing session
 	db.DB.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE id = ? AND user_id = ? AND ended_at IS NULL", sessionID, userID)
@@ -152,6 +156,8 @@ func processFishingResult(userID int, sessionID int, result FishingResult) {
 	if result.ItemID != "" {
 		AddItem(userID, result.ItemID, 1)
 	}
+
+	return result, nil
 }
 
 func StopFishing(userID int) error {

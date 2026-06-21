@@ -36,6 +36,7 @@ const INTERP_SPEED: float = 20.0
 @onready var _sprite:    Sprite2D      = $Sprite2D
 @onready var _anim_tree: AnimationTree = $AnimationTree
 @onready var _name_label: Label        = $NameLabel
+@onready var _context_target: Node = $ContextTarget
 
 
 const PET_SCENE: PackedScene = preload("res://prefabs/characters/pet.tscn")
@@ -51,6 +52,14 @@ func _ready() -> void:
 	global_position = sync_position
 	if _name_label:
 		_name_label.text = display_name_text
+	configure_context_menu(user_id, display_name_text)
+
+
+func configure_context_menu(target_user_id: int, target_name: String) -> void:
+	if not is_node_ready() or _context_target == null:
+		return
+	_context_target.set("playerId", target_user_id)
+	_context_target.set("playerName", target_name)
 
 
 func _physics_process(delta: float) -> void:

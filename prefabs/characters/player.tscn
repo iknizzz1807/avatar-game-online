@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/client/prefabs/player/player_use_water_state.gd" id="9_uwst"]
 [ext_resource type="Script" uid="uid://bagfxkfa7im1l" path="res://scripts/shared/inventory_slot.gd" id="10_ku2fq"]
 [ext_resource type="PackedScene" path="res://prefabs/ui/screens/shop.tscn" id="10_shop"]
+[ext_resource type="Script" path="res://scripts/client/prefabs/player/player_fishing_state.gd" id="11_fishst"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uwrxv"]
 size = Vector2(8, 6)
@@ -694,6 +695,9 @@ script = ExtResource("3_eimbo")
 
 [node name="UseWater" type="Node" parent="States" unique_id=2056939857]
 script = ExtResource("9_uwst")
+
+[node name="Fishing" type="Node" parent="States"]
+script = ExtResource("11_fishst")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=658738122]
 

@@ -50,6 +50,7 @@ func main() {
 	api.Use(middleware.AuthMiddleware())
 	{
 		api.GET("/user/me", handlers.GetMe)
+		api.GET("/user/:id/profile", handlers.GetUserProfile)
 		api.PUT("/user/map", handlers.ChangeMap)
 
 		api.GET("/inventory", handlers.GetInventory)
@@ -66,6 +67,7 @@ func main() {
 
 		api.GET("/fishing/status", handlers.GetFishingStatus)
 		api.POST("/fishing/start", handlers.StartFishing)
+		api.POST("/fishing/claim", handlers.ClaimFishing)
 		api.POST("/fishing/stop", handlers.StopFishing)
 	}
 

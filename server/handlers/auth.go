@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"strconv"
+
 	"github.com/avatar-game/server/middleware"
 	"github.com/avatar-game/server/services"
 	"github.com/avatar-game/server/utils"
@@ -142,4 +144,26 @@ func ChangeMap(c *gin.Context) {
 
 	coins, _ := services.GetCoins(userID)
 	utils.RespondWithCoins(c, coins, gin.H{"current_map": req.Map})
+}
+
+func GetUserProfile(c *gin.Context) {
+	profileID, err := strconv.Atoi(c.Param("id"))
+	if err != nil || profileID <= 0 {
+		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
+		return
+	}
+
+	user, err := services.GetUserByID(profileID)
+	if err != nil {
+		utils.RespondError(c, utils.ErrCodeUserNotFound, 404)
+		return
+	}
+
+	utils.RespondSuccess(c, gin.H{
+		"id":           user.ID,
+		"display_name": user.DisplayName,
+		"coins":        user.Coins,
+		"current_map":  user.CurrentMap,
+		"created_at":   user.CreatedAt,
+	})
 }

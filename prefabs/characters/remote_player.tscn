@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://ck3trbmxal703"]
 
 [ext_resource type="Script" uid="uid://8awfctsd13kg" path="res://scripts/client/prefabs/player/remote_player.gd" id="1_remote"]
+[ext_resource type="Script" path="res://scripts/client/prefabs/player/other_player.gd" id="2_other"]
 [ext_resource type="Texture2D" uid="uid://elfswkp7g1wu" path="res://sprites/Characters/Basic Charakter Actions.png" id="2_ig736"]
 [ext_resource type="Texture2D" uid="uid://c51j2mga5duvm" path="res://sprites/Characters/Basic Charakter Spritesheet.png" id="2_sprite"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_context"]
+size = Vector2(18, 28)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_22wcc"]
 animation = &"idleDown"
@@ -661,6 +665,13 @@ theme_override_font_sizes/font_size = 8
 text = "Player"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ContextTarget" type="Area2D" parent="."]
+script = ExtResource("2_other")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContextTarget"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_context")
 
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=1303071370]
 tree_root = SubResource("AnimationNodeStateMachine_lis4f")

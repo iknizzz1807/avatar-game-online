@@ -34,7 +34,7 @@ func StartFishing(c *gin.Context) {
 		return
 	}
 
-	err := services.StartFishing(userID, int(seatIndex))
+	startResult, err := services.StartFishing(userID, int(seatIndex))
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
@@ -45,8 +45,28 @@ func StartFishing(c *gin.Context) {
 	inventory, _ := services.GetInventory(userID)
 	utils.RespondWithCoins(c, coins, gin.H{
 		"fishing_status": status,
+		"finish_at":      startResult.FinishAt,
 		"inventory":      inventory,
 		"message":        "Đang câu cá...",
+	})
+}
+
+func ClaimFishing(c *gin.Context) {
+	userID := middleware.GetUserID(c)
+
+	result, err := services.ClaimFishing(userID)
+	if err != nil {
+		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
+		return
+	}
+
+	coins, _ := services.GetCoins(userID)
+	status, _ := services.GetFishingStatus(userID)
+	inventory, _ := services.GetInventory(userID)
+	utils.RespondWithCoins(c, coins, gin.H{
+		"fishing_status": status,
+		"inventory":      inventory,
+		"result":         result,
 	})
 }
 

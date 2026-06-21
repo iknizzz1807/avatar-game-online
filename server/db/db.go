@@ -81,6 +81,7 @@ func migrate() error {
 			user_id INTEGER NOT NULL,
 			seat_index INTEGER NOT NULL,
 			started_at DATETIME NOT NULL,
+			finish_at DATETIME,
 			ended_at DATETIME,
 			FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
 			UNIQUE(user_id)
@@ -91,6 +92,11 @@ func migrate() error {
 		if _, err := DB.Exec(q); err != nil {
 			return err
 		}
+	}
+
+	if _, err := DB.Exec(`ALTER TABLE fishing_sessions ADD COLUMN finish_at DATETIME`); err != nil {
+		// SQLite returns duplicate column errors after the first migration; ignore them.
+		log.Println("Fishing finish_at migration skipped:", err)
 	}
 
 	log.Println("Database migrations completed")

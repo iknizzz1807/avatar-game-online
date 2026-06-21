@@ -1,6 +1,7 @@
 extends Node
 
 signal coins_changed(amount: int)
+signal session_expired()
 
 const API_BASE: String = "http://127.0.0.1:8080"
 
@@ -54,6 +55,9 @@ func request_json(path: String, method: int = HTTPClient.METHOD_GET, body: Dicti
 		current_coins = int(parsed.get("coins", current_coins))
 		coins_changed.emit(current_coins)
 
+	if response_code == 401:
+		_handle_session_expired()
+
 	return {
 		"ok": response_code >= 200 and response_code < 300,
 		"code": response_code,
@@ -65,3 +69,16 @@ func request_json(path: String, method: int = HTTPClient.METHOD_GET, body: Dicti
 func response_data(response: Dictionary) -> Dictionary:
 	var body: Dictionary = response.get("body", {})
 	return body.get("data", body)
+
+
+func _handle_session_expired() -> void:
+	if auth_token.is_empty():
+		return
+	clear_auth_token()
+	current_coins = 0
+	session_expired.emit()
+	if get_node_or_null("/root/MultiplayerManager"):
+		MultiplayerManager.disconnect_from_server()
+	if get_node_or_null("/root/ToastManager"):
+		ToastManager.show_toast("Phien dang nhap het han.", ToastManager.Type.WARNING)
+	get_tree().change_scene_to_file("res://scenes/auth.tscn")

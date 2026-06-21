@@ -91,6 +91,11 @@ func _ready() -> void:
 	# Tag the local-authority player so FarmSlot can find it via get_overlapping_bodies().
 	if is_multiplayer_authority():
 		add_to_group("local_player")
+		
+		# Show local HUD at runtime since it is hidden in the prefab by default
+		var hud_node = get_node_or_null("CanvasLayer/HUD")
+		if hud_node:
+			hud_node.visible = true
 
 
 func _process(delta: float) -> void:

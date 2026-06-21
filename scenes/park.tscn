@@ -1,189 +1,322 @@
-[gd_scene format=3 uid="uid://park_scene_001"]
+[gd_scene format=4 uid="uid://2354wvwelqtn"]
 
 [ext_resource type="PackedScene" uid="uid://c3wsy7q6g5io4" path="res://prefabs/characters/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://prefabs/teleport_zone.tscn" id="2_tpzone"]
-[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Maple Tree.png" id="3_tree"]
-[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Fence's copiar.png" id="4_fence"]
-[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Plants.png" id="5_plants"]
-[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Furniture.png" id="6_furniture"]
+[ext_resource type="PackedScene" uid="uid://c8niy5fx7tb1w" path="res://scenes/objects/maple_tree.tscn" id="3_r2x14"]
+[ext_resource type="PackedScene" uid="uid://bu8u7nq6axjxr" path="res://scenes/objects/plant.tscn" id="4_mrh1q"]
+[ext_resource type="PackedScene" uid="uid://djlbq2r8wg3yu" path="res://scenes/objects/fence.tscn" id="5_ejoub"]
+[ext_resource type="PackedScene" uid="uid://sag4vj7tl150" path="res://scenes/objects/carpet.tscn" id="6_lkp8f"]
+[ext_resource type="PackedScene" uid="uid://dqqav1s88c2uq" path="res://scenes/objects/fence_3.tscn" id="7_dt7g6"]
 [ext_resource type="Script" uid="uid://ub6l8wnka6u7" path="res://scripts/client/shared/world_boundary.gd" id="7_wbscript"]
 [ext_resource type="Script" uid="uid://d1de6slrwb6fu" path="res://scripts/client/shared/player_registry.gd" id="8_registry"]
+[ext_resource type="PackedScene" uid="uid://m488d3soc7di" path="res://scenes/objects/fence_4.tscn" id="8_tiu4o"]
+[ext_resource type="Texture2D" uid="uid://qyp0b6fvm5sx" path="res://sprites/Tilesets/Tilled Dirt.png" id="9_lcslx"]
+[ext_resource type="PackedScene" uid="uid://cqrrsteaf32ji" path="res://scenes/objects/flower.tscn" id="10_h0erc"]
+[ext_resource type="Texture2D" uid="uid://dnr2lqp35tgs4" path="res://sprites/Tilesets/Water.png" id="11_dt7g6"]
+[ext_resource type="PackedScene" uid="uid://dq2nrypmpg42m" path="res://scenes/objects/water_weeds.tscn" id="12_tiu4o"]
+[ext_resource type="PackedScene" uid="uid://cfscmf45yiipa" path="res://scenes/objects/weed.tscn" id="13_lcslx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
 size = Vector2(520, 340)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_park_tree"]
-size = Vector2(24, 18)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ug77f"]
+texture = ExtResource("9_lcslx")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+7:6/0 = 0
+1:7/0 = 0
+2:7/0 = 0
+3:7/0 = 0
+4:7/0 = 0
+5:7/0 = 0
+6:7/0 = 0
+7:7/0 = 0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_park_bench"]
-size = Vector2(30, 12)
+[sub_resource type="TileSet" id="TileSet_o1cqc"]
+sources/0 = SubResource("TileSetAtlasSource_ug77f")
 
-[node name="Park" type="Node2D"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_h0erc"]
+texture = ExtResource("11_dt7g6")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_ug77f"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_h0erc")
+
+[node name="Park" type="Node2D" unique_id=1630298695]
 y_sort_enabled = true
 
-[node name="WorldBoundary" type="Node2D" parent="."]
+[node name="WorldBoundary" type="Node2D" parent="." unique_id=237728455]
 script = ExtResource("7_wbscript")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary" unique_id=1713585775]
 position = Vector2(180, 90)
 shape = SubResource("RectangleShape2D_zone")
 debug_color = Color(0.5, 0.8, 1, 0.3)
 
-[node name="PlayerRegistry" type="Node" parent="."]
+[node name="PlayerRegistry" type="Node" parent="." unique_id=1331137562]
 script = ExtResource("8_registry")
 players_container = NodePath("..")
 
-[node name="StaticCollisions" type="StaticBody2D" parent="."]
-
-[node name="TreeACollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(22, 8)
-shape = SubResource("RectangleShape2D_park_tree")
-
-[node name="TreeBCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(96, 18)
-shape = SubResource("RectangleShape2D_park_tree")
-
-[node name="TreeCCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(292, 18)
-shape = SubResource("RectangleShape2D_park_tree")
-
-[node name="TreeDCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(372, 6)
-shape = SubResource("RectangleShape2D_park_tree")
-
-[node name="TreeECollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(44, 178)
-shape = SubResource("RectangleShape2D_park_tree")
-
-[node name="TreeFCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(340, 180)
-shape = SubResource("RectangleShape2D_park_tree")
-
-[node name="BenchLeftCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(122, 60)
-shape = SubResource("RectangleShape2D_park_bench")
-
-[node name="BenchRightCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(264, 60)
-shape = SubResource("RectangleShape2D_park_bench")
-
-[node name="Grass" type="Polygon2D" parent="."]
+[node name="Grass" type="Polygon2D" parent="." unique_id=305243071]
 z_index = -20
+position = Vector2(9, 13)
 color = Color(0.337255, 0.603922, 0.286275, 1)
-polygon = PackedVector2Array(-80, -80, 440, -80, 440, 260, -80, 260)
+polygon = PackedVector2Array(-120, -120, 480, -120, 480, 300, -120, 300)
 
-[node name="WalkPath" type="Polygon2D" parent="."]
+[node name="WalkPath" type="Polygon2D" parent="." unique_id=2114104293]
 z_index = -18
 color = Color(0.705882, 0.568627, 0.384314, 1)
 polygon = PackedVector2Array(-80, 86, 70, 70, 192, 96, 320, 70, 440, 86, 440, 126, 318, 108, 192, 136, 70, 108, -80, 126)
 
-[node name="PicnicArea" type="Polygon2D" parent="."]
+[node name="PicnicArea" type="Polygon2D" parent="." unique_id=135395612]
 z_index = -17
 color = Color(0.454902, 0.686275, 0.352941, 1)
 polygon = PackedVector2Array(112, 22, 272, 22, 272, 74, 112, 74)
 
-[node name="Decor" type="Node2D" parent="."]
+[node name="Decor" type="Node2D" parent="." unique_id=1854123679]
 y_sort_enabled = true
 
-[node name="TreeA" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(22, -12)
-texture = ExtResource("3_tree")
-region_enabled = true
-region_rect = Rect2(0, 0, 48, 48)
+[node name="tree" type="Node2D" parent="Decor" unique_id=260789582]
 
-[node name="TreeB" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(96, -2)
-texture = ExtResource("3_tree")
-region_enabled = true
-region_rect = Rect2(48, 0, 48, 48)
+[node name="maple_tree" parent="Decor/tree" unique_id=465524685 instance=ExtResource("3_r2x14")]
+position = Vector2(-416, 119)
 
-[node name="TreeC" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(292, -2)
-texture = ExtResource("3_tree")
-region_enabled = true
-region_rect = Rect2(96, 0, 48, 48)
+[node name="maple_tree2" parent="Decor/tree" unique_id=526295446 instance=ExtResource("3_r2x14")]
+position = Vector2(-370, 119)
 
-[node name="TreeD" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(372, -14)
-texture = ExtResource("3_tree")
-region_enabled = true
-region_rect = Rect2(0, 0, 48, 48)
+[node name="maple_tree3" parent="Decor/tree" unique_id=51019039 instance=ExtResource("3_r2x14")]
+position = Vector2(-325, 120)
 
-[node name="TreeE" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(44, 158)
-texture = ExtResource("3_tree")
-region_enabled = true
-region_rect = Rect2(48, 0, 48, 48)
+[node name="maple_tree4" parent="Decor/tree" unique_id=756574322 instance=ExtResource("3_r2x14")]
+position = Vector2(-417, 183)
 
-[node name="TreeF" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(340, 160)
-texture = ExtResource("3_tree")
-region_enabled = true
-region_rect = Rect2(96, 0, 48, 48)
+[node name="maple_tree5" parent="Decor/tree" unique_id=402046834 instance=ExtResource("3_r2x14")]
+position = Vector2(-371, 185)
 
-[node name="BenchLeft" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(122, 56)
-texture = ExtResource("6_furniture")
-region_enabled = true
-region_rect = Rect2(0, 0, 32, 16)
+[node name="maple_tree6" parent="Decor/tree" unique_id=1276889913 instance=ExtResource("3_r2x14")]
+position = Vector2(-323, 187)
 
-[node name="BenchRight" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(264, 56)
-texture = ExtResource("6_furniture")
-region_enabled = true
-region_rect = Rect2(32, 0, 32, 16)
+[node name="maple_tree7" parent="Decor/tree" unique_id=148217011 instance=ExtResource("3_r2x14")]
+position = Vector2(-280, 121)
 
-[node name="FlowerBedA" type="Sprite2D" parent="Decor"]
-position = Vector2(106, 126)
-texture = ExtResource("5_plants")
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
+[node name="maple_tree8" parent="Decor/tree" unique_id=1260403369 instance=ExtResource("3_r2x14")]
+position = Vector2(-279, 186)
 
-[node name="FlowerBedB" type="Sprite2D" parent="Decor"]
-position = Vector2(278, 126)
-texture = ExtResource("5_plants")
-region_enabled = true
-region_rect = Rect2(16, 0, 16, 16)
+[node name="maple_tree9" parent="Decor/tree" unique_id=1498520035 instance=ExtResource("3_r2x14")]
+position = Vector2(-234, 127)
 
-[node name="FlowerBedC" type="Sprite2D" parent="Decor"]
-position = Vector2(150, 148)
-texture = ExtResource("5_plants")
-region_enabled = true
-region_rect = Rect2(32, 0, 16, 16)
+[node name="maple_tree10" parent="Decor/tree" unique_id=1158186800 instance=ExtResource("3_r2x14")]
+position = Vector2(-234, 189)
 
-[node name="FlowerBedD" type="Sprite2D" parent="Decor"]
-position = Vector2(234, 148)
-texture = ExtResource("5_plants")
-region_enabled = true
-region_rect = Rect2(48, 0, 16, 16)
+[node name="maple_tree11" parent="Decor/tree" unique_id=574510475 instance=ExtResource("3_r2x14")]
+position = Vector2(-188, 131)
 
-[node name="FenceA" type="Sprite2D" parent="Decor"]
-position = Vector2(164, 18)
-texture = ExtResource("4_fence")
-region_enabled = true
-region_rect = Rect2(0, 0, 48, 16)
+[node name="maple_tree12" parent="Decor/tree" unique_id=1063420780 instance=ExtResource("3_r2x14")]
+position = Vector2(-188, 191)
 
-[node name="FenceB" type="Sprite2D" parent="Decor"]
-position = Vector2(220, 18)
-texture = ExtResource("4_fence")
-region_enabled = true
-region_rect = Rect2(0, 0, 48, 16)
+[node name="maple_tree13" parent="Decor/tree" unique_id=1026712930 instance=ExtResource("3_r2x14")]
+position = Vector2(-144, 132)
 
-[node name="BackToTown" parent="." instance=ExtResource("2_tpzone")]
+[node name="maple_tree14" parent="Decor/tree" unique_id=781246624 instance=ExtResource("3_r2x14")]
+position = Vector2(-145, 193)
+
+[node name="maple_tree15" parent="Decor/tree" unique_id=1520517350 instance=ExtResource("3_r2x14")]
+position = Vector2(-100, 118)
+
+[node name="maple_tree16" parent="Decor/tree" unique_id=621905322 instance=ExtResource("3_r2x14")]
+position = Vector2(-101, 191)
+
+[node name="maple_tree17" parent="Decor/tree" unique_id=794743644 instance=ExtResource("3_r2x14")]
+position = Vector2(-56, 112)
+
+[node name="maple_tree18" parent="Decor/tree" unique_id=2091676014 instance=ExtResource("3_r2x14")]
+position = Vector2(-12, 119)
+
+[node name="maple_tree19" parent="Decor/tree" unique_id=137033074 instance=ExtResource("3_r2x14")]
+position = Vector2(-52, 186)
+
+[node name="maple_tree20" parent="Decor/tree" unique_id=1804829067 instance=ExtResource("3_r2x14")]
+position = Vector2(-2, 187)
+
+[node name="plant" parent="Decor/tree" unique_id=281763644 instance=ExtResource("4_mrh1q")]
+
+[node name="park_decor" type="Node2D" parent="Decor" unique_id=1560278140]
+
+[node name="fence" parent="Decor/park_decor" unique_id=22022054 instance=ExtResource("5_ejoub")]
+
+[node name="fence2" parent="Decor/park_decor" unique_id=1714626768 instance=ExtResource("5_ejoub")]
+position = Vector2(119, 0)
+
+[node name="carpet" parent="Decor/park_decor" unique_id=933527957 instance=ExtResource("6_lkp8f")]
+
+[node name="fence3" parent="Decor/park_decor" unique_id=603036007 instance=ExtResource("7_dt7g6")]
+
+[node name="fence4" parent="Decor/park_decor" unique_id=1319041333 instance=ExtResource("7_dt7g6")]
+position = Vector2(39, 0)
+
+[node name="fence5" parent="Decor/park_decor" unique_id=464209016 instance=ExtResource("7_dt7g6")]
+position = Vector2(79, 0)
+
+[node name="fence_4" parent="Decor/park_decor" unique_id=1215582508 instance=ExtResource("8_tiu4o")]
+
+[node name="fence_5" parent="Decor/park_decor" unique_id=1453333279 instance=ExtResource("8_tiu4o")]
+position = Vector2(112, -1)
+
+[node name="dirt" type="TileMapLayer" parent="Decor/park_decor" unique_id=356870375]
+z_index = -2
+tile_map_data = PackedByteArray("AAASAP7/AAACAAQAAAATAP7/AAACAAQAAAAUAP7/AAACAAQAAAAVAP7/AAACAAQAAAAWAP7/AAACAAQAAAAXAP7/AAACAAQAAAAXAP//AAACAAQAAAAWAP//AAACAAQAAAAVAP//AAACAAQAAAAUAP//AAACAAQAAAATAP//AAACAAQAAAASAP//AAACAAQAAAA=")
+tile_set = SubResource("TileSet_o1cqc")
+
+[node name="plant" parent="Decor/park_decor" unique_id=649585812 instance=ExtResource("4_mrh1q")]
+position = Vector2(33, -2)
+
+[node name="plant2" parent="Decor/park_decor" unique_id=171841835 instance=ExtResource("4_mrh1q")]
+position = Vector2(46, -3)
+
+[node name="flower" type="Node2D" parent="Decor" unique_id=588117225]
+
+[node name="flower" parent="Decor/flower" unique_id=1779351204 instance=ExtResource("10_h0erc")]
+position = Vector2(113, 16)
+
+[node name="flower2" parent="Decor/flower" unique_id=1532654200 instance=ExtResource("10_h0erc")]
+position = Vector2(113, 32)
+
+[node name="flower3" parent="Decor/flower" unique_id=356122141 instance=ExtResource("10_h0erc")]
+position = Vector2(130, 16)
+
+[node name="flower4" parent="Decor/flower" unique_id=531611852 instance=ExtResource("10_h0erc")]
+position = Vector2(134, 32)
+
+[node name="flower5" parent="Decor/flower" unique_id=2026290029 instance=ExtResource("10_h0erc")]
+position = Vector2(153, 16)
+
+[node name="flower6" parent="Decor/flower" unique_id=1804044335 instance=ExtResource("10_h0erc")]
+position = Vector2(174, 33)
+
+[node name="flower7" parent="Decor/flower" unique_id=90658992 instance=ExtResource("10_h0erc")]
+position = Vector2(172, 17)
+
+[node name="flower8" parent="Decor/flower" unique_id=1618510133 instance=ExtResource("10_h0erc")]
+position = Vector2(194, 33)
+
+[node name="flower9" parent="Decor/flower" unique_id=645711827 instance=ExtResource("10_h0erc")]
+position = Vector2(195, 18)
+
+[node name="flower10" parent="Decor/flower" unique_id=447271321 instance=ExtResource("10_h0erc")]
+position = Vector2(155, 30)
+
+[node name="plant" parent="Decor/flower" unique_id=450851760 instance=ExtResource("4_mrh1q")]
+position = Vector2(16, -2)
+
+[node name="water" type="TileMapLayer" parent="Decor" unique_id=91495509]
+z_index = -2
+tile_map_data = PackedByteArray("AAD///7/AAAAAAAAAAAAAP7/AAAAAAAAAAABAP7/AAAAAAAAAAACAP7/AAAAAAAAAAADAP7/AAAAAAAAAAADAP//AAAAAAAAAAADAAAAAAAAAAAAAAACAAAAAAAAAAAAAAACAP//AAAAAAAAAAABAP//AAAAAAAAAAAAAP//AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAD//wAAAAAAAAAAAAD/////AAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAAAAAACAP3/AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP//AAAAAAAAAAAEAAAAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_ug77f")
+
+[node name="water_weeds" parent="Decor" unique_id=2146739818 instance=ExtResource("12_tiu4o")]
+position = Vector2(49, -6)
+
+[node name="water_weeds2" parent="Decor" unique_id=783443297 instance=ExtResource("12_tiu4o")]
+position = Vector2(11, -30)
+
+[node name="Weed" parent="Decor" unique_id=646145256 instance=ExtResource("13_lcslx")]
+position = Vector2(-17, -7)
+
+[node name="Weed" parent="Decor/Weed" unique_id=1109656008 instance=ExtResource("13_lcslx")]
+position = Vector2(21, 0)
+
+[node name="Weed" parent="Decor/Weed/Weed" unique_id=920261833 instance=ExtResource("13_lcslx")]
+position = Vector2(22, -1)
+
+[node name="Weed" parent="Decor/Weed/Weed/Weed" unique_id=1111215517 instance=ExtResource("13_lcslx")]
+position = Vector2(20, -1)
+
+[node name="Weed" parent="Decor/Weed/Weed/Weed/Weed" unique_id=1415985700 instance=ExtResource("13_lcslx")]
+position = Vector2(-63, 21)
+
+[node name="Weed" parent="Decor/Weed/Weed/Weed/Weed/Weed" unique_id=1598668148 instance=ExtResource("13_lcslx")]
+position = Vector2(21, 0)
+
+[node name="Weed" parent="Decor/Weed/Weed/Weed/Weed/Weed/Weed" unique_id=189624300 instance=ExtResource("13_lcslx")]
+position = Vector2(21, 1)
+
+[node name="Weed" parent="Decor/Weed/Weed/Weed/Weed/Weed/Weed/Weed" unique_id=915478950 instance=ExtResource("13_lcslx")]
+position = Vector2(23, -1)
+
+[node name="BackToTown" parent="." unique_id=116172668 instance=ExtResource("2_tpzone")]
 position = Vector2(28, 96)
 target_map_id = "town"
 spawn_position = Vector2(352, 84)
 
-[node name="Label" parent="BackToTown/Visual" index="1"]
-text = "TOWN"
+[node name="ToFishPond" parent="." unique_id=500075062 instance=ExtResource("2_tpzone")]
+position = Vector2(382, 96)
+target_map_id = "fish_pond"
+spawn_position = Vector2(330, 110)
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(192, 118)
+[node name="ToFarm" parent="." unique_id=690585253 instance=ExtResource("2_tpzone")]
+position = Vector2(192, 240)
+target_map_id = "game"
+spawn_position = Vector2(210, 95)
+
+[node name="Player" parent="." unique_id=2017938755 instance=ExtResource("1_player")]
+position = Vector2(192, 101)

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://d3q7iubi6dcwr"]
+
+[ext_resource type="Texture2D" uid="uid://bqo7fm6akiuj7" path="res://sprites/Objects/Basic_Grass_Biom_things.png" id="1_81tcl"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_df5mh"]
+radius = 3.0
+
+[node name="apple" type="StaticBody2D" unique_id=980692842]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1413602051]
+position = Vector2(230.25, 161.25)
+scale = Vector2(0.67777777, 0.88461536)
+texture = ExtResource("1_81tcl")
+region_enabled = true
+region_rect = Rect2(2.0737724, 33.600258, 45.274075, 13.274075)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1325906690]
+position = Vector2(240, 163)
+shape = SubResource("CircleShape2D_df5mh")

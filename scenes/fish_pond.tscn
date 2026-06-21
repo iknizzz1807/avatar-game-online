@@ -1,215 +1,469 @@
-[gd_scene format=3 uid="uid://fish_pond_scene_001"]
+[gd_scene format=4 uid="uid://d24axfuj3qf5n"]
 
 [ext_resource type="PackedScene" uid="uid://c3wsy7q6g5io4" path="res://prefabs/characters/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://prefabs/teleport_zone.tscn" id="2_tpzone"]
-[ext_resource type="Texture2D" path="res://sprites/Objects/Wood_Bridge.png" id="3_bridge"]
-[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Grass_Biom_things.png" id="4_grassprops"]
-[ext_resource type="Texture2D" path="res://sprites/Objects/Basic_Plants.png" id="5_plants"]
-[ext_resource type="Texture2D" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/Maple Tree.png" id="6_tree"]
-[ext_resource type="Texture2D" path="res://sprites/Characters/Tools.png" id="7_tools"]
+[ext_resource type="Texture2D" uid="uid://30gg5iijnsvn" path="res://sprites/Tilesets/Grass.png" id="3_bejjb"]
+[ext_resource type="Texture2D" uid="uid://bqo7fm6akiuj7" path="res://sprites/Objects/Basic_Grass_Biom_things.png" id="4_grassprops"]
+[ext_resource type="PackedScene" uid="uid://cfscmf45yiipa" path="res://scenes/objects/weed.tscn" id="4_sehyh"]
+[ext_resource type="PackedScene" uid="uid://dnprpcte3afsl" path="res://scenes/objects/apple_tree.tscn" id="5_sehyh"]
+[ext_resource type="Texture2D" uid="uid://dnr2lqp35tgs4" path="res://sprites/Tilesets/Water.png" id="6_2ranf"]
+[ext_resource type="PackedScene" uid="uid://cqrrsteaf32ji" path="res://scenes/objects/flower.tscn" id="7_m12ta"]
 [ext_resource type="Script" uid="uid://ub6l8wnka6u7" path="res://scripts/client/shared/world_boundary.gd" id="8_wbscript"]
+[ext_resource type="PackedScene" uid="uid://dq2nrypmpg42m" path="res://scenes/objects/water_weeds.tscn" id="8_wunwe"]
+[ext_resource type="PackedScene" uid="uid://bi7ydxvcppam" path="res://scenes/objects/water_weeds_2.tscn" id="9_nksb8"]
 [ext_resource type="Script" uid="uid://d1de6slrwb6fu" path="res://scripts/client/shared/player_registry.gd" id="9_registry"]
-[ext_resource type="Script" path="res://scripts/client/prefabs/fishing_spot.gd" id="10_fishspot"]
+[ext_resource type="PackedScene" uid="uid://bwvch44i0uwmi" path="res://scenes/objects/mushroom.tscn" id="11_c7r2t"]
+[ext_resource type="PackedScene" uid="uid://d3q7iubi6dcwr" path="res://scenes/objects/apple.tscn" id="12_wunwe"]
+[ext_resource type="PackedScene" uid="uid://d3dbgvlcrhg5w" path="res://scenes/objects/path.tscn" id="13_nksb8"]
+[ext_resource type="PackedScene" uid="uid://cbrawqifqk6ey" path="res://scenes/objects/path_2.tscn" id="14_c7r2t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
 size = Vector2(520, 340)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pond_top"]
-size = Vector2(250, 38)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2ranf"]
+texture = ExtResource("3_bejjb")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+9:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+9:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+4:2/0 = 0
+5:2/0 = 0
+6:2/0 = 0
+7:2/0 = 0
+8:2/0 = 0
+9:2/0 = 0
+10:2/0 = 0
+0:3/0 = 0
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+4:3/0 = 0
+5:3/0 = 0
+6:3/0 = 0
+7:3/0 = 0
+8:3/0 = 0
+9:3/0 = 0
+10:3/0 = 0
+0:4/0 = 0
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+4:4/0 = 0
+5:4/0 = 0
+6:4/0 = 0
+7:4/0 = 0
+8:4/0 = 0
+9:4/0 = 0
+0:5/0 = 0
+1:5/0 = 0
+2:5/0 = 0
+3:5/0 = 0
+4:5/0 = 0
+5:5/0 = 0
+6:5/0 = 0
+7:5/0 = 0
+8:5/0 = 0
+9:5/0 = 0
+0:6/0 = 0
+1:6/0 = 0
+2:6/0 = 0
+3:6/0 = 0
+4:6/0 = 0
+5:6/0 = 0
+6:6/0 = 0
+7:6/0 = 0
+8:6/0 = 0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pond_side"]
-size = Vector2(60, 92)
+[sub_resource type="TileSet" id="TileSet_m12ta"]
+sources/0 = SubResource("TileSetAtlasSource_2ranf")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pond_bottom"]
-size = Vector2(190, 34)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_m12ta"]
+texture = ExtResource("6_2ranf")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+3:0/0 = 0
+3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_pond_tree"]
-size = Vector2(24, 18)
+[sub_resource type="TileSet" id="TileSet_bd1v7"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_m12ta")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_fishing_spot"]
-radius = 18.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_lagpe"]
 
-[node name="FishPond" type="Node2D"]
+[node name="FishPond" type="Node2D" unique_id=1915962319]
 y_sort_enabled = true
 
-[node name="WorldBoundary" type="Node2D" parent="."]
+[node name="WorldBoundary" type="Node2D" parent="." unique_id=374255352]
 script = ExtResource("8_wbscript")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundary" unique_id=527257948]
 position = Vector2(180, 90)
 shape = SubResource("RectangleShape2D_zone")
 debug_color = Color(0.5, 0.8, 1, 0.3)
 
-[node name="PlayerRegistry" type="Node" parent="."]
+[node name="PlayerRegistry" type="Node" parent="." unique_id=735967859]
 script = ExtResource("9_registry")
 players_container = NodePath("..")
 
-[node name="StaticCollisions" type="StaticBody2D" parent="."]
+[node name="StaticCollisions" type="StaticBody2D" parent="." unique_id=1130599416]
 
-[node name="WaterTopCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(194, 30)
-shape = SubResource("RectangleShape2D_pond_top")
-
-[node name="WaterLeftCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(76, 102)
-shape = SubResource("RectangleShape2D_pond_side")
-
-[node name="WaterRightCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(318, 102)
-shape = SubResource("RectangleShape2D_pond_side")
-
-[node name="WaterBottomCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(190, 158)
-shape = SubResource("RectangleShape2D_pond_bottom")
-
-[node name="TreeACollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(12, 10)
-shape = SubResource("RectangleShape2D_pond_tree")
-
-[node name="TreeBCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(374, 16)
-shape = SubResource("RectangleShape2D_pond_tree")
-
-[node name="TreeCCollision" type="CollisionShape2D" parent="StaticCollisions"]
-position = Vector2(386, 186)
-shape = SubResource("RectangleShape2D_pond_tree")
-
-[node name="Grass" type="Polygon2D" parent="."]
+[node name="Grass" type="Polygon2D" parent="." unique_id=1133445956]
 z_index = -20
 color = Color(0.333333, 0.568627, 0.286275, 1)
 polygon = PackedVector2Array(-80, -80, 440, -80, 440, 260, -80, 260)
 
-[node name="Water" type="Polygon2D" parent="."]
-z_index = -18
-color = Color(0.180392, 0.52549, 0.741176, 1)
-polygon = PackedVector2Array(70, 0, 318, 0, 366, 50, 346, 144, 286, 186, 90, 170, 34, 112, 42, 36)
-
-[node name="Shore" type="Polygon2D" parent="."]
-z_index = -17
-color = Color(0.666667, 0.560784, 0.368627, 1)
-polygon = PackedVector2Array(62, -8, 326, -8, 378, 46, 356, 152, 290, 198, 82, 180, 24, 118, 32, 30)
-
-[node name="WaterOverlay" type="Polygon2D" parent="."]
-z_index = -16
-color = Color(0.196078, 0.588235, 0.792157, 1)
-polygon = PackedVector2Array(78, 8, 310, 8, 354, 54, 336, 136, 280, 174, 98, 160, 50, 108, 56, 42)
-
-[node name="WaterHighlightA" type="Line2D" parent="."]
-z_index = -15
-points = PackedVector2Array(104, 56, 154, 52, 208, 58)
-width = 2.0
-default_color = Color(0.623529, 0.862745, 0.945098, 0.55)
-
-[node name="WaterHighlightB" type="Line2D" parent="."]
-z_index = -15
-points = PackedVector2Array(166, 122, 224, 116, 286, 124)
-width = 2.0
-default_color = Color(0.623529, 0.862745, 0.945098, 0.45)
-
-[node name="WaterHighlightC" type="Line2D" parent="."]
-z_index = -15
-points = PackedVector2Array(82, 108, 126, 116, 174, 110)
-width = 2.0
-default_color = Color(0.623529, 0.862745, 0.945098, 0.4)
-
-[node name="Decor" type="Node2D" parent="."]
+[node name="Decor" type="Node2D" parent="." unique_id=2146695685]
 y_sort_enabled = true
 
-[node name="Bridge" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(190, 70)
-texture = ExtResource("3_bridge")
-region_enabled = true
-region_rect = Rect2(0, 0, 80, 48)
+[node name="GrassMap" type="TileMapLayer" parent="Decor" unique_id=294056445]
+z_index = -2
+tile_map_data = PackedByteArray("AAD//wIAAAABAAEAAAAAAAIAAAABAAEAAAABAAIAAAABAAEAAAACAAIAAAABAAEAAAADAAIAAAABAAEAAAAEAAIAAAABAAEAAAAFAAIAAAABAAEAAAAGAAIAAAABAAEAAAAHAAIAAAABAAEAAAD9////AAABAAEAAAD9/wAAAAABAAEAAAD9/wEAAAABAAEAAAD9/wIAAAABAAEAAAD+////AAABAAEAAAD+/wAAAAABAAEAAAD+/wEAAAABAAEAAAD+/wIAAAABAAEAAAD9//3/AAABAAEAAAD9//7/AAABAAEAAAD+//3/AAABAAEAAAD+//7/AAABAAEAAAD///3/AAABAAEAAAAAAP3/AAABAAEAAAABAP3/AAABAAEAAAACAP3/AAABAAEAAAADAP3/AAABAAEAAAAEAP3/AAABAAEAAAAFAP3/AAABAAEAAAAGAP3/AAABAAEAAAAHAP3/AAABAAEAAAAIAP3/AAABAAEAAAAIAP7/AAABAAEAAAAIAP//AAABAAEAAAAIAAAAAAABAAEAAAAIAAEAAAABAAEAAAAIAAIAAAABAAEAAAAJAP3/AAABAAEAAAAJAP7/AAABAAEAAAAJAP//AAABAAEAAAAJAAAAAAABAAEAAAAJAAEAAAABAAEAAAAJAAIAAAABAAEAAAAKAP3/AAABAAEAAAAKAP7/AAABAAEAAAAKAP//AAABAAEAAAAKAAAAAAABAAEAAAAKAAEAAAABAAEAAAAKAAIAAAABAAEAAAAKAPv/AAABAAEAAAAKAPz/AAABAAEAAAALAPv/AAABAAEAAAALAPz/AAABAAEAAAALAP3/AAABAAEAAAALAP7/AAABAAEAAAALAP//AAABAAEAAAALAAAAAAABAAEAAAALAAEAAAABAAEAAAALAAIAAAABAAEAAAAMAPv/AAABAAEAAAAMAPz/AAABAAEAAAAMAP3/AAABAAEAAAAMAP7/AAABAAEAAAAMAP//AAABAAEAAAAMAAAAAAABAAEAAAAMAAEAAAABAAEAAAAMAAIAAAABAAEAAAANAPv/AAABAAEAAAANAPz/AAABAAEAAAANAP3/AAABAAEAAAANAP7/AAABAAEAAAANAP//AAABAAEAAAANAAAAAAABAAEAAAANAAEAAAABAAEAAAANAAIAAAABAAEAAAAOAPv/AAABAAEAAAAOAPz/AAABAAEAAAAOAP3/AAABAAEAAAAOAP7/AAABAAEAAAAOAP//AAABAAEAAAAOAAAAAAABAAEAAAAOAAEAAAABAAEAAAAOAAIAAAABAAEAAAAPAPv/AAABAAEAAAAPAPz/AAABAAEAAAAPAP3/AAABAAEAAAAPAP7/AAABAAEAAAAPAP//AAABAAEAAAAPAAAAAAABAAEAAAAPAAEAAAABAAEAAAAPAAIAAAABAAEAAAAQAPv/AAABAAEAAAAQAPz/AAABAAEAAAAQAP3/AAABAAEAAAAQAP7/AAABAAEAAAAQAP//AAABAAEAAAAQAAAAAAABAAEAAAAQAAEAAAABAAEAAAAQAAIAAAABAAEAAAARAPv/AAABAAEAAAARAPz/AAABAAEAAAARAP3/AAABAAEAAAARAP7/AAABAAEAAAARAP//AAABAAEAAAARAAAAAAABAAEAAAARAAEAAAABAAEAAAARAAIAAAABAAEAAAD7//v/AAABAAEAAAD8//v/AAABAAEAAAD9//v/AAABAAEAAAD+//v/AAABAAEAAAD///v/AAABAAEAAAAAAPv/AAABAAEAAAABAPv/AAABAAEAAAACAPv/AAABAAEAAAADAPv/AAABAAEAAAAEAPv/AAABAAEAAAAFAPv/AAABAAEAAAAGAPv/AAABAAEAAAAHAPv/AAABAAEAAAAIAPv/AAABAAEAAAAJAPv/AAABAAEAAAD7//z/AAABAAEAAAD7//3/AAABAAEAAAD7//7/AAABAAEAAAD7////AAABAAEAAAD7/wAAAAABAAEAAAD7/wEAAAABAAEAAAD7/wIAAAABAAEAAAD8//z/AAABAAEAAAD8//3/AAABAAEAAAD8//7/AAABAAEAAAD8////AAABAAEAAAD8/wAAAAABAAEAAAD8/wEAAAABAAEAAAD8/wIAAAABAAEAAAD9//z/AAABAAEAAAD+//z/AAABAAEAAAD///z/AAABAAEAAAAAAPz/AAABAAEAAAABAPz/AAABAAEAAAACAPz/AAABAAEAAAADAPz/AAABAAEAAAAEAPz/AAABAAEAAAAFAPz/AAABAAEAAAAGAPz/AAABAAEAAAAHAPz/AAABAAEAAAAIAPz/AAABAAEAAAAJAPz/AAABAAEAAAASAAAAAAABAAEAAAASAAEAAAABAAEAAAASAAIAAAABAAEAAAATAAAAAAABAAEAAAATAAEAAAABAAEAAAATAAIAAAABAAEAAAAUAAAAAAABAAEAAAAUAAEAAAABAAEAAAAUAAIAAAABAAEAAAAVAAAAAAABAAEAAAAVAAEAAAABAAEAAAAVAAIAAAABAAEAAAAWAAAAAAABAAEAAAAWAAEAAAABAAEAAAAWAAIAAAABAAEAAAAXAAAAAAABAAEAAAAXAAEAAAABAAEAAAAXAAIAAAABAAEAAAAYAAAAAAABAAEAAAAYAAEAAAABAAEAAAAYAAIAAAABAAEAAAAZAAAAAAABAAEAAAAZAAEAAAABAAEAAAAZAAIAAAABAAEAAAAaAAAAAAABAAEAAAAaAAEAAAABAAEAAAAaAAIAAAABAAEAAAAbAAEAAAABAAEAAAAbAAAAAAABAAEAAAAbAAIAAAABAAEAAAASAP3/AAABAAEAAAATAP3/AAABAAEAAAAUAP3/AAABAAEAAAAVAP3/AAABAAEAAAAWAP3/AAABAAEAAAAXAP3/AAABAAEAAAAYAP3/AAABAAEAAAAZAP3/AAABAAEAAAAaAP3/AAABAAEAAAAbAP3/AAABAAEAAAD7/wMAAAABAAEAAAD7/wQAAAABAAEAAAD7/wUAAAABAAEAAAD7/wYAAAABAAEAAAD7/wcAAAABAAEAAAD7/wgAAAABAAEAAAD7/wkAAAABAAEAAAD7/woAAAABAAEAAAD7/wsAAAABAAEAAAD7/wwAAAABAAEAAAD7/w0AAAABAAEAAAD8/wMAAAABAAEAAAD8/wQAAAABAAEAAAD8/wUAAAABAAEAAAD8/wYAAAABAAEAAAD8/wcAAAABAAEAAAD8/wgAAAABAAEAAAD8/wkAAAABAAEAAAD8/woAAAABAAEAAAD8/wsAAAABAAEAAAD8/wwAAAABAAEAAAD8/w0AAAABAAEAAAD9/wMAAAABAAEAAAD9/wQAAAABAAEAAAD9/wUAAAABAAEAAAD9/wYAAAABAAEAAAD9/wcAAAABAAEAAAD9/wgAAAABAAEAAAD9/wkAAAABAAEAAAD9/woAAAABAAEAAAD9/wsAAAABAAEAAAD9/wwAAAABAAEAAAD9/w0AAAABAAEAAAD+/wMAAAABAAEAAAD+/wQAAAABAAEAAAD+/wUAAAABAAEAAAD+/wYAAAABAAEAAAD+/wcAAAABAAEAAAD+/wgAAAABAAEAAAD+/wkAAAABAAEAAAD+/woAAAABAAEAAAD+/wsAAAABAAEAAAD+/wwAAAABAAEAAAD+/w0AAAABAAEAAAD//wMAAAABAAEAAAD//wQAAAABAAEAAAD//wUAAAABAAEAAAD//wYAAAABAAEAAAD//wcAAAABAAEAAAD//wgAAAABAAEAAAD//wkAAAABAAEAAAD//woAAAABAAEAAAD//wsAAAABAAEAAAD//wwAAAABAAEAAAD//w0AAAABAAEAAAAAAAMAAAABAAEAAAAAAAQAAAABAAEAAAAAAAUAAAABAAEAAAAAAAYAAAABAAEAAAAAAAcAAAABAAEAAAAAAAgAAAABAAEAAAAAAAkAAAABAAEAAAAAAAoAAAABAAEAAAAAAAsAAAABAAEAAAAAAAwAAAABAAEAAAAAAA0AAAABAAEAAAABAAMAAAABAAEAAAABAAQAAAABAAEAAAABAAUAAAABAAEAAAABAAYAAAABAAEAAAABAAcAAAABAAEAAAABAAgAAAABAAEAAAABAAkAAAABAAEAAAABAAoAAAABAAEAAAABAAsAAAABAAEAAAABAAwAAAABAAEAAAABAA0AAAABAAEAAAACAAMAAAABAAEAAAACAAQAAAABAAEAAAACAAUAAAABAAEAAAACAAYAAAABAAEAAAACAAcAAAABAAEAAAACAAgAAAABAAEAAAACAAkAAAABAAEAAAACAAoAAAABAAEAAAACAAsAAAABAAEAAAACAAwAAAABAAEAAAACAA0AAAABAAEAAAADAAMAAAABAAEAAAADAAQAAAABAAEAAAADAAUAAAABAAEAAAADAAYAAAABAAEAAAADAAcAAAABAAEAAAADAAgAAAABAAEAAAADAAkAAAABAAEAAAADAAoAAAABAAEAAAADAAsAAAABAAEAAAADAAwAAAABAAEAAAADAA0AAAABAAEAAAAEAAMAAAABAAEAAAAEAAQAAAABAAEAAAAEAAUAAAABAAEAAAAEAAYAAAABAAEAAAAEAAcAAAABAAEAAAAEAAgAAAABAAEAAAAEAAkAAAABAAEAAAAEAAoAAAABAAEAAAAEAAsAAAABAAEAAAAEAAwAAAABAAEAAAAEAA0AAAABAAEAAAAFAAMAAAABAAEAAAAFAAQAAAABAAEAAAAFAAUAAAABAAEAAAAFAAYAAAABAAEAAAAFAAcAAAABAAEAAAAFAAgAAAABAAEAAAAFAAkAAAABAAEAAAAFAAoAAAABAAEAAAAFAAsAAAABAAEAAAAFAAwAAAABAAEAAAAFAA0AAAABAAEAAAAGAAMAAAABAAEAAAAGAAQAAAABAAEAAAAGAAUAAAABAAEAAAAGAAYAAAABAAEAAAAGAAcAAAABAAEAAAAGAAgAAAABAAEAAAAGAAkAAAABAAEAAAAGAAoAAAABAAEAAAAGAAsAAAABAAEAAAAGAAwAAAABAAEAAAAGAA0AAAABAAEAAAAHAAMAAAABAAEAAAAHAAQAAAABAAEAAAAHAAUAAAABAAEAAAAHAAYAAAABAAEAAAAHAAcAAAABAAEAAAAHAAgAAAABAAEAAAAHAAkAAAABAAEAAAAHAAoAAAABAAEAAAAHAAsAAAABAAEAAAAHAAwAAAABAAEAAAAHAA0AAAABAAEAAAAIAAMAAAABAAEAAAAIAAQAAAABAAEAAAAIAAUAAAABAAEAAAAIAAYAAAABAAEAAAAIAAcAAAABAAEAAAAIAAgAAAABAAEAAAAIAAkAAAABAAEAAAAIAAoAAAABAAEAAAAIAAsAAAABAAEAAAAIAAwAAAABAAEAAAAIAA0AAAABAAEAAAAJAAMAAAABAAEAAAAJAAQAAAABAAEAAAAJAAUAAAABAAEAAAAJAAYAAAABAAEAAAAJAAcAAAABAAEAAAAJAAgAAAABAAEAAAAJAAkAAAABAAEAAAAJAAoAAAABAAEAAAAJAAsAAAABAAEAAAAJAAwAAAABAAEAAAAJAA0AAAABAAEAAAAKAAMAAAABAAEAAAAKAAQAAAABAAEAAAAKAAUAAAABAAEAAAAKAAYAAAABAAEAAAAKAAcAAAABAAEAAAAKAAgAAAABAAEAAAAKAAkAAAABAAEAAAAKAAoAAAABAAEAAAAKAAsAAAABAAEAAAAKAAwAAAABAAEAAAAKAA0AAAABAAEAAAALAAMAAAABAAEAAAALAAQAAAABAAEAAAALAAUAAAABAAEAAAALAAYAAAABAAEAAAALAAcAAAABAAEAAAALAAgAAAABAAEAAAALAAkAAAABAAEAAAALAAoAAAABAAEAAAALAAsAAAABAAEAAAALAAwAAAABAAEAAAALAA0AAAABAAEAAAAMAAMAAAABAAEAAAAMAAQAAAABAAEAAAAMAAUAAAABAAEAAAAMAAYAAAABAAEAAAAMAAcAAAABAAEAAAAMAAgAAAABAAEAAAAMAAkAAAABAAEAAAAMAAoAAAABAAEAAAAMAAsAAAABAAEAAAAMAAwAAAABAAEAAAAMAA0AAAABAAEAAAANAAMAAAABAAEAAAANAAQAAAABAAEAAAANAAUAAAABAAEAAAANAAYAAAABAAEAAAANAAcAAAABAAEAAAANAAgAAAABAAEAAAANAAkAAAABAAEAAAANAAoAAAABAAEAAAANAAsAAAABAAEAAAANAAwAAAABAAEAAAANAA0AAAABAAEAAAAOAAMAAAABAAEAAAAOAAQAAAABAAEAAAAOAAUAAAABAAEAAAAOAAYAAAABAAEAAAAOAAcAAAABAAEAAAAOAAgAAAABAAEAAAAOAAkAAAABAAEAAAAOAAoAAAABAAEAAAAOAAsAAAABAAEAAAAOAAwAAAABAAEAAAAOAA0AAAABAAEAAAAPAAMAAAABAAEAAAAPAAQAAAABAAEAAAAPAAUAAAABAAEAAAAPAAYAAAABAAEAAAAPAAcAAAABAAEAAAAPAAgAAAABAAEAAAAPAAkAAAABAAEAAAAPAAoAAAABAAEAAAAPAAsAAAABAAEAAAAPAAwAAAABAAEAAAAPAA0AAAABAAEAAAAQAAMAAAABAAEAAAAQAAQAAAABAAEAAAAQAAUAAAABAAEAAAAQAAYAAAABAAEAAAAQAAcAAAABAAEAAAAQAAgAAAABAAEAAAAQAAkAAAABAAEAAAAQAAoAAAABAAEAAAAQAAsAAAABAAEAAAAQAAwAAAABAAEAAAAQAA0AAAABAAEAAAARAAMAAAABAAEAAAARAAQAAAABAAEAAAARAAUAAAABAAEAAAARAAYAAAABAAEAAAARAAcAAAABAAEAAAARAAgAAAABAAEAAAARAAkAAAABAAEAAAARAAoAAAABAAEAAAARAAsAAAABAAEAAAARAAwAAAABAAEAAAARAA0AAAABAAEAAAASAAMAAAABAAEAAAASAAQAAAABAAEAAAASAAUAAAABAAEAAAASAAYAAAABAAEAAAASAAcAAAABAAEAAAASAAgAAAABAAEAAAASAAkAAAABAAEAAAASAAoAAAABAAEAAAASAAsAAAABAAEAAAASAAwAAAABAAEAAAASAA0AAAABAAEAAAATAAMAAAABAAEAAAATAAQAAAABAAEAAAATAAUAAAABAAEAAAATAAYAAAABAAEAAAATAAcAAAABAAEAAAATAAgAAAABAAEAAAATAAkAAAABAAEAAAATAAoAAAABAAEAAAATAAsAAAABAAEAAAATAAwAAAABAAEAAAATAA0AAAABAAEAAAAUAAMAAAABAAEAAAAUAAQAAAABAAEAAAAUAAUAAAABAAEAAAAUAAYAAAABAAEAAAAUAAcAAAABAAEAAAAUAAgAAAABAAEAAAAUAAkAAAABAAEAAAAUAAoAAAABAAEAAAAUAAsAAAABAAEAAAAUAAwAAAABAAEAAAAUAA0AAAABAAEAAAAVAAMAAAABAAEAAAAVAAQAAAABAAEAAAAVAAUAAAABAAEAAAAVAAYAAAABAAEAAAAVAAcAAAABAAEAAAAVAAgAAAABAAEAAAAVAAkAAAABAAEAAAAVAAoAAAABAAEAAAAVAAsAAAABAAEAAAAVAAwAAAABAAEAAAAVAA0AAAABAAEAAAAWAAMAAAABAAEAAAAWAAQAAAABAAEAAAAWAAUAAAABAAEAAAAWAAYAAAABAAEAAAAWAAcAAAABAAEAAAAWAAgAAAABAAEAAAAWAAkAAAABAAEAAAAWAAoAAAABAAEAAAAWAAsAAAABAAEAAAAWAAwAAAABAAEAAAAWAA0AAAABAAEAAAAXAAMAAAABAAEAAAAXAAQAAAABAAEAAAAXAAUAAAABAAEAAAAXAAYAAAABAAEAAAAXAAcAAAABAAEAAAAXAAgAAAABAAEAAAAXAAkAAAABAAEAAAAXAAoAAAABAAEAAAAXAAsAAAABAAEAAAAXAAwAAAABAAEAAAAXAA0AAAABAAEAAAAYAAMAAAABAAEAAAAYAAQAAAABAAEAAAAYAAUAAAABAAEAAAAYAAYAAAABAAEAAAAYAAcAAAABAAEAAAAYAAgAAAABAAEAAAAYAAkAAAABAAEAAAAYAAoAAAABAAEAAAAYAAsAAAABAAEAAAAYAAwAAAABAAEAAAAYAA0AAAABAAEAAAAZAAMAAAABAAEAAAAZAAQAAAABAAEAAAAZAAUAAAABAAEAAAAZAAYAAAABAAEAAAAZAAcAAAABAAEAAAAZAAgAAAABAAEAAAAZAAkAAAABAAEAAAAZAAoAAAABAAEAAAAZAAsAAAABAAEAAAAZAAwAAAABAAEAAAAZAA0AAAABAAEAAAAaAAMAAAABAAEAAAAaAAQAAAABAAEAAAAaAAUAAAABAAEAAAAaAAYAAAABAAEAAAAaAAcAAAABAAEAAAAaAAgAAAABAAEAAAAaAAkAAAABAAEAAAAaAAoAAAABAAEAAAAaAAsAAAABAAEAAAAaAAwAAAABAAEAAAAaAA0AAAABAAEAAAAbAAMAAAABAAEAAAAbAAQAAAABAAEAAAAbAAUAAAABAAEAAAAbAAYAAAABAAEAAAAbAAcAAAABAAEAAAAbAAgAAAABAAEAAAAbAAkAAAABAAEAAAAbAAoAAAABAAEAAAAbAAsAAAABAAEAAAAbAAwAAAABAAEAAAAbAA0AAAABAAEAAAD7/w4AAAABAAEAAAD7/w8AAAABAAEAAAD7/xAAAAABAAEAAAD8/w4AAAABAAEAAAD8/w8AAAABAAEAAAD8/xAAAAABAAEAAAD9/w4AAAABAAEAAAD9/w8AAAABAAEAAAD9/xAAAAABAAEAAAD+/w4AAAABAAEAAAD+/w8AAAABAAEAAAD+/xAAAAABAAEAAAD//w4AAAABAAEAAAD//w8AAAABAAEAAAD//xAAAAABAAEAAAAAAA4AAAABAAEAAAAAAA8AAAABAAEAAAAAABAAAAABAAEAAAABAA4AAAABAAEAAAABAA8AAAABAAEAAAABABAAAAABAAEAAAACAA4AAAABAAEAAAACAA8AAAABAAEAAAACABAAAAABAAEAAAADAA4AAAABAAEAAAADAA8AAAABAAEAAAADABAAAAABAAEAAAAEAA4AAAABAAEAAAAEAA8AAAABAAEAAAAEABAAAAABAAEAAAAFAA4AAAABAAEAAAAFAA8AAAABAAEAAAAFABAAAAABAAEAAAAGAA4AAAABAAEAAAAGAA8AAAABAAEAAAAGABAAAAABAAEAAAAHAA4AAAABAAEAAAAHAA8AAAABAAEAAAAHABAAAAABAAEAAAAIAA4AAAABAAEAAAAIAA8AAAABAAEAAAAIABAAAAABAAEAAAAJAA4AAAABAAEAAAAJAA8AAAABAAEAAAAJABAAAAABAAEAAAAKAA4AAAABAAEAAAAKAA8AAAABAAEAAAAKABAAAAABAAEAAAALAA4AAAABAAEAAAALAA8AAAABAAEAAAALABAAAAABAAEAAAAMAA4AAAABAAEAAAAMAA8AAAABAAEAAAAMABAAAAABAAEAAAANAA4AAAABAAEAAAANAA8AAAABAAEAAAANABAAAAABAAEAAAAOAA4AAAABAAEAAAAOAA8AAAABAAEAAAAOABAAAAABAAEAAAAPAA4AAAABAAEAAAAPAA8AAAABAAEAAAAPABAAAAABAAEAAAAQAA4AAAABAAEAAAAQAA8AAAABAAEAAAAQABAAAAABAAEAAAARAA4AAAABAAEAAAARAA8AAAABAAEAAAARABAAAAABAAEAAAASAA4AAAABAAEAAAASAA8AAAABAAEAAAASABAAAAABAAEAAAATAA4AAAABAAEAAAATAA8AAAABAAEAAAATABAAAAABAAEAAAAUAA4AAAABAAEAAAAUAA8AAAABAAEAAAAUABAAAAABAAEAAAAVAA4AAAABAAEAAAAVAA8AAAABAAEAAAAVABAAAAABAAEAAAAWAA4AAAABAAEAAAAWAA8AAAABAAEAAAAWABAAAAABAAEAAAAXAA4AAAABAAEAAAAXAA8AAAABAAEAAAAXABAAAAABAAEAAAAYAA4AAAABAAEAAAAYAA8AAAABAAEAAAAYABAAAAABAAEAAAAZAA4AAAABAAEAAAAZAA8AAAABAAEAAAAZABAAAAABAAEAAAAaAA4AAAABAAEAAAAaAA8AAAABAAEAAAAaABAAAAABAAEAAAAbAA4AAAABAAEAAAAbAA8AAAABAAEAAAAbABAAAAABAAEAAAA=")
+tile_set = SubResource("TileSet_m12ta")
 
-[node name="FishingRod" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(268, 150)
-texture = ExtResource("7_tools")
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
+[node name="Weeds" type="Node2D" parent="Decor" unique_id=542728651]
 
-[node name="ReedsA" type="Sprite2D" parent="Decor"]
-position = Vector2(68, 40)
+[node name="Weed24" parent="Decor/Weeds" unique_id=646145256 instance=ExtResource("4_sehyh")]
+position = Vector2(-123, 64)
+
+[node name="Weed23" parent="Decor/Weeds" unique_id=1068825817 instance=ExtResource("4_sehyh")]
+position = Vector2(-102, 64)
+
+[node name="Weed22" parent="Decor/Weeds" unique_id=1030614328 instance=ExtResource("4_sehyh")]
+position = Vector2(-81, 65)
+
+[node name="Weed20" parent="Decor/Weeds" unique_id=1026400080 instance=ExtResource("4_sehyh")]
+position = Vector2(-41, 64)
+
+[node name="Weed4" parent="Decor/Weeds" unique_id=1380158050 instance=ExtResource("4_sehyh")]
+position = Vector2(-1, 65)
+
+[node name="Weed5" parent="Decor/Weeds" unique_id=1841039040 instance=ExtResource("4_sehyh")]
+position = Vector2(-3, -14)
+
+[node name="Weed6" parent="Decor/Weeds" unique_id=1196501877 instance=ExtResource("4_sehyh")]
+position = Vector2(-23, -15)
+
+[node name="Weed7" parent="Decor/Weeds" unique_id=1588464382 instance=ExtResource("4_sehyh")]
+position = Vector2(-163, -15)
+
+[node name="Weed8" parent="Decor/Weeds" unique_id=750554826 instance=ExtResource("4_sehyh")]
+position = Vector2(-43, -14)
+
+[node name="Weed9" parent="Decor/Weeds" unique_id=1345885342 instance=ExtResource("4_sehyh")]
+position = Vector2(-63, -14)
+
+[node name="Weed10" parent="Decor/Weeds" unique_id=925533600 instance=ExtResource("4_sehyh")]
+position = Vector2(-83, -15)
+
+[node name="Weed12" parent="Decor/Weeds" unique_id=1225393951 instance=ExtResource("4_sehyh")]
+position = Vector2(-123, -15)
+
+[node name="Weed13" parent="Decor/Weeds" unique_id=615585013 instance=ExtResource("4_sehyh")]
+position = Vector2(-143, -16)
+
+[node name="Weed14" parent="Decor/Weeds" unique_id=446191188 instance=ExtResource("4_sehyh")]
+position = Vector2(-1, 7)
+
+[node name="Weed15" parent="Decor/Weeds" unique_id=1428112622 instance=ExtResource("4_sehyh")]
+position = Vector2(-165, 6)
+
+[node name="Weed21" parent="Decor/Weeds" unique_id=463177099 instance=ExtResource("4_sehyh")]
+position = Vector2(-62, 64)
+
+[node name="Weed" parent="Decor/Weeds" unique_id=1179444444 instance=ExtResource("4_sehyh")]
+position = Vector2(-21, 64)
+
+[node name="Weed3" parent="Decor/Weeds" unique_id=1986776637 instance=ExtResource("4_sehyh")]
+position = Vector2(0, 48)
+
+[node name="Weed11" parent="Decor/Weeds" unique_id=1458457348 instance=ExtResource("4_sehyh")]
+position = Vector2(-103, -15)
+
+[node name="Weed16" parent="Decor/Weeds" unique_id=1968908452 instance=ExtResource("4_sehyh")]
+position = Vector2(-165, 24)
+
+[node name="Weed17" parent="Decor/Weeds" unique_id=2067948561 instance=ExtResource("4_sehyh")]
+position = Vector2(-165, 45)
+
+[node name="Weed18" parent="Decor/Weeds" unique_id=827114647 instance=ExtResource("4_sehyh")]
+position = Vector2(-165, 64)
+
+[node name="Weed19" parent="Decor/Weeds" unique_id=473459458 instance=ExtResource("4_sehyh")]
+position = Vector2(-145, 65)
+
+[node name="Weed2" parent="Decor/Weeds" unique_id=1923268047 instance=ExtResource("4_sehyh")]
+position = Vector2(-1, 28)
+
+[node name="nam" parent="Decor/Weeds" unique_id=1828069469 instance=ExtResource("11_c7r2t")]
+z_index = 1
+
+[node name="Weed25" parent="Decor/Weeds" unique_id=1797596069 instance=ExtResource("4_sehyh")]
+position = Vector2(-50, 127)
+
+[node name="Weed26" parent="Decor/Weeds" unique_id=1225791792 instance=ExtResource("4_sehyh")]
+position = Vector2(-70, 110)
+
+[node name="Weed27" parent="Decor/Weeds" unique_id=1925616666 instance=ExtResource("4_sehyh")]
+position = Vector2(-91, 112)
+
+[node name="Weed28" parent="Decor/Weeds" unique_id=916989026 instance=ExtResource("4_sehyh")]
+position = Vector2(-32, 147)
+
+[node name="Weed29" parent="Decor/Weeds" unique_id=983413649 instance=ExtResource("4_sehyh")]
+position = Vector2(-111, 111)
+
+[node name="Weed30" parent="Decor/Weeds" unique_id=1284019320 instance=ExtResource("4_sehyh")]
+position = Vector2(-32, 172)
+
+[node name="Weed31" parent="Decor/Weeds" unique_id=331154193 instance=ExtResource("4_sehyh")]
+position = Vector2(-46, 198)
+
+[node name="Weed32" parent="Decor/Weeds" unique_id=1321727577 instance=ExtResource("4_sehyh")]
+position = Vector2(-69, 213)
+
+[node name="Weed33" parent="Decor/Weeds" unique_id=1706775095 instance=ExtResource("4_sehyh")]
+position = Vector2(-96, 231)
+
+[node name="Weed34" parent="Decor/Weeds" unique_id=1479037725 instance=ExtResource("4_sehyh")]
+position = Vector2(-125, 230)
+
+[node name="Weed35" parent="Decor/Weeds" unique_id=1132124748 instance=ExtResource("4_sehyh")]
+position = Vector2(-134, 126)
+
+[node name="Weed36" parent="Decor/Weeds" unique_id=1328221183 instance=ExtResource("4_sehyh")]
+position = Vector2(-150, 147)
+
+[node name="Weed37" parent="Decor/Weeds" unique_id=1526858851 instance=ExtResource("4_sehyh")]
+position = Vector2(-150, 171)
+
+[node name="Weed38" parent="Decor/Weeds" unique_id=1923916492 instance=ExtResource("4_sehyh")]
+position = Vector2(-151, 194)
+
+[node name="Weed39" parent="Decor/Weeds" unique_id=512177782 instance=ExtResource("4_sehyh")]
+position = Vector2(-147, 218)
+
+[node name="apple_tree" type="Node2D" parent="Decor" unique_id=1942498027]
+
+[node name="apple_tree" parent="Decor/apple_tree" unique_id=1267269968 instance=ExtResource("5_sehyh")]
+position = Vector2(21, -46)
+
+[node name="apple_tree2" parent="Decor/apple_tree" unique_id=558167999 instance=ExtResource("5_sehyh")]
+position = Vector2(60, -48)
+
+[node name="apple_tree3" parent="Decor/apple_tree" unique_id=1761880635 instance=ExtResource("5_sehyh")]
+position = Vector2(98, -49)
+
+[node name="apple_tree4" parent="Decor/apple_tree" unique_id=1427362281 instance=ExtResource("5_sehyh")]
+position = Vector2(133, -50)
+
+[node name="apple_tree5" parent="Decor/apple_tree" unique_id=339581636 instance=ExtResource("5_sehyh")]
+position = Vector2(22, -3)
+
+[node name="apple_tree6" parent="Decor/apple_tree" unique_id=1088643131 instance=ExtResource("5_sehyh")]
+position = Vector2(61, -3)
+
+[node name="apple_tree7" parent="Decor/apple_tree" unique_id=1577214301 instance=ExtResource("5_sehyh")]
+position = Vector2(98, -4)
+
+[node name="apple_tree8" parent="Decor/apple_tree" unique_id=1125841862 instance=ExtResource("5_sehyh")]
+position = Vector2(133, -6)
+
+[node name="apple_tree9" parent="Decor/apple_tree" unique_id=1417760215 instance=ExtResource("5_sehyh")]
+position = Vector2(91, 159)
+
+[node name="apple_tree10" parent="Decor/apple_tree" unique_id=1708043272 instance=ExtResource("5_sehyh")]
+position = Vector2(117, 218)
+
+[node name="apple_tree11" parent="Decor/apple_tree" unique_id=2035265217 instance=ExtResource("5_sehyh")]
+position = Vector2(-26, 155)
+
+[node name="apple_tree12" parent="Decor/apple_tree" unique_id=211864628 instance=ExtResource("5_sehyh")]
+position = Vector2(-5, 229)
+
+[node name="apple_tree13" parent="Decor/apple_tree" unique_id=811389230 instance=ExtResource("5_sehyh")]
+position = Vector2(-53, 206)
+
+[node name="Water" type="TileMapLayer" parent="Decor" unique_id=1608067128]
+z_index = -2
+tile_map_data = PackedByteArray("AAD///7/AAABAAAAAAD/////AAABAAAAAAD//wAAAAABAAAAAAD//wEAAAABAAAAAAAAAP7/AAABAAAAAAAAAP//AAABAAAAAAAAAAAAAAABAAAAAAAAAAEAAAABAAAAAAABAP7/AAABAAAAAAABAP//AAABAAAAAAABAAAAAAABAAAAAAABAAEAAAABAAAAAAACAP7/AAABAAAAAAACAP//AAABAAAAAAACAAAAAAABAAAAAAACAAEAAAABAAAAAAADAP7/AAABAAAAAAADAP//AAABAAAAAAADAAAAAAABAAAAAAADAAEAAAABAAAAAAAEAP7/AAABAAAAAAAEAP//AAABAAAAAAAEAAAAAAABAAAAAAAEAAEAAAABAAAAAAAFAP7/AAABAAAAAAAFAP//AAABAAAAAAAFAAAAAAABAAAAAAAFAAEAAAABAAAAAAAGAP7/AAABAAAAAAAGAP//AAABAAAAAAAGAAAAAAABAAAAAAAGAAEAAAABAAAAAAAHAP7/AAABAAAAAAAHAP//AAABAAAAAAAHAAAAAAABAAAAAAAHAAEAAAABAAAAAAACAAYAAAABAAAAAAABAAYAAAABAAAAAAABAAcAAAABAAAAAAAAAAcAAAABAAAAAAAAAAgAAAABAAAAAAAAAAkAAAABAAAAAAAAAAoAAAABAAAAAAABAAoAAAABAAAAAAABAAsAAAABAAAAAAACAAsAAAABAAAAAAACAAoAAAABAAAAAAADAAoAAAABAAAAAAAEAAoAAAABAAAAAAAEAAkAAAABAAAAAAAFAAkAAAABAAAAAAAFAAgAAAABAAAAAAAFAAcAAAABAAAAAAAEAAcAAAABAAAAAAAEAAYAAAABAAAAAAADAAYAAAABAAAAAAABAAgAAAABAAAAAAABAAkAAAABAAAAAAACAAkAAAABAAAAAAADAAgAAAABAAAAAAAEAAgAAAABAAAAAAACAAcAAAABAAAAAAACAAgAAAABAAAAAAADAAkAAAABAAAAAAADAAcAAAABAAAAAAAQAAsAAAABAAAAAAARAAsAAAABAAAAAAASAAsAAAABAAAAAAATAAsAAAABAAAAAAAUAAsAAAABAAAAAAAVAAsAAAABAAAAAAAWAAsAAAABAAAAAAAXAAsAAAABAAAAAAAXAAwAAAABAAAAAAAXAA0AAAABAAAAAAAWAA0AAAABAAAAAAAVAA0AAAABAAAAAAAUAA0AAAABAAAAAAATAA0AAAABAAAAAAASAA0AAAABAAAAAAARAA0AAAABAAAAAAAQAA0AAAABAAAAAAAQAAwAAAABAAAAAAARAAwAAAABAAAAAAASAAwAAAABAAAAAAATAAwAAAABAAAAAAAUAAwAAAABAAAAAAAVAAwAAAABAAAAAAAWAAwAAAABAAAAAAAUAA4AAAABAAAAAAATAA4AAAABAAAAAAASAAoAAAABAAAAAAATAAoAAAABAAAAAAAUAAoAAAABAAAAAAAVAAoAAAABAAAAAAAVAAkAAAABAAAAAAAUAAkAAAABAAAAAAATAAkAAAABAAAAAAA=")
+tile_set = SubResource("TileSet_bd1v7")
+
+[node name="flower" type="Node2D" parent="Decor" unique_id=621037989]
+z_index = -1
+
+[node name="flower" parent="Decor/flower" unique_id=1779351204 instance=ExtResource("7_m12ta")]
+position = Vector2(14, 60)
+
+[node name="flower2" parent="Decor/flower" unique_id=1080927833 instance=ExtResource("7_m12ta")]
+position = Vector2(-200, 114)
+
+[node name="flower3" parent="Decor/flower" unique_id=2006416352 instance=ExtResource("7_m12ta")]
+position = Vector2(14, 45)
+
+[node name="flower4" parent="Decor/flower" unique_id=1272920480 instance=ExtResource("7_m12ta")]
+position = Vector2(1, 45)
+
+[node name="flower5" parent="Decor/flower" unique_id=2064164366 instance=ExtResource("7_m12ta")]
+position = Vector2(-212, 114)
+
+[node name="flower6" parent="Decor/flower" unique_id=1533556904 instance=ExtResource("7_m12ta")]
+position = Vector2(1, 62)
+
+[node name="flower7" parent="Decor/flower" unique_id=1512015690 instance=ExtResource("7_m12ta")]
+position = Vector2(-200, 134)
+
+[node name="flower8" parent="Decor/flower" unique_id=1030238388 instance=ExtResource("7_m12ta")]
+position = Vector2(-190, 115)
+
+[node name="flower9" parent="Decor/flower" unique_id=133653766 instance=ExtResource("7_m12ta")]
+position = Vector2(-211, 134)
+
+[node name="flower10" parent="Decor/flower" unique_id=262821665 instance=ExtResource("7_m12ta")]
+position = Vector2(-190, 134)
+
+[node name="flower11" parent="Decor/flower" unique_id=1356950254 instance=ExtResource("7_m12ta")]
+position = Vector2(28, 60)
+
+[node name="flower12" parent="Decor/flower" unique_id=1216728587 instance=ExtResource("7_m12ta")]
+position = Vector2(27, 40)
+
+[node name="flower13" parent="Decor/flower" unique_id=945683133 instance=ExtResource("7_m12ta")]
+position = Vector2(40, 59)
+
+[node name="flower14" parent="Decor/flower" unique_id=766593889 instance=ExtResource("7_m12ta")]
+
+[node name="flower15" parent="Decor/flower" unique_id=1490283099 instance=ExtResource("7_m12ta")]
+position = Vector2(40, 39)
+
+[node name="water_weeds" type="Node2D" parent="Decor" unique_id=1997137280]
+
+[node name="water_weeds" parent="Decor/water_weeds" unique_id=2146739818 instance=ExtResource("8_wunwe")]
+position = Vector2(-1, 1)
+
+[node name="water_weeds_2" parent="Decor/water_weeds" unique_id=1518595608 instance=ExtResource("9_nksb8")]
+position = Vector2(315, 221)
+
+[node name="water_weeds_3" parent="Decor/water_weeds" unique_id=584830266 instance=ExtResource("9_nksb8")]
+position = Vector2(64, -6)
+
+[node name="water_weeds2" parent="Decor/water_weeds" unique_id=33727490 instance=ExtResource("8_wunwe")]
+position = Vector2(35, 13)
+
+[node name="water_weeds3" parent="Decor/water_weeds" unique_id=345620277 instance=ExtResource("8_wunwe")]
+position = Vector2(110, 15)
+
+[node name="water" type="StaticBody2D" parent="Decor/water_weeds" unique_id=982465976]
+
+[node name="Sprite2D" type="Sprite2D" parent="Decor/water_weeds/water" unique_id=872252408]
+position = Vector2(61, -9)
 texture = ExtResource("4_grassprops")
 region_enabled = true
-region_rect = Rect2(0, 16, 16, 16)
+region_rect = Rect2(83.61452, 16.296555, 27.496292, 13.037037)
 
-[node name="ReedsB" type="Sprite2D" parent="Decor"]
-position = Vector2(326, 42)
-texture = ExtResource("4_grassprops")
-region_enabled = true
-region_rect = Rect2(16, 16, 16, 16)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Decor/water_weeds/water" unique_id=777010515]
+position = Vector2(59, -6)
+shape = SubResource("CircleShape2D_lagpe")
 
-[node name="ReedsC" type="Sprite2D" parent="Decor"]
-position = Vector2(80, 142)
-texture = ExtResource("4_grassprops")
-region_enabled = true
-region_rect = Rect2(32, 16, 16, 16)
+[node name="water_weeds4" parent="Decor/water_weeds" unique_id=1171299934 instance=ExtResource("8_wunwe")]
+position = Vector2(24, 129)
 
-[node name="FlowerA" type="Sprite2D" parent="Decor"]
-position = Vector2(46, 170)
-texture = ExtResource("5_plants")
-region_enabled = true
-region_rect = Rect2(48, 0, 16, 16)
+[node name="water_weeds5" parent="Decor/water_weeds" unique_id=1276606544 instance=ExtResource("8_wunwe")]
+position = Vector2(62, 151)
 
-[node name="FlowerB" type="Sprite2D" parent="Decor"]
-position = Vector2(340, 164)
-texture = ExtResource("5_plants")
-region_enabled = true
-region_rect = Rect2(64, 0, 16, 16)
+[node name="water_weeds6" parent="Decor/water_weeds" unique_id=2143223645 instance=ExtResource("8_wunwe")]
+position = Vector2(56, 116)
 
-[node name="TreeA" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(12, -10)
-texture = ExtResource("6_tree")
-region_enabled = true
-region_rect = Rect2(0, 0, 48, 48)
+[node name="water_weeds7" parent="Decor/water_weeds" unique_id=1154045884 instance=ExtResource("8_wunwe")]
+position = Vector2(30, 169)
 
-[node name="TreeB" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(374, -4)
-texture = ExtResource("6_tree")
-region_enabled = true
-region_rect = Rect2(48, 0, 48, 48)
+[node name="water_weeds8" parent="Decor/water_weeds" unique_id=1713023878 instance=ExtResource("8_wunwe")]
+position = Vector2(312, 189)
 
-[node name="TreeC" type="Sprite2D" parent="Decor"]
-y_sort_enabled = true
-position = Vector2(386, 166)
-texture = ExtResource("6_tree")
-region_enabled = true
-region_rect = Rect2(96, 0, 48, 48)
+[node name="StaticBody2D" parent="Decor/water_weeds" unique_id=284760192 instance=ExtResource("9_nksb8")]
 
-[node name="BackToTown" parent="." instance=ExtResource("2_tpzone")]
+[node name="fruits" type="Node2D" parent="Decor" unique_id=1204873764]
+
+[node name="apple" parent="Decor/fruits" unique_id=980692842 instance=ExtResource("12_wunwe")]
+
+[node name="apple2" parent="Decor/fruits" unique_id=245285023 instance=ExtResource("12_wunwe")]
+position = Vector2(41, -157)
+
+[node name="apple3" parent="Decor/fruits" unique_id=731544811 instance=ExtResource("12_wunwe")]
+position = Vector2(79, -139)
+
+[node name="apple4" parent="Decor/fruits" unique_id=470575151 instance=ExtResource("12_wunwe")]
+position = Vector2(120, -146)
+
+[node name="apple5" parent="Decor/fruits" unique_id=2000130808 instance=ExtResource("12_wunwe")]
+position = Vector2(39, -185)
+
+[node name="path" type="Node2D" parent="Decor" unique_id=1895929933]
+
+[node name="path" parent="Decor/path" unique_id=1884887002 instance=ExtResource("13_nksb8")]
+position = Vector2(0, -81)
+
+[node name="path2" parent="Decor/path" unique_id=2029049089 instance=ExtResource("13_nksb8")]
+position = Vector2(14, -4)
+
+[node name="path3" parent="Decor/path" unique_id=544323145 instance=ExtResource("13_nksb8")]
+position = Vector2(0, -41)
+
+[node name="path4" parent="Decor/path" unique_id=823130908 instance=ExtResource("13_nksb8")]
+position = Vector2(10, -41)
+
+[node name="path5" parent="Decor/path" unique_id=1061571963 instance=ExtResource("13_nksb8")]
+
+[node name="path6" parent="Decor/path" unique_id=1188412286 instance=ExtResource("13_nksb8")]
+position = Vector2(11, -69)
+
+[node name="path7" parent="Decor/path" unique_id=359080138 instance=ExtResource("13_nksb8")]
+position = Vector2(0, 35)
+
+[node name="path8" parent="Decor/path" unique_id=284480177 instance=ExtResource("13_nksb8")]
+position = Vector2(21, -142)
+
+[node name="path_2" parent="Decor/path" unique_id=505538454 instance=ExtResource("14_c7r2t")]
+
+[node name="path_3" parent="Decor/path" unique_id=871214257 instance=ExtResource("14_c7r2t")]
+position = Vector2(40, 0)
+
+[node name="path_4" parent="Decor/path" unique_id=2070423479 instance=ExtResource("14_c7r2t")]
+position = Vector2(83, 0)
+
+[node name="path_5" parent="Decor/path" unique_id=1322274032 instance=ExtResource("14_c7r2t")]
+position = Vector2(166, 0)
+
+[node name="path_6" parent="Decor/path" unique_id=1734852769 instance=ExtResource("14_c7r2t")]
+position = Vector2(125, 0)
+
+[node name="BackToTown" parent="." unique_id=1803356863 instance=ExtResource("2_tpzone")]
 position = Vector2(352, 112)
 target_map_id = "town"
 spawn_position = Vector2(40, 84)
 
-[node name="Label" parent="BackToTown/Visual" index="1"]
-text = "TOWN"
-
-[node name="FishingSpot0" type="Area2D" parent="."]
-position = Vector2(118, 154)
-script = ExtResource("10_fishspot")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot0"]
-shape = SubResource("CircleShape2D_fishing_spot")
-
-[node name="FishingSpot1" type="Area2D" parent="."]
-position = Vector2(226, 170)
-script = ExtResource("10_fishspot")
-seat_index = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot1"]
-shape = SubResource("CircleShape2D_fishing_spot")
-
-[node name="FishingSpot2" type="Area2D" parent="."]
-position = Vector2(324, 126)
-script = ExtResource("10_fishspot")
-seat_index = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FishingSpot2"]
-shape = SubResource("CircleShape2D_fishing_spot")
-
-[node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(190, 148)
+[node name="Player" parent="." unique_id=108723119 instance=ExtResource("1_player")]
+position = Vector2(161, 206)

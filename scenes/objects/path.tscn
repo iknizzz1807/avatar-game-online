@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://d3dbgvlcrhg5w"]
+
+[ext_resource type="Texture2D" uid="uid://ddb8oxml0dslu" path="res://sprites/Objects/Paths.png" id="1_v4tq5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hklfo"]
+radius = 0.01
+
+[node name="path" type="StaticBody2D" unique_id=1884887002]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1540957567]
+position = Vector2(139, 174)
+texture = ExtResource("1_v4tq5")
+region_enabled = true
+region_rect = Rect2(0, 0, 14.696007, 44.80026)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=444204648]
+position = Vector2(139, 185)
+shape = SubResource("CircleShape2D_hklfo")
+disabled = true

@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://r5v5j2hqghfv"]
+
+[ext_resource type="Texture2D" uid="uid://cycoepw5tjcy1" path="res://sprites/Farm RPG FREE 16x16 - Tiny Asset Pack/Objects/House.png" id="1_itsqs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_itsqs"]
+size = Vector2(45, 45)
+
+[node name="behind_house" type="StaticBody2D" unique_id=1237898025]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=414158004]
+position = Vector2(248.00002, 130)
+scale = Vector2(0.7638889, 0.76388896)
+texture = ExtResource("1_itsqs")
+region_enabled = true
+region_rect = Rect2(4.0000305, 0.7999954, 72.79999, 89.6)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=998450200]
+position = Vector2(247.5, 141.5)
+shape = SubResource("RectangleShape2D_itsqs")

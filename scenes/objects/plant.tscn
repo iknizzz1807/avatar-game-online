@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://bu8u7nq6axjxr"]
+
+[ext_resource type="Texture2D" uid="uid://b2v7g6lp04mh8" path="res://sprites/Objects/Basic_Furniture.png" id="1_re4db"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fvfks"]
+
+[node name="plant" type="StaticBody2D" unique_id=281763644]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=199070219]
+position = Vector2(169, 33)
+texture = ExtResource("1_re4db")
+region_enabled = true
+region_rect = Rect2(52.088585, -0.5923338, 8.7703705, 14.696297)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1131936900]
+position = Vector2(167, 35)
+shape = SubResource("CircleShape2D_fvfks")
+disabled = true

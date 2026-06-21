@@ -702,6 +702,7 @@ script = ExtResource("11_fishst")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=658738122]
 
 [node name="HUD" parent="CanvasLayer" unique_id=1281974293 instance=ExtResource("4_p1jl7")]
+visible = false
 
 [node name="Chat" parent="CanvasLayer" unique_id=1850566308 instance=ExtResource("5_hc1fl")]
 visible = false

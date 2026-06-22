@@ -20,13 +20,18 @@ var api_base: String = "http://127.0.0.1:8080"
 const CHAT_MAX_CHARS: int = 100
 const CHAT_WINDOW_SECONDS: float = 5.0
 const CHAT_MAX_IN_WINDOW: int = 3
+const REGISTER_COOLDOWN_SECONDS: float = 2.0
+const MAP_CHANGE_COOLDOWN_SECONDS: float = 2.0
 const MOVEMENT_MAX_SPEED: float = 260.0
 const MOVEMENT_GRACE_DISTANCE: float = 80.0
 
 # peer_id → { user_id, display_name, map_id, auth_token }
 var _players: Dictionary = {}
 var _chat_times: Dictionary = {}
+var _rpc_times: Dictionary = {}
 var _last_movement: Dictionary = {}
+var _pending_registrations: Dictionary = {}
+var _pending_map_changes: Dictionary = {}
 
 # Reference to the spawner so we can call spawn/despawn
 @onready var _spawner: MultiplayerSpawner = $MultiplayerSpawner
@@ -91,6 +96,9 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	_players.erase(peer_id)
 	_last_movement.erase(peer_id)
 	_chat_times.erase(peer_id)
+	_clear_rpc_limits(peer_id)
+	_pending_registrations.erase(peer_id)
+	_pending_map_changes.erase(peer_id)
 	print("[GameServer] Player %s (peer %d) unregistered" % [info.get("display_name", "?"), peer_id])
 
 
@@ -108,7 +116,13 @@ func register_player(_user_id: int, _display_name: String, _map_id: String) -> v
 @rpc("any_peer", "reliable")
 func register_player_with_token(token: String, map_id: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
+	if _pending_registrations.has(sender_id) or not _allow_rpc(sender_id, "register", REGISTER_COOLDOWN_SECONDS):
+		push_warning("[GameServer] Rejected registration spam from peer %d" % sender_id)
+		multiplayer.multiplayer_peer.disconnect_peer(sender_id)
+		return
+	_pending_registrations[sender_id] = true
 	var user: Dictionary = await _verify_token(token)
+	_pending_registrations.erase(sender_id)
 	if user.is_empty():
 		push_warning("[GameServer] Rejected unauthenticated peer %d" % sender_id)
 		multiplayer.multiplayer_peer.disconnect_peer(sender_id)
@@ -163,6 +177,9 @@ func request_map_change(scene_name: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if not _players.has(sender_id):
 		return
+	if _pending_map_changes.has(sender_id) or not _allow_rpc(sender_id, "map_change", MAP_CHANGE_COOLDOWN_SECONDS):
+		MultiplayerManager.map_change_denied.rpc_id(sender_id)
+		return
 
 	var info: Dictionary = _players[sender_id]
 	var token: String = info.get("auth_token", "")
@@ -171,9 +188,12 @@ func request_map_change(scene_name: String) -> void:
 		MultiplayerManager.map_change_denied.rpc_id(sender_id)
 		return
 
+	_pending_map_changes[sender_id] = true
 	if not await _update_user_map(token, server_map_name):
+		_pending_map_changes.erase(sender_id)
 		MultiplayerManager.map_change_denied.rpc_id(sender_id)
 		return
+	_pending_map_changes.erase(sender_id)
 
 	MultiplayerManager.map_change_approved.rpc_id(sender_id, scene_name)
 
@@ -367,6 +387,23 @@ func _allow_chat(peer_id: int) -> bool:
 	fresh.append(now)
 	_chat_times[peer_id] = fresh
 	return true
+
+
+func _allow_rpc(peer_id: int, rpc_name: String, cooldown_seconds: float) -> bool:
+	var now := Time.get_ticks_msec() / 1000.0
+	var key := "%d:%s" % [peer_id, rpc_name]
+	var last_time := float(_rpc_times.get(key, -cooldown_seconds))
+	if now - last_time < cooldown_seconds:
+		return false
+	_rpc_times[key] = now
+	return true
+
+
+func _clear_rpc_limits(peer_id: int) -> void:
+	var prefix := "%d:" % peer_id
+	for key in _rpc_times.keys():
+		if str(key).begins_with(prefix):
+			_rpc_times.erase(key)
 
 
 func _read_arg_or_env(arg_name: String, env_name: String, default_value: String) -> String:

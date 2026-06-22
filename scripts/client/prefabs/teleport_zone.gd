@@ -31,7 +31,7 @@ func _on_body_entered(body: Node) -> void:
 	if _teleporting:
 		return
 	# Only react to the locally-controlled player.
-	if not (body is CharacterBody2D and body.is_multiplayer_authority()):
+	if not (body is CharacterBody2D and (not multiplayer.has_multiplayer_peer() or body.is_multiplayer_authority())):
 		return
 
 	_teleporting = true

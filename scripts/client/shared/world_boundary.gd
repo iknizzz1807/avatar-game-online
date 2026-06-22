@@ -159,7 +159,7 @@ func _find_local_player() -> Node:
 
 
 func _search(node: Node) -> Node:
-	if node is CharacterBody2D and node.is_multiplayer_authority():
+	if node is CharacterBody2D and (not multiplayer.has_multiplayer_peer() or node.is_multiplayer_authority()):
 		return node
 	for child in node.get_children():
 		var result : Node = _search(child)

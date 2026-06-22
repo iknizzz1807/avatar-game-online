@@ -86,10 +86,10 @@ func _ready() -> void:
 
 	# Enable the camera only for the local (authority) player.
 	# Remote players must NOT have an active camera.
-	camera.enabled = is_multiplayer_authority()
+	camera.enabled = is_local_authority()
 
 	# Tag the local-authority player so FarmSlot can find it via get_overlapping_bodies().
-	if is_multiplayer_authority():
+	if is_local_authority():
 		add_to_group("local_player")
 		
 		# Show local HUD at runtime since it is hidden in the prefab by default
@@ -101,13 +101,13 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# Only the local player (authority) drives its own state machine.
 	# Non-authority instances are driven by RemotePlayer via sync vars.
-	if not is_multiplayer_authority():
+	if not is_local_authority():
 		return;
 	stateMachine.update(delta);
 
 
 func _physics_process(delta: float) -> void:
-	if not is_multiplayer_authority():
+	if not is_local_authority():
 		return;
 	stateMachine.physics_update(delta);
 	# Keep sync vars up to date locally
@@ -142,3 +142,7 @@ func start_fishing(facing: Vector2 = Vector2.DOWN) -> void:
 func stop_fishing() -> void:
 	if stateMachine.currentState == State.FISHING:
 		stateMachine.change_state(State.NORMAL)
+
+
+func is_local_authority() -> bool:
+	return not multiplayer.has_multiplayer_peer() or is_multiplayer_authority()

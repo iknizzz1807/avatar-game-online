@@ -6,14 +6,14 @@ import (
 
 	"github.com/avatar-game/server/config"
 	"github.com/avatar-game/server/models"
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 var DB *sql.DB
 
 func Initialize(cfg *config.Config) error {
 	var err error
-	DB, err = sql.Open("sqlite3", cfg.DBPath)
+	DB, err = sql.Open("sqlite", cfg.DBPath)
 	if err != nil {
 		return err
 	}

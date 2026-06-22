@@ -9,6 +9,8 @@ import (
 	"github.com/avatar-game/server/utils"
 )
 
+const staleFishingGrace = 5 * time.Minute
+
 type FishingResult struct {
 	Type   string `json:"type"`    // 'fail', 'small', 'medium', 'large'
 	ItemID string `json:"item_id"` // fish item ID or empty if fail
@@ -20,6 +22,8 @@ type FishingStartResult struct {
 }
 
 func GetFishingStatus(userID int) (models.FishingStatusResponse, error) {
+	cleanupStaleFishingSessions()
+
 	status := models.FishingStatusResponse{
 		IsFishing: false,
 		Seats:     make([]bool, models.MaxFishingSeats),
@@ -63,6 +67,7 @@ func StartFishing(userID int, seatIndex int) (FishingStartResult, error) {
 	if seatIndex < 0 || seatIndex >= models.MaxFishingSeats {
 		return result, utils.ErrCodeInvalidInput
 	}
+	cleanupStaleFishingSessions()
 
 	tx, err := db.DB.Begin()
 	if err != nil {
@@ -211,4 +216,11 @@ func StopFishing(userID int) error {
 	}
 
 	return tx.Commit()
+}
+
+func cleanupStaleFishingSessions() {
+	_, _ = db.DB.Exec(
+		"UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE ended_at IS NULL AND finish_at < ?",
+		time.Now().Add(-staleFishingGrace),
+	)
 }

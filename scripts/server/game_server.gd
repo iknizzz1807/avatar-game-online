@@ -202,6 +202,7 @@ func _server_map_from_scene(scene_name: String) -> String:
 
 func _update_user_map(token: String, server_map_name: String) -> bool:
 	var http := HTTPRequest.new()
+	http.timeout = 5.0
 	add_child(http)
 	var headers := PackedStringArray([
 		"Content-Type: application/json",
@@ -226,6 +227,7 @@ func _stop_fishing_for_peer(info: Dictionary) -> void:
 
 func _stop_fishing_for_token(token: String) -> void:
 	var http := HTTPRequest.new()
+	http.timeout = 5.0
 	add_child(http)
 	var headers := PackedStringArray([
 		"Content-Type: application/json",
@@ -241,6 +243,7 @@ func _stop_fishing_for_token(token: String) -> void:
 
 func _verify_token(token: String) -> Dictionary:
 	var http := HTTPRequest.new()
+	http.timeout = 5.0
 	add_child(http)
 	var headers := PackedStringArray([
 		"Content-Type: application/json",

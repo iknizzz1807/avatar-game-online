@@ -26,6 +26,10 @@ type SeedRequest struct {
 
 func SeedPlot(c *gin.Context) {
 	userID := middleware.GetUserID(c)
+	if err := services.EnsureUserInMap(userID, "farm", "game"); err != nil {
+		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
+		return
+	}
 
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {
@@ -58,6 +62,10 @@ func SeedPlot(c *gin.Context) {
 
 func WaterPlot(c *gin.Context) {
 	userID := middleware.GetUserID(c)
+	if err := services.EnsureUserInMap(userID, "farm", "game"); err != nil {
+		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
+		return
+	}
 
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {
@@ -84,6 +92,10 @@ func WaterPlot(c *gin.Context) {
 
 func HarvestPlot(c *gin.Context) {
 	userID := middleware.GetUserID(c)
+	if err := services.EnsureUserInMap(userID, "farm", "game"); err != nil {
+		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
+		return
+	}
 
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {

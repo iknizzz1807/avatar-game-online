@@ -21,6 +21,10 @@ func GetFishingStatus(c *gin.Context) {
 
 func StartFishing(c *gin.Context) {
 	userID := middleware.GetUserID(c)
+	if err := services.EnsureUserInMap(userID, "fishing_lake", "fish_pond"); err != nil {
+		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
+		return
+	}
 
 	var data map[string]interface{}
 	if err := c.ShouldBindJSON(&data); err != nil {

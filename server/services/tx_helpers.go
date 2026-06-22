@@ -68,9 +68,15 @@ func hasItemTx(tx *sql.Tx, userID int, itemID string) (bool, int, error) {
 }
 
 func addItemTx(tx *sql.Tx, userID int, itemID string, quantity int) error {
+	if quantity <= 0 {
+		return utils.ErrCodeInvalidInput
+	}
 	item, err := getItemByIDTx(tx, itemID)
 	if err != nil {
 		return err
+	}
+	if quantity > item.MaxStack {
+		return utils.ErrCodeInventoryFull
 	}
 
 	var existingQty int
@@ -85,7 +91,7 @@ func addItemTx(tx *sql.Tx, userID int, itemID string, quantity int) error {
 
 	newQty := existingQty + quantity
 	if newQty > item.MaxStack {
-		newQty = item.MaxStack
+		return utils.ErrCodeInventoryFull
 	}
 	_, err = tx.Exec("UPDATE inventory SET quantity = ? WHERE user_id = ? AND item_id = ?", newQty, userID, itemID)
 	return err

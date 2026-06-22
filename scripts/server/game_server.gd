@@ -76,6 +76,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 		return
 
 	var info: Dictionary = _players[peer_id]
+	_stop_fishing_for_peer(info)
 
 	# Despawn this player's node on all clients
 	var node_path: String = "Player_%d" % peer_id
@@ -213,6 +214,28 @@ func _update_user_map(token: String, server_map_name: String) -> bool:
 	var response = await http.request_completed
 	http.queue_free()
 	return int(response[0]) == HTTPRequest.RESULT_SUCCESS and int(response[1]) == 200
+
+
+func _stop_fishing_for_peer(info: Dictionary) -> void:
+	var token: String = info.get("auth_token", "")
+	if token.is_empty():
+		return
+	_stop_fishing_for_token(token)
+
+
+func _stop_fishing_for_token(token: String) -> void:
+	var http := HTTPRequest.new()
+	add_child(http)
+	var headers := PackedStringArray([
+		"Content-Type: application/json",
+		"Authorization: Bearer " + token,
+	])
+	var err := http.request(api_base + "/api/fishing/stop", headers, HTTPClient.METHOD_POST, "{}")
+	if err != OK:
+		http.queue_free()
+		return
+	await http.request_completed
+	http.queue_free()
 
 
 func _verify_token(token: String) -> Dictionary:

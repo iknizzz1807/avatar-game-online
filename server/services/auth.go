@@ -119,3 +119,16 @@ func UpdateUserMap(userID int, mapName string) error {
 	_, err := db.DB.Exec("UPDATE users SET current_map = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?", mapName, userID)
 	return err
 }
+
+func EnsureUserInMap(userID int, allowedMaps ...string) error {
+	user, err := GetUserByID(userID)
+	if err != nil {
+		return err
+	}
+	for _, allowed := range allowedMaps {
+		if user.CurrentMap == allowed {
+			return nil
+		}
+	}
+	return utils.ErrCodeInvalidInput
+}

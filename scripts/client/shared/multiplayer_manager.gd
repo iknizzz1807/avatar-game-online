@@ -7,7 +7,7 @@ extends Node
 #
 # Responsibilities:
 #   • Connect to / disconnect from the Godot dedicated server
-#   • Call register_player() on the server after connecting
+#   • Call register_player_with_token() on the server after connecting
 #   • Listen for server RPCs (_client_player_joined, _client_player_left)
 #   • Emit typed signals so the game scene can react (spawn/despawn nodes, etc.)
 #   • Store local player info set by the auth flow
@@ -156,14 +156,11 @@ func _on_connected_to_server() -> void:
 func send_registration() -> void:
 	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
 	if server_node and multiplayer.has_multiplayer_peer() and multiplayer.get_peers().size() > 0:
-		if not local_auth_token.is_empty() and local_auth_token != "dummy_token":
-			server_node.register_player_with_token.rpc_id(1, local_auth_token, local_map_id)
-		else:
-			server_node.register_player.rpc_id(1,
-				local_user_id,
-				local_display_name,
-				local_map_id
-			)
+		if local_auth_token.is_empty() or local_auth_token == "dummy_token":
+			push_error("[MultiplayerManager] Refusing to register with dedicated server without a JWT.")
+			disconnect_from_server()
+			return
+		server_node.register_player_with_token.rpc_id(1, local_auth_token, local_map_id)
 	elif not server_node:
 		push_error("[MultiplayerManager] ServerScene not found in tree — cannot register.")
 

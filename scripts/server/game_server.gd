@@ -8,7 +8,7 @@ extends Node
 #
 # Responsibilities:
 #   • Create ENet listen server on PORT
-#   • Accept clients and wait for their register_player() RPC
+#   • Accept clients and wait for authenticated registration RPC
 #   • Broadcast joined/left events to all peers in the same map
 #   • The server is the MultiplayerSpawner authority — it spawns player nodes
 #     for newly connected peers and despawns them on disconnect.
@@ -67,7 +67,7 @@ func _start_server() -> void:
 
 func _on_peer_connected(peer_id: int) -> void:
 	print("[GameServer] Peer connected: %d" % peer_id)
-	# Player is not registered yet — they must call register_player() first.
+	# Player is not registered yet — they must call register_player_with_token() first.
 
 
 func _on_peer_disconnected(peer_id: int) -> void:
@@ -76,6 +76,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 		return
 
 	var info: Dictionary = _players[peer_id]
+	_stop_fishing_for_peer(info)
 
 	# Despawn this player's node on all clients
 	var node_path: String = "Player_%d" % peer_id
@@ -95,14 +96,15 @@ func _on_peer_disconnected(peer_id: int) -> void:
 
 # ─── Client → Server RPCs ─────────────────────────────────────────────────────
 
+@rpc("any_peer", "reliable")
+func register_player(_user_id: int, _display_name: String, _map_id: String) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	push_warning("[GameServer] Rejected unauthenticated legacy registration from peer %d" % sender_id)
+	multiplayer.multiplayer_peer.disconnect_peer(sender_id)
+
+
 ## Called by the client immediately after the ENet connection is established,
 ## and also every time the client loads a new map (scene).
-@rpc("any_peer", "reliable")
-func register_player(user_id: int, display_name: String, map_id: String) -> void:
-	var sender_id: int = multiplayer.get_remote_sender_id()
-	_register_verified_player(sender_id, user_id, display_name, map_id)
-
-
 @rpc("any_peer", "reliable")
 func register_player_with_token(token: String, map_id: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
@@ -200,6 +202,7 @@ func _server_map_from_scene(scene_name: String) -> String:
 
 func _update_user_map(token: String, server_map_name: String) -> bool:
 	var http := HTTPRequest.new()
+	http.timeout = 5.0
 	add_child(http)
 	var headers := PackedStringArray([
 		"Content-Type: application/json",
@@ -215,8 +218,32 @@ func _update_user_map(token: String, server_map_name: String) -> bool:
 	return int(response[0]) == HTTPRequest.RESULT_SUCCESS and int(response[1]) == 200
 
 
+func _stop_fishing_for_peer(info: Dictionary) -> void:
+	var token: String = info.get("auth_token", "")
+	if token.is_empty():
+		return
+	_stop_fishing_for_token(token)
+
+
+func _stop_fishing_for_token(token: String) -> void:
+	var http := HTTPRequest.new()
+	http.timeout = 5.0
+	add_child(http)
+	var headers := PackedStringArray([
+		"Content-Type: application/json",
+		"Authorization: Bearer " + token,
+	])
+	var err := http.request(api_base + "/api/fishing/stop", headers, HTTPClient.METHOD_POST, "{}")
+	if err != OK:
+		http.queue_free()
+		return
+	await http.request_completed
+	http.queue_free()
+
+
 func _verify_token(token: String) -> Dictionary:
 	var http := HTTPRequest.new()
+	http.timeout = 5.0
 	add_child(http)
 	var headers := PackedStringArray([
 		"Content-Type: application/json",

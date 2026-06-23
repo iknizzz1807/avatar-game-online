@@ -126,10 +126,12 @@ func _build_walls(rect: Rect2) -> void:
 func _apply_camera_limits(rect: Rect2) -> void:
 	var player : Node = _find_local_player()
 
-	if player == null:
-		# One extra frame in case the host spawns slightly later.
+	# Retry for a few frames in case the scene change or connection is handshaking
+	var retries := 5
+	while player == null and retries > 0:
 		await get_tree().process_frame
 		player = _find_local_player()
+		retries -= 1
 
 	if player == null:
 		push_warning("[WorldBoundary] Local Player not found — camera limits NOT applied.")
@@ -152,14 +154,20 @@ func _apply_camera_limits(rect: Rect2) -> void:
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
-## Recursively searches the current scene for a CharacterBody2D that has
+## Recursively searches the scene for a Player node that has
 ## multiplayer authority (the locally-controlled player).
 func _find_local_player() -> Node:
-	return _search(get_tree().current_scene)
+	# Try finding by group "local_player" first
+	var players = get_tree().get_nodes_in_group("local_player")
+	if not players.is_empty():
+		return players[0]
+	
+	# Fallback recursive search from tree root
+	return _search(get_tree().root)
 
 
 func _search(node: Node) -> Node:
-	if node is CharacterBody2D and (not multiplayer.has_multiplayer_peer() or node.is_multiplayer_authority()):
+	if node is Player and (not multiplayer.has_multiplayer_peer() or node.is_multiplayer_authority()):
 		return node
 	for child in node.get_children():
 		var result : Node = _search(child)

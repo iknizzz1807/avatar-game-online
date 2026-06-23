@@ -1,0 +1,237 @@
+[gd_scene format=3 uid="uid://cqvqt2oo68wo3"]
+
+[ext_resource type="Script" path="res://scripts/client/prefabs/ui/fishing_minigame.gd" id="1_fmgame"]
+[ext_resource type="SystemFont" path="res://resources/ui_system_font.tres" id="2_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wait_bg"]
+bg_color = Color(0.05, 0.09, 0.14, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.55, 0.85, 0.75)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bite_bg"]
+bg_color = Color(0.35, 0.12, 0.02, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.65, 0.1, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(1, 0.5, 0, 0.5)
+shadow_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.08, 0.06, 0.04, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.55, 0.8, 0.7)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_catch_bg"]
+bg_color = Color(0.1, 0.08, 0.06, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.4, 0.2, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_catch_fill"]
+bg_color = Color(0.25, 0.9, 0.35, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_result_bg"]
+bg_color = Color(0.05, 0.09, 0.04, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.85, 0.35, 0.85)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="FishingMinigame" type="Control" unique_id=486897809]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_fmgame")
+
+[node name="WaitPanel" type="PanelContainer" parent="." unique_id=1329215912]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = 50.0
+offset_right = 90.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wait_bg")
+
+[node name="VBox" type="VBoxContainer" parent="WaitPanel" unique_id=1946955294]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="BobberLabel" type="Label" parent="WaitPanel/VBox" unique_id=1069307776]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+text = "O"
+horizontal_alignment = 1
+
+[node name="WaitLabel" type="Label" parent="WaitPanel/VBox" unique_id=1124920043]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 13
+text = "Dang cho ca..."
+horizontal_alignment = 1
+
+[node name="BitePanel" type="PanelContainer" parent="." unique_id=1827968400]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -140.0
+offset_top = 30.0
+offset_right = 140.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bite_bg")
+
+[node name="BiteMargin" type="MarginContainer" parent="BitePanel" unique_id=557118323]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="BiteLabel" type="Label" parent="BitePanel/BiteMargin" unique_id=1710904722]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 17
+text = "CA CAN CAU! Nhan Space / Click!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BarPanel" type="Control" parent="." unique_id=518308853]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -120.0
+offset_right = 75.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BarContainer" type="PanelContainer" parent="BarPanel" unique_id=1510319243]
+layout_mode = 1
+offset_right = 36.0
+offset_bottom = 200.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bar_bg")
+
+[node name="BarBg" type="Control" parent="BarPanel/BarContainer" unique_id=1226605934]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="FishZone" type="ColorRect" parent="BarPanel/BarContainer/BarBg" unique_id=1300006501]
+layout_mode = 1
+offset_right = 36.0
+offset_bottom = 36.0
+mouse_filter = 2
+color = Color(0.25, 0.95, 0.4, 0.55)
+
+[node name="PlayerZone" type="ColorRect" parent="BarPanel/BarContainer/BarBg" unique_id=693307394]
+layout_mode = 1
+offset_right = 36.0
+offset_bottom = 56.0
+mouse_filter = 2
+color = Color(0.3, 0.6, 0.95, 0.85)
+
+[node name="CatchProgress" type="ProgressBar" parent="BarPanel" unique_id=714274145]
+layout_mode = 1
+offset_left = 44.0
+offset_right = 60.0
+offset_bottom = 200.0
+theme_override_styles/background = SubResource("StyleBoxFlat_catch_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_catch_fill")
+fill_mode = 3
+show_percentage = false
+
+[node name="ResultPanel" type="PanelContainer" parent="." unique_id=591841385]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 30.0
+offset_right = 160.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_result_bg")
+
+[node name="ResultMargin" type="MarginContainer" parent="ResultPanel" unique_id=1141624615]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="ResultLabel" type="Label" parent="ResultPanel/ResultMargin" unique_id=1576737144]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 16
+text = "Ca can cau!"
+horizontal_alignment = 1
+vertical_alignment = 1

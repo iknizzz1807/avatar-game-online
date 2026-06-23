@@ -102,6 +102,24 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_link"]
+content_margin_left = 0.0
+content_margin_top = 2.0
+content_margin_right = 0.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_link_hover"]
+content_margin_left = 0.0
+content_margin_top = 2.0
+content_margin_right = 0.0
+content_margin_bottom = 2.0
+bg_color = Color(0.952941, 0.690196, 0.25098, 0.12)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="Auth" type="Control" unique_id=292367545]
 layout_mode = 3
 anchors_preset = 15
@@ -253,6 +271,18 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_skip")
 text = "Skip Login"
 
+[node name="RegisterButton" type="Button" parent="Login/VBoxContainer" unique_id=112233445]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.952941, 0.690196, 0.25098, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_link")
+theme_override_styles/hover = SubResource("StyleBoxFlat_link_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_link")
+theme_override_styles/focus = SubResource("StyleBoxFlat_link")
+text = "Chua co tai khoan? Dang ky"
+
 [node name="SignUp" type="Control" parent="." unique_id=751365117]
 visible = false
 layout_mode = 1
@@ -286,12 +316,19 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -150.0
-offset_top = -88.0
+offset_top = -108.0
 offset_right = 150.0
-offset_bottom = 88.0
+offset_bottom = 108.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="SignUp/VBoxContainer" unique_id=112233446]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
+theme_override_font_sizes/font_size = 16
+text = "Dang Ky Tai Khoan"
+horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="SignUp/VBoxContainer" unique_id=632175893]
 layout_mode = 2
@@ -323,6 +360,7 @@ theme_override_colors/font_color = Color(0.188235, 0.121569, 0.0705882, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_input")
 theme_override_styles/focus = SubResource("StyleBoxFlat_input_focus")
 
+
 [node name="Button" type="Button" parent="SignUp/VBoxContainer" unique_id=1853657149]
 custom_minimum_size = Vector2(116, 34)
 layout_mode = 2
@@ -332,4 +370,16 @@ theme_override_colors/font_color = Color(1, 0.964706, 0.843137, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
-text = "Sign Up"
+text = "Dang Ky"
+
+[node name="BackToLoginButton" type="Button" parent="SignUp/VBoxContainer" unique_id=112233447]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.952941, 0.690196, 0.25098, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_link")
+theme_override_styles/hover = SubResource("StyleBoxFlat_link_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_link")
+theme_override_styles/focus = SubResource("StyleBoxFlat_link")
+text = "Da co tai khoan? Dang nhap"

@@ -17,15 +17,17 @@ const GAME_SCENE: String = "res://scenes/game.tscn"
 @onready var _signup_panel: Control = $SignUp
 
 # Login panel
-@onready var _login_user:  LineEdit = $Login/VBoxContainer/GridContainer/TextEdit
-@onready var _login_pass:  LineEdit = $Login/VBoxContainer/GridContainer/TextEdit2
-@onready var _login_btn:   Button   = $Login/VBoxContainer/Button
-@onready var _skip_btn:    Button   = $Login/VBoxContainer/SkipButton
+@onready var _login_user:       LineEdit = $Login/VBoxContainer/GridContainer/TextEdit
+@onready var _login_pass:       LineEdit = $Login/VBoxContainer/GridContainer/TextEdit2
+@onready var _login_btn:        Button   = $Login/VBoxContainer/Button
+@onready var _skip_btn:         Button   = $Login/VBoxContainer/SkipButton
+@onready var _register_link:    Button   = $Login/VBoxContainer/RegisterButton
 
 # Sign-up panel
-@onready var _signup_user: LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit
-@onready var _signup_pass: LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit2
-@onready var _signup_btn:  Button   = $SignUp/VBoxContainer/Button
+@onready var _signup_user:      LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit
+@onready var _signup_pass:      LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit2
+@onready var _signup_btn:       Button   = $SignUp/VBoxContainer/Button
+@onready var _back_to_login:    Button   = $SignUp/VBoxContainer/BackToLoginButton
 
 @onready var _http: HTTPRequest = $HTTPRequest
 
@@ -37,6 +39,8 @@ func _ready() -> void:
 	_login_btn.pressed.connect(_on_login_pressed)
 	_signup_btn.pressed.connect(_on_signup_pressed)
 	_skip_btn.pressed.connect(_on_skip_login_pressed)
+	_register_link.pressed.connect(_show_signup)
+	_back_to_login.pressed.connect(_show_login)
 	_login_panel.visible  = true
 	_signup_panel.visible = false
 
@@ -50,6 +54,22 @@ func _ready() -> void:
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.set_anchors_preset(Control.PRESET_FULL_RECT)
 		add_child(label)
+
+
+# ─── Panel toggle helpers ─────────────────────────────────────────────────────
+
+func _show_signup() -> void:
+	_login_panel.visible  = false
+	_signup_panel.visible = true
+	_signup_user.text = ""
+	_signup_pass.text = ""
+	_signup_user.grab_focus()
+
+
+func _show_login() -> void:
+	_signup_panel.visible = false
+	_login_panel.visible  = true
+	_login_user.grab_focus()
 
 
 # ─── Button handlers ──────────────────────────────────────────────────────────

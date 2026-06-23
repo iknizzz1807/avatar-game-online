@@ -11,8 +11,9 @@
 [ext_resource type="PackedScene" path="res://prefabs/ui/components/context_menu.tscn" id="8_ctxmenu"]
 [ext_resource type="Script" path="res://scripts/client/prefabs/player/player_use_water_state.gd" id="9_uwst"]
 [ext_resource type="Script" uid="uid://bagfxkfa7im1l" path="res://scripts/shared/inventory_slot.gd" id="10_ku2fq"]
-[ext_resource type="PackedScene" path="res://prefabs/ui/screens/shop.tscn" id="10_shop"]
-[ext_resource type="Script" path="res://scripts/client/prefabs/player/player_fishing_state.gd" id="11_fishst"]
+[ext_resource type="PackedScene" uid="uid://byjvxs4buyyy2" path="res://prefabs/ui/screens/shop.tscn" id="10_shop"]
+[ext_resource type="Script" uid="uid://v5f7d8ftxmi6" path="res://scripts/client/prefabs/player/player_fishing_state.gd" id="11_fishst"]
+[ext_resource type="PackedScene" uid="uid://cqvqt2oo68wo3" path="res://prefabs/ui/screens/fishing_minigame.tscn" id="12_fmgame"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uwrxv"]
 size = Vector2(8, 6)
@@ -662,7 +663,7 @@ radius = 14.0
 [node name="Player" type="CharacterBody2D" unique_id=349396540]
 y_sort_enabled = true
 script = ExtResource("1_1ir3x")
-MAX_SPEED = 60.0
+MAX_SPEED = 100.0
 ACCELERATION = 800.0
 DECELERATION = 800.0
 
@@ -671,6 +672,7 @@ y_sort_enabled = true
 texture = ExtResource("1_72ieh")
 hframes = 4
 vframes = 4
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
 position = Vector2(0, 5)
@@ -696,7 +698,7 @@ script = ExtResource("3_eimbo")
 [node name="UseWater" type="Node" parent="States" unique_id=2056939857]
 script = ExtResource("9_uwst")
 
-[node name="Fishing" type="Node" parent="States"]
+[node name="Fishing" type="Node" parent="States" unique_id=1693051820]
 script = ExtResource("11_fishst")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=658738122]
@@ -716,6 +718,9 @@ EXAMPLE_SLOTS = Array[ExtResource("10_ku2fq")]([])
 [node name="ContextMenu" parent="CanvasLayer" unique_id=999000001 instance=ExtResource("8_ctxmenu")]
 
 [node name="Shop" parent="CanvasLayer" unique_id=999000002 instance=ExtResource("10_shop")]
+visible = false
+
+[node name="FishingMinigame" parent="CanvasLayer" unique_id=999000003 instance=ExtResource("12_fmgame")]
 visible = false
 
 [node name="WaterDetector" type="Area2D" parent="." unique_id=2056939858]

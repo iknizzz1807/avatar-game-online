@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cwk537gnemm03" path="res://prefabs/teleport_zone.tscn" id="2_tpzone"]
 [ext_resource type="TileSet" uid="uid://bc04ursoiq68r" path="res://resources/tile_set.tres" id="5_t6cq8"]
 [ext_resource type="TileSet" uid="uid://cddsul2oegbt0" path="res://resources/decor.tres" id="6_cq4yp"]
+[ext_resource type="PackedScene" uid="uid://dsnpi2uvy8058" path="res://prefabs/characters/npcs/shopkeeper.tscn" id="7_cq4yp"]
 [ext_resource type="Script" uid="uid://ub6l8wnka6u7" path="res://scripts/client/shared/world_boundary.gd" id="9_wbscript"]
 [ext_resource type="Script" uid="uid://d1de6slrwb6fu" path="res://scripts/client/shared/player_registry.gd" id="10_registry"]
 
@@ -31,16 +32,16 @@ players_container = NodePath("..")
 position = Vector2(-82, 208)
 scale = Vector2(1, 3.1080005)
 target_map_id = "game"
-spawn_position = Vector2(210, 95)
+spawn_position = Vector2(350, 144)
 
 [node name="ToPark" parent="." unique_id=1072414055 instance=ExtResource("2_tpzone")]
 position = Vector2(444, 203.99998)
 scale = Vector2(1, 4.5385566)
 target_map_id = "park"
-spawn_position = Vector2(40, 96)
+spawn_position = Vector2(-43, 101)
 
 [node name="Player" parent="." unique_id=898192435 instance=ExtResource("1_player")]
-position = Vector2(-54, 207)
+position = Vector2(-56, 206)
 
 [node name="Ground" type="TileMapLayer" parent="." unique_id=1026130396]
 z_index = -1
@@ -69,3 +70,12 @@ tile_set = ExtResource("6_cq4yp")
 y_sort_enabled = true
 tile_map_data = PackedByteArray("AAAXAAIAAwAyABQAAAAVAAIAAwAyABQAAAAXAAoAAwA2ACAAAAATAAoAAwA2ACAAAAAUAAoAAwA2ACAAAAAWAAoAAwA2ACAAAAD//woAAwAwACAAAAACAAoAAwAwACAAAAALAP3/AwAoABMAAAAKAP3/AwAmABAAAAAEAAIAAwAlABIAAAABAAIAAwAlABEAAAACAAIAAwAmABEAAAAUAAYAAwAcAAUAAAADAAcAAwAdAAUAAAAAAP7/AwAdAAUAAAD9//7/AwAdAAUAAAALAAQAAwAsABIAAAALAAsAAwAsABIAAAAEAAAAAwAnABEAAAACAP//AwAxABUAAAADAP7/AwAzABcAAAADAP//AwA1ABkAAAACAAEAAwA3ABwAAAA=")
 tile_set = ExtResource("6_cq4yp")
+
+[node name="FarmSpawn" type="Marker2D" parent="." unique_id=1502701562]
+position = Vector2(-56, 206)
+
+[node name="ParkSpawn" type="Marker2D" parent="." unique_id=1022369273]
+position = Vector2(424, 204)
+
+[node name="Shopkeeper" parent="." unique_id=349396540 instance=ExtResource("7_cq4yp")]
+position = Vector2(273, 40)

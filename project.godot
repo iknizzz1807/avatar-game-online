@@ -51,6 +51,10 @@ folder_colors={
 "res://sprites/": "purple"
 }
 
+[global_group]
+
+player=""
+
 [input]
 
 move_left={

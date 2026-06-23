@@ -1824,8 +1824,11 @@ tile_set = ExtResource("8_icuut")
 [node name="BackToTown" parent="." unique_id=1803356863 instance=ExtResource("2_tpzone")]
 position = Vector2(184, 260)
 scale = Vector2(5.8747835, 0.25440562)
-target_map_id = "town"
-spawn_position = Vector2(40, 84)
+target_map_id = "park"
+spawn_position = Vector2(272, -56)
 
 [node name="Player" parent="." unique_id=108723119 instance=ExtResource("1_player")]
 position = Vector2(185, 232)
+
+[node name="ParkSpawn" type="Marker2D" parent="." unique_id=1796976061]
+position = Vector2(184, 232)

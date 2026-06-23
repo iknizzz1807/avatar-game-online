@@ -36,17 +36,26 @@ func _on_body_entered(body: Node) -> void:
 
 	_teleporting = true
 
+	print("[TeleportZone] Player entered zone → target='%s'  spawn_pos=%s  player_pos=%s" % [
+		target_map_id, spawn_position, body.global_position
+	])
+
 	# Store the desired spawn position so the new scene can read it.
 	TeleportData.spawn_position = spawn_position
+	print("[TeleportZone] TeleportData.spawn_position set to %s" % TeleportData.spawn_position)
 
 	if MultiplayerManager and multiplayer.has_multiplayer_peer():
+		print("[TeleportZone] Requesting map change from server…")
 		var approved: bool = await MultiplayerManager.request_map_change(target_map_id)
 		if not approved:
 			_teleporting = false
-			push_warning("[TeleportZone] Server denied map change.")
+			TeleportData.spawn_position = Vector2.ZERO
+			push_warning("[TeleportZone] Server denied map change — TeleportData cleared.")
 			return
+		print("[TeleportZone] Server approved map change to '%s'" % target_map_id)
 	elif MultiplayerManager:
 		MultiplayerManager.set_map(target_map_id)
 
+	print("[TeleportZone] Changing scene → res://scenes/%s.tscn" % target_map_id)
 	# Load the target scene.
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % target_map_id)

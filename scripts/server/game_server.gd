@@ -142,6 +142,7 @@ func _register_verified_player(sender_id: int, user_id: int, display_name: Strin
 		
 		# If the map changed, broadcast to others
 		if old_map != map_id:
+			print("[GameServer] Map change peer=%d: '%s' → '%s'  clearing last_movement" % [sender_id, old_map, map_id])
 			_last_movement.erase(sender_id)
 			_broadcast_player_left(sender_id, old_map)
 			_broadcast_player_joined(sender_id, user_id, display_name, map_id)
@@ -301,17 +302,22 @@ func _map_id_from_user(user: Dictionary) -> String:
 
 ## Called by the client every physics frame to sync movement.
 @rpc("any_peer", "unreliable_ordered")
-func sync_player_state(pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
+func sync_player_state(map_id: String, pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	if not _players.has(sender_id):
+		return
+	if _players[sender_id].get("map_id", "") != map_id:
 		return
 	if not _is_movement_valid(sender_id, pos):
 		var last: Dictionary = _last_movement.get(sender_id, {})
 		var last_pos: Vector2 = last.get("pos", pos)
+		push_warning("[GameServer] FORCE_POSITION peer=%d  reported=%s  last_known=%s  dist=%.1fpx" % [
+			sender_id, pos, last_pos, last_pos.distance_to(pos)
+		])
 		MultiplayerManager.force_position.rpc_id(sender_id, last_pos)
 		return
 		
-	var map_id: String = _players[sender_id].get("map_id", "")
+
 	
 	# Relay to everyone else on the same map
 	for target_id: int in _players:

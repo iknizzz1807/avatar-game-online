@@ -97,6 +97,16 @@ func _ready() -> void:
 		if hud_node:
 			hud_node.visible = true
 
+		# Apply the spawn position written by TeleportZone before the scene change.
+		# Consume it immediately so it doesn't affect future _ready() calls.
+		print("[Player:_ready] scene pos=%s  TeleportData.spawn_position=%s" % [global_position, TeleportData.spawn_position])
+		if TeleportData.spawn_position != Vector2.ZERO:
+			print("[Player:_ready] ✔ applying TeleportData → %s" % TeleportData.spawn_position)
+			global_position = TeleportData.spawn_position
+			TeleportData.spawn_position = Vector2.ZERO
+		else:
+			print("[Player:_ready] TeleportData is ZERO — keeping scene position %s" % global_position)
+
 
 func _process(delta: float) -> void:
 	# Only the local player (authority) drives its own state machine.
@@ -116,8 +126,8 @@ func _physics_process(delta: float) -> void:
 	# Send our state to the server if connected
 	if multiplayer.has_multiplayer_peer() and multiplayer.get_peers().size() > 0:
 		var server_node = get_tree().root.get_node_or_null("ServerScene")
-		if server_node:
-			server_node.sync_player_state.rpc_id(1, sync_position, sync_anim_state, sync_facing, sync_flip_h)
+		if server_node and MultiplayerManager:
+			server_node.sync_player_state.rpc_id(1, MultiplayerManager.local_map_id, sync_position, sync_anim_state, sync_facing, sync_flip_h)
 
 
 # ─── Farming ─────────────────────────────────────────────────────────────────

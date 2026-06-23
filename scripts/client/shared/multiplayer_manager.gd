@@ -300,6 +300,7 @@ func update_remote_player(peer_id: int, pos: Vector2, anim_state: String, facing
 @rpc("authority", "reliable")
 func force_position(pos: Vector2) -> void:
 	for player in get_tree().get_nodes_in_group("local_player"):
+		print("[MultiplayerManager] force_position called: snapping player from %s → %s" % [player.global_position, pos])
 		player.global_position = pos
 		if "sync_position" in player:
 			player.sync_position = pos

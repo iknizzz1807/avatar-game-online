@@ -43,7 +43,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if not _active or _target == null or not _target.has_method("_build_actions"):
+	if not _active or _target == null or not _can_refresh_target_actions():
 		return;
 	_refresh_elapsed += delta;
 	if _refresh_elapsed < 0.15:
@@ -130,7 +130,7 @@ func _on_action_pressed(actionId: String) -> void:
 
 func _clear_items() -> void:
 	for child: Node in itemList.get_children():
-		child.free();
+		child.queue_free();
 
 
 func _set_actions(actions: Array) -> void:
@@ -171,6 +171,15 @@ func _set_actions(actions: Array) -> void:
 
 			btn.mouse_entered.connect(func() -> void: hint.show());
 			btn.mouse_exited.connect(func() -> void: hint.hide());
+
+
+func _can_refresh_target_actions() -> bool:
+	if not _target.has_method("_build_actions"):
+		return false
+	for method in _target.get_method_list():
+		if method.get("name", "") == "_build_actions":
+			return method.get("args", []).size() == 0
+	return false
 
 ## Place the menu at [param pos], clamping so it stays fully within the viewport.
 func _place_at(pos: Vector2) -> void:

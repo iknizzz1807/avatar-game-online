@@ -23,6 +23,9 @@ signal action_selected(action_id: String, target: Object);
 
 ## The world object that opened this menu (FarmSlot, OtherPlayer, …).
 var _target: Object = null;
+var _screen_pos: Vector2 = Vector2.ZERO;
+var _last_actions_signature: String = "";
+var _refresh_elapsed: float = 0.0;
 
 ## Whether the menu is currently visible and consuming input.
 var _active: bool = false;
@@ -36,6 +39,20 @@ func _ready() -> void:
 	add_to_group("context_menu");
 	# Process input even when paused, so the menu can always be dismissed.
 	process_mode = Node.PROCESS_MODE_ALWAYS;
+	set_process(false);
+
+
+func _process(delta: float) -> void:
+	if not _active or _target == null or not _target.has_method("_build_actions"):
+		return;
+	_refresh_elapsed += delta;
+	if _refresh_elapsed < 0.15:
+		return;
+	_refresh_elapsed = 0.0;
+	var actions: Array = _target.call("_build_actions");
+	var signature := JSON.stringify(actions);
+	if signature != _last_actions_signature:
+		_set_actions(actions);
 
 # ═════════════════════════════════════════════════════════════════════════════
 # PUBLIC API
@@ -59,6 +76,65 @@ func _ready() -> void:
 ## that object with its own action list — no changes needed here.
 func show_menu(actions: Array, target: Object, screen_pos: Vector2) -> void:
 	_target = target;
+	_screen_pos = screen_pos;
+	_refresh_elapsed = 0.0;
+	_set_actions(actions);
+
+	# Position the menu; clamp so it never goes off-screen.
+	_place_at(screen_pos);
+
+	show();
+	_active = true;
+	set_process(true);
+
+## Close the menu without selecting any action.
+func dismiss() -> void:
+	_active = false;
+	set_process(false);
+	hide();
+	_clear_items();
+	_target = null;
+	_last_actions_signature = "";
+
+# ═════════════════════════════════════════════════════════════════════════════
+# INPUT HANDLING
+# ═════════════════════════════════════════════════════════════════════════════
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _active:
+		return;
+
+	# Dismiss on Escape
+	if event.is_action_pressed("ui_cancel"):
+		dismiss();
+		get_viewport().set_input_as_handled();
+		return;
+
+	# Dismiss when clicking anywhere outside the panel
+	if event is InputEventMouseButton and event.pressed:
+		var localPos: Vector2 = get_local_mouse_position();
+		var menuRect: Rect2 = Rect2(Vector2.ZERO, size);
+		if not menuRect.has_point(localPos):
+			dismiss();
+			get_viewport().set_input_as_handled();
+
+# ═════════════════════════════════════════════════════════════════════════════
+# PRIVATE HELPERS
+# ═════════════════════════════════════════════════════════════════════════════
+
+func _on_action_pressed(actionId: String) -> void:
+	var target: Object = _target;
+	dismiss();
+	action_selected.emit(actionId, target);
+	print("[ContextMenu] Action '%s' selected on %s" % [actionId, target]);
+
+func _clear_items() -> void:
+	for child: Node in itemList.get_children():
+		child.free();
+
+
+func _set_actions(actions: Array) -> void:
+	_last_actions_signature = JSON.stringify(actions);
 	_clear_items();
 
 	for actionData: Dictionary in actions:
@@ -95,55 +171,6 @@ func show_menu(actions: Array, target: Object, screen_pos: Vector2) -> void:
 
 			btn.mouse_entered.connect(func() -> void: hint.show());
 			btn.mouse_exited.connect(func() -> void: hint.hide());
-
-	# Position the menu; clamp so it never goes off-screen.
-	_place_at(screen_pos);
-
-	show();
-	_active = true;
-
-## Close the menu without selecting any action.
-func dismiss() -> void:
-	_active = false;
-	hide();
-	_clear_items();
-	_target = null;
-
-# ═════════════════════════════════════════════════════════════════════════════
-# INPUT HANDLING
-# ═════════════════════════════════════════════════════════════════════════════
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not _active:
-		return;
-
-	# Dismiss on Escape
-	if event.is_action_pressed("ui_cancel"):
-		dismiss();
-		get_viewport().set_input_as_handled();
-		return;
-
-	# Dismiss when clicking anywhere outside the panel
-	if event is InputEventMouseButton and event.pressed:
-		var localPos: Vector2 = get_local_mouse_position();
-		var menuRect: Rect2 = Rect2(Vector2.ZERO, size);
-		if not menuRect.has_point(localPos):
-			dismiss();
-			get_viewport().set_input_as_handled();
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PRIVATE HELPERS
-# ═════════════════════════════════════════════════════════════════════════════
-
-func _on_action_pressed(actionId: String) -> void:
-	var target: Object = _target;
-	dismiss();
-	action_selected.emit(actionId, target);
-	print("[ContextMenu] Action '%s' selected on %s" % [actionId, target]);
-
-func _clear_items() -> void:
-	for child: Node in itemList.get_children():
-		child.queue_free();
 
 ## Place the menu at [param pos], clamping so it stays fully within the viewport.
 func _place_at(pos: Vector2) -> void:

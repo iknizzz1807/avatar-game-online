@@ -44,10 +44,17 @@ func _configure_camera_limits() -> void:
 func _find_local_player() -> Node:
 	# Walk all children looking for a CharacterBody2D that has authority.
 	for child in get_children():
-		if child is CharacterBody2D and (not multiplayer.has_multiplayer_peer() or child.is_multiplayer_authority()):
+		if child is CharacterBody2D and (not _has_active_multiplayer_peer() or child.is_multiplayer_authority()):
 			return child
 		# Also check one level deeper (if players are grouped under a container).
 		for grandchild in child.get_children():
-			if grandchild is CharacterBody2D and (not multiplayer.has_multiplayer_peer() or grandchild.is_multiplayer_authority()):
+			if grandchild is CharacterBody2D and (not _has_active_multiplayer_peer() or grandchild.is_multiplayer_authority()):
 				return grandchild
 	return null
+
+
+func _has_active_multiplayer_peer() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return false
+	var peer := multiplayer.multiplayer_peer
+	return peer != null and peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED

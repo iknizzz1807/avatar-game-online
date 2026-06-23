@@ -74,7 +74,7 @@ func _handle_click() -> void:
 			if not _is_player_nearby():
 				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
 				return
-			_request_server_action("plant", "seed_tomato")
+			_request_server_action("plant")
 			
 		PlotState.SEEDED:
 			# Delegate to the nearby local player so the watering animation plays first.
@@ -131,7 +131,7 @@ func _on_context_action(actionId: String, target: Object) -> void:
 			if not _is_player_nearby():
 				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
 				return
-			_request_server_action("plant", "seed_tomato")
+			_request_server_action("plant")
 		"water":
 			# Delegate to the nearby local player so the watering animation plays first.
 			_request_water_via_player()
@@ -232,6 +232,11 @@ func _request_server_action(action: String, seed_id: String = "") -> void:
 	var body := { "plot_index": plotId }
 	match action:
 		"plant":
+			if seed_id.is_empty():
+				seed_id = await _pick_available_seed_id()
+			if seed_id.is_empty():
+				ToastManager.show_toast("Bạn cần mua hạt giống trước.", ToastManager.Type.WARNING)
+				return
 			endpoint = "/api/farm/seed"
 			body["seed_id"] = seed_id
 		"water":
@@ -243,7 +248,7 @@ func _request_server_action(action: String, seed_id: String = "") -> void:
 
 	var response: Dictionary = await ApiClient.request_json(endpoint, HTTPClient.METHOD_POST, body)
 	if not response.get("ok", false):
-		ToastManager.show_toast("Thao tác nông trại thất bại.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(_farm_error_message(response), ToastManager.Type.WARNING)
 		return
 
 	var data: Dictionary = ApiClient.response_data(response)
@@ -279,3 +284,53 @@ func _plot_status_to_state(status: String) -> int:
 			return PlotState.READY
 		_:
 			return PlotState.EMPTY
+
+
+func _farm_error_message(response: Dictionary) -> String:
+	var error_code: String = response.get("error", "")
+	if error_code.is_empty():
+		var body: Dictionary = response.get("body", {})
+		var debug_message: String = body.get("message", "")
+		if debug_message == "INVALID_INPUT":
+			return "Bạn cần mua hạt giống hoặc đang ở sai khu vực."
+		if not debug_message.is_empty():
+			return debug_message
+	match error_code:
+		"INVALID_INPUT":
+			return "Bạn cần mua hạt giống hoặc đang ở sai khu vực."
+		"PLOT_NOT_EMPTY":
+			return "Ô đất này đã được trồng."
+		"PLOT_NOT_SEEDED":
+			return "Ô này chưa gieo hạt."
+		"PLOT_NOT_READY":
+			return "Cây chưa đến lúc thu hoạch."
+		"INVENTORY_FULL":
+			return "Túi đồ đã đầy."
+		_:
+			return "Thao tác nông trại thất bại."
+
+
+func _pick_available_seed_id() -> String:
+	var preferred := ["seed_tomato", "seed_carrot", "seed_corn"]
+	var seed_counts := {}
+	for inv in get_tree().get_nodes_in_group("inventory"):
+		if "inventoryData" in inv:
+			for slot in inv.inventoryData:
+				if slot is Dictionary and not slot.is_empty():
+					var server_id: String = slot.get("server_id", "")
+					if server_id.begins_with("seed_"):
+						seed_counts[server_id] = int(slot.get("quantity", 0))
+	for seed_id in preferred:
+		if int(seed_counts.get(seed_id, 0)) > 0:
+			return seed_id
+
+	var response: Dictionary = await ApiClient.request_json("/api/inventory")
+	if not response.get("ok", false):
+		return ""
+	var items: Array = ApiClient.response_data(response).get("inventory", [])
+	for item in items:
+		if item is Dictionary:
+			var item_id: String = item.get("item_id", "")
+			if item_id.begins_with("seed_") and int(item.get("quantity", 0)) > 0:
+				return item_id
+	return ""

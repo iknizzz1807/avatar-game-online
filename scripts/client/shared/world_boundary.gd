@@ -167,10 +167,17 @@ func _find_local_player() -> Node:
 
 
 func _search(node: Node) -> Node:
-	if node is Player and (not multiplayer.has_multiplayer_peer() or node.is_multiplayer_authority()):
+	if node is Player and (not _has_active_multiplayer_peer() or node.is_multiplayer_authority()):
 		return node
 	for child in node.get_children():
 		var result : Node = _search(child)
 		if result != null:
 			return result
 	return null
+
+
+func _has_active_multiplayer_peer() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return false
+	var peer := multiplayer.multiplayer_peer
+	return peer != null and peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED

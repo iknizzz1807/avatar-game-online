@@ -56,8 +56,8 @@ func _on_body_entered(body: Node) -> void:
 		MultiplayerManager.set_map(target_map_id)
 
 	print("[TeleportZone] Changing scene → res://scenes/%s.tscn" % target_map_id)
-	# Load the target scene.
-	get_tree().change_scene_to_file("res://scenes/%s.tscn" % target_map_id)
+	# Load the target scene (deferred to avoid physics callback errors).
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/%s.tscn" % target_map_id)
 
 
 func _has_active_multiplayer_peer() -> bool:

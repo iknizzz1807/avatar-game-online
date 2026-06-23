@@ -67,7 +67,7 @@ var _pending_water_slot: Node = null
 const PET_SCENE: PackedScene = preload("res://prefabs/characters/pet.tscn")
 
 func _ready() -> void:
-	if multiplayer.has_multiplayer_peer():
+	if _has_active_multiplayer_peer():
 		set_multiplayer_authority(multiplayer.get_unique_id())
 		
 	var pet : Node2D = PET_SCENE.instantiate()
@@ -124,7 +124,7 @@ func _physics_process(delta: float) -> void:
 	sync_position = global_position;
 	
 	# Send our state to the server if connected
-	if multiplayer.has_multiplayer_peer() and multiplayer.get_peers().size() > 0:
+	if _has_active_multiplayer_peer() and multiplayer.get_peers().size() > 0:
 		var server_node = get_tree().root.get_node_or_null("ServerScene")
 		if server_node and MultiplayerManager:
 			server_node.sync_player_state.rpc_id(1, MultiplayerManager.local_map_id, sync_position, sync_anim_state, sync_facing, sync_flip_h)
@@ -155,4 +155,11 @@ func stop_fishing() -> void:
 
 
 func is_local_authority() -> bool:
-	return not multiplayer.has_multiplayer_peer() or is_multiplayer_authority()
+	return not _has_active_multiplayer_peer() or is_multiplayer_authority()
+
+
+func _has_active_multiplayer_peer() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return false
+	var peer := multiplayer.multiplayer_peer
+	return peer != null and peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED

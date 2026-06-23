@@ -31,7 +31,7 @@ func _on_body_entered(body: Node) -> void:
 	if _teleporting:
 		return
 	# Only react to the locally-controlled player.
-	if not (body is CharacterBody2D and (not multiplayer.has_multiplayer_peer() or body.is_multiplayer_authority())):
+	if not (body is CharacterBody2D and (not _has_active_multiplayer_peer() or body.is_multiplayer_authority())):
 		return
 
 	_teleporting = true
@@ -44,8 +44,7 @@ func _on_body_entered(body: Node) -> void:
 	TeleportData.spawn_position = spawn_position
 	print("[TeleportZone] TeleportData.spawn_position set to %s" % TeleportData.spawn_position)
 
-	if MultiplayerManager and multiplayer.has_multiplayer_peer():
-		print("[TeleportZone] Requesting map change from server…")
+	if MultiplayerManager and _has_active_multiplayer_peer():
 		var approved: bool = await MultiplayerManager.request_map_change(target_map_id)
 		if not approved:
 			_teleporting = false
@@ -59,3 +58,10 @@ func _on_body_entered(body: Node) -> void:
 	print("[TeleportZone] Changing scene → res://scenes/%s.tscn" % target_map_id)
 	# Load the target scene.
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % target_map_id)
+
+
+func _has_active_multiplayer_peer() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return false
+	var peer := multiplayer.multiplayer_peer
+	return peer != null and peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED

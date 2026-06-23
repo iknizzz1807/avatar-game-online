@@ -68,6 +68,7 @@ func main() {
 		api.GET("/fishing/status", handlers.GetFishingStatus)
 		api.POST("/fishing/start", handlers.StartFishing)
 		api.POST("/fishing/claim", handlers.ClaimFishing)
+		api.POST("/fishing/fail", handlers.FailFishing)
 		api.POST("/fishing/stop", handlers.StopFishing)
 	}
 

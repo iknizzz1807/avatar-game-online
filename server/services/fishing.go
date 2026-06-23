@@ -121,7 +121,7 @@ func StartFishing(userID int, seatIndex int) (FishingStartResult, error) {
 		return result, err
 	}
 
-	finishAt := time.Now().Add(time.Duration(10+rand.Intn(11)) * time.Second)
+	finishAt := time.Now()
 	_, err = tx.Exec(
 		"INSERT INTO fishing_sessions (user_id, seat_index, started_at, finish_at) VALUES (?, ?, ?, ?)",
 		userID, seatIndex, time.Now(), finishAt,
@@ -212,6 +212,27 @@ func StopFishing(userID int) error {
 	// Return 1 bait
 	baitQty = 1
 	if err := addItemTx(tx, userID, "bait_normal", baitQty); err != nil {
+		return err
+	}
+
+	return tx.Commit()
+}
+
+func FailFishing(userID int) error {
+	tx, err := db.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	var sessionID int
+	err = tx.QueryRow("SELECT id FROM fishing_sessions WHERE user_id = ? AND ended_at IS NULL", userID).Scan(&sessionID)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec("UPDATE fishing_sessions SET ended_at = CURRENT_TIMESTAMP WHERE id = ?", sessionID)
+	if err != nil {
 		return err
 	}
 

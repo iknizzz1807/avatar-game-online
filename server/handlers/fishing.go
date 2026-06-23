@@ -91,3 +91,21 @@ func StopFishing(c *gin.Context) {
 		"message":        "Đã dừng câu cá",
 	})
 }
+
+func FailFishing(c *gin.Context) {
+	userID := middleware.GetUserID(c)
+
+	if err := services.FailFishing(userID); err != nil {
+		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
+		return
+	}
+
+	coins, _ := services.GetCoins(userID)
+	status, _ := services.GetFishingStatus(userID)
+	inventory, _ := services.GetInventory(userID)
+	utils.RespondWithCoins(c, coins, gin.H{
+		"fishing_status": status,
+		"inventory":      inventory,
+		"message":        "Cá chạy mất rồi",
+	})
+}

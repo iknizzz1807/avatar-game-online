@@ -141,7 +141,7 @@ func _start_fishing(tile_world_pos: Vector2, player: Node) -> void:
 			{ "seat_index": 0 }
 		)
 		if not response.get("ok", false):
-			ToastManager.show_toast("Không thể bắt đầu câu cá.", ToastManager.Type.WARNING)
+			ToastManager.show_toast(_fishing_error_message(response.get("error", "")), ToastManager.Type.WARNING)
 			return
 		_sync_inventory(ApiClient.response_data(response))
 
@@ -208,7 +208,13 @@ func on_minigame_success() -> void:
 ## Called by PlayerFishingState after the minigame is lost.
 func on_minigame_failed(_reason: String) -> void:
 	_is_fishing = false
-	# No claim call — fish escaped
+	if ApiClient.has_auth_token():
+		var response: Dictionary = await ApiClient.request_json(
+			"/api/fishing/fail",
+			HTTPClient.METHOD_POST
+		)
+		if response.get("ok", false):
+			_sync_inventory(ApiClient.response_data(response))
 
 
 func _buy_item(item_id: String) -> void:
@@ -224,7 +230,7 @@ func _buy_item(item_id: String) -> void:
 		ToastManager.show_toast("Đã mua vật phẩm.")
 		_sync_inventory(ApiClient.response_data(response))
 	else:
-		ToastManager.show_toast("Không mua được vật phẩm.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(_shop_error_message(response.get("error", "")), ToastManager.Type.WARNING)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -255,3 +261,29 @@ func _sync_inventory(data: Dictionary) -> void:
 	for inv in get_tree().get_nodes_in_group("inventory"):
 		if inv.has_method("set_server_inventory"):
 			inv.set_server_inventory(data.get("inventory", []))
+
+
+func _fishing_error_message(error_code: String) -> String:
+	match error_code:
+		"NO_FISHING_ROD":
+			return "Bạn cần mua cần câu trước."
+		"NO_BAIT":
+			return "Bạn cần mua mồi câu trước."
+		"SEAT_OCCUPIED":
+			return "Vị trí câu này đang có người."
+		"INVALID_INPUT":
+			return "Bạn chưa ở đúng khu câu cá hoặc dữ liệu không hợp lệ."
+		_:
+			return "Không thể bắt đầu câu cá."
+
+
+func _shop_error_message(error_code: String) -> String:
+	match error_code:
+		"INSUFFICIENT_FUNDS":
+			return "Bạn không đủ Xu để mua vật phẩm."
+		"INVENTORY_FULL":
+			return "Túi đồ đã đầy."
+		"INVALID_INPUT":
+			return "Vật phẩm này không bán trong shop."
+		_:
+			return "Không mua được vật phẩm."

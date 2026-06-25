@@ -53,7 +53,7 @@ server/
 │   ├── jwt.go             # JWT token utilities
 │   └── errors.go          # Error codes and messages
 └── tests/
-    └── (unit tests)
+	└── (unit tests)
 ```
 
 ---
@@ -65,58 +65,58 @@ server/
 ```sql
 -- Users table
 CREATE TABLE users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    display_name TEXT NOT NULL,
-    coins INTEGER DEFAULT 1000 DEFAULT 1000,
-    current_map TEXT DEFAULT 'central_park',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	username TEXT UNIQUE NOT NULL,
+	password_hash TEXT NOT NULL,
+	display_name TEXT NOT NULL,
+	coins INTEGER DEFAULT 1000 DEFAULT 1000,
+	current_map TEXT DEFAULT 'central_park',
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Items (static reference data)
 CREATE TABLE items (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    type TEXT NOT NULL,           -- 'seed', 'harvest', 'fishing_rod', 'bait', 'clothing'
-    buy_price INTEGER NOT NULL,
-    sell_price INTEGER NOT NULL,
-    grow_time_seconds INTEGER,    -- NULL for non-seeds
-    stackable INTEGER DEFAULT 1,
-    max_stack INTEGER DEFAULT 99
+	id TEXT PRIMARY KEY,
+	name TEXT NOT NULL,
+	type TEXT NOT NULL,           -- 'seed', 'harvest', 'fishing_rod', 'bait', 'clothing'
+	buy_price INTEGER NOT NULL,
+	sell_price INTEGER NOT NULL,
+	grow_time_seconds INTEGER,    -- NULL for non-seeds
+	stackable INTEGER DEFAULT 1,
+	max_stack INTEGER DEFAULT 99
 );
 
 -- User inventory
 CREATE TABLE inventory (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    item_id TEXT NOT NULL,
-    quantity INTEGER NOT NULL DEFAULT 1,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (item_id) REFERENCES items(id),
-    UNIQUE(user_id, item_id)
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER NOT NULL,
+	item_id TEXT NOT NULL,
+	quantity INTEGER NOT NULL DEFAULT 1,
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY (item_id) REFERENCES items(id),
+	UNIQUE(user_id, item_id)
 );
 
 -- Farm plots (4x4 = 16 per user)
 CREATE TABLE plots (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    plot_index INTEGER NOT NULL,  -- 0-15
-    status TEXT NOT NULL,         -- 'EMPTY', 'SEEDED', 'GROWING', 'READY'
-    seed_id TEXT,                -- NULL if EMPTY
-    ready_at DATETIME,           -- NULL until watered
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE(user_id, plot_index)
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER NOT NULL,
+	plot_index INTEGER NOT NULL,  -- 0-15
+	status TEXT NOT NULL,         -- 'EMPTY', 'SEEDED', 'GROWING', 'READY'
+	seed_id TEXT,                -- NULL if EMPTY
+	ready_at DATETIME,           -- NULL until watered
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+	UNIQUE(user_id, plot_index)
 );
 
 -- Active fishing sessions
 CREATE TABLE fishing_sessions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    seat_index INTEGER NOT NULL,  -- 0-4 (5 fishing spots)
-    started_at DATETIME NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	user_id INTEGER NOT NULL,
+	seat_index INTEGER NOT NULL,  -- 0-4 (5 fishing spots)
+	started_at DATETIME NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 ```
 
@@ -305,10 +305,10 @@ All endpoints (except register/login) require `Authorization: Bearer <token>` he
 ```go
 // config/config.go
 type Config struct {
-    Port        string // default "8080"
-    DBPath      string // default "game.db"
-    JWTSecret   string // minimum 32 characters
-    ServerPort  string // for WebSocket (if needed)
+	Port        string // default "8080"
+	DBPath      string // default "game.db"
+	JWTSecret   string // minimum 32 characters
+	ServerPort  string // for WebSocket (if needed)
 }
 ```
 

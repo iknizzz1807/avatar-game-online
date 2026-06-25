@@ -24,11 +24,11 @@
 
 ## PHASE 2 — GO SERVER: XÁC THỰC (AUTH)
 
-- [ ] 🟡 **Đăng ký**: nhận username + password + tên → kiểm tra username chưa tồn tại → lưu tài khoản → cấp **1.000 Xu** → trả token phiên
-- [ ] 🟡 **Đăng nhập**: xác thực username + password → trả token + toàn bộ game state (Xu, inventory, 16 ô đất)
-- [ ] 🟢 Password phải hash trước khi lưu, không lưu plaintext
-- [ ] 🟢 Mọi request đến Go Server đều phải kèm token hợp lệ — không có token thì từ chối
-- [ ] 🟢 Lỗi rõ ràng: "Sai mật khẩu" / "Tài khoản không tồn tại" / "Username đã được dùng"
+- [X] 🟡 **Đăng ký**: nhận username + password + tên → kiểm tra username chưa tồn tại → lưu tài khoản → cấp **1.000 Xu** → trả token phiên
+- [X] 🟡 **Đăng nhập**: xác thực username + password → trả token + toàn bộ game state (Xu, inventory, 16 ô đất)
+- [X] 🟢 Password phải hash trước khi lưu, không lưu plaintext
+- [X] 🟢 Mọi request đến Go Server đều phải kèm token hợp lệ — không có token thì từ chối
+- [X] 🟢 Lỗi rõ ràng: "Sai mật khẩu" / "Tài khoản không tồn tại" / "Username đã được dùng"
 
 ---
 

@@ -1,6 +1,8 @@
 extends Node2D
 class_name RemotePlayer
 
+const FISHING_LINE_DRAWER_SCRIPT := preload("res://scripts/client/shared/fishing_line_drawer.gd")
+
 # ═════════════════════════════════════════════════════════════════════════════
 # REMOTE PLAYER — Display-only node for other players in the world.
 #
@@ -30,6 +32,8 @@ var sync_anim_state: String  = "Idle"    # "Idle" or "Run"
 var sync_facing:     Vector2 = Vector2(0.0, 1.0)  # blend position
 var sync_flip_h:     bool    = false
 
+var _fishing_line_key: String = ""
+
 # ─── Interpolation ────────────────────────────────────────────────────────────
 const INTERP_SPEED: float = 20.0
 
@@ -53,6 +57,7 @@ func _ready() -> void:
 	if _name_label:
 		_name_label.text = display_name_text
 	configure_context_menu(user_id, display_name_text)
+	_fishing_line_key = "remote:%s" % get_instance_id()
 
 
 func configure_context_menu(target_user_id: int, target_name: String) -> void:
@@ -70,9 +75,67 @@ func _physics_process(delta: float) -> void:
 	var playback: AnimationNodeStateMachinePlayback = \
 		_anim_tree.get("parameters/playback") as AnimationNodeStateMachinePlayback
 	if playback:
-		playback.travel(sync_anim_state)
+		var display_state := "Idle" if sync_anim_state == "Fishing" else sync_anim_state
+		playback.travel(display_state)
 		_anim_tree.set("parameters/Idle/blend_position", sync_facing)
 		_anim_tree.set("parameters/Run/blend_position",  sync_facing)
 		_anim_tree.set("parameters/useWater/blend_position", sync_facing)
 
 	_sprite.flip_h = sync_flip_h
+	_update_fishing_line(sync_anim_state == "Fishing", sync_facing, sync_flip_h)
+
+
+func _exit_tree() -> void:
+	_clear_fishing_line()
+
+
+func _update_fishing_line(active: bool, facing: Vector2, flip_h: bool) -> void:
+	if not active:
+		_clear_fishing_line()
+		return
+	var drawer := _get_fishing_line_drawer()
+
+	var dir := _fishing_direction(facing, flip_h)
+	var rod_tip := global_position + Vector2(0, -8) + dir * 13.0
+	var bobber := global_position + Vector2(0, -8) + dir * 58.0 + Vector2(0, 10)
+	var distance := rod_tip.distance_to(bobber)
+	var sag := clampf(distance * 0.25, 4.0, 30.0)
+	drawer.update_line_points(_fishing_line_key, _generate_fishing_line_points(rod_tip, bobber, 20, sag))
+
+
+func _fishing_direction(facing: Vector2, flip_h: bool) -> Vector2:
+	var x := -absf(facing.x) if flip_h else absf(facing.x)
+	var dir := Vector2(x, facing.y)
+	if dir.length() < 0.1:
+		return Vector2.DOWN
+	return dir.normalized()
+
+
+func _generate_fishing_line_points(start: Vector2, end: Vector2, segments: int, sag: float) -> PackedVector2Array:
+	var points := PackedVector2Array()
+	var safe_segments = maxi(segments, 1)
+	for i in range(safe_segments + 1):
+		var t := float(i) / float(safe_segments)
+		var base_point := start.lerp(end, t)
+		# 4t(1-t) is 0 at both ends and peaks at 1 in the middle.
+		var parabola_factor := 4.0 * t * (1.0 - t)
+		points.append(base_point + Vector2(0, sag * parabola_factor))
+	return points
+
+
+func _get_fishing_line_drawer() -> FishingLineDrawer:
+	var root := get_tree().current_scene if get_tree().current_scene else get_tree().root
+	var drawer := root.get_node_or_null("FishingLineDrawer") as FishingLineDrawer
+	if drawer == null:
+		drawer = FISHING_LINE_DRAWER_SCRIPT.new() as FishingLineDrawer
+		drawer.name = "FishingLineDrawer"
+		drawer.z_index = 200
+		root.add_child(drawer)
+	return drawer
+
+
+func _clear_fishing_line() -> void:
+	var root := get_tree().current_scene if get_tree().current_scene else get_tree().root
+	var drawer := root.get_node_or_null("FishingLineDrawer") as FishingLineDrawer
+	if drawer:
+		drawer.clear_line(_fishing_line_key)

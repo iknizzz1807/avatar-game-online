@@ -37,7 +37,7 @@ func begin_state() -> void:
 	var playback: AnimationNodeStateMachinePlayback = player.animationTree["parameters/playback"]
 	playback.travel("Idle")
 	player.animationTree["parameters/Idle/blend_position"] = blend_pos
-	player.sync_anim_state = "Idle"
+	player.sync_anim_state = "Fishing"
 	player.sync_facing     = blend_pos
 	player.sync_flip_h     = _facing.x < 0.0
 

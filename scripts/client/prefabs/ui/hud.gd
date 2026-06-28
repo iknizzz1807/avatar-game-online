@@ -18,6 +18,7 @@ signal map_change_requested();
 @onready var xuLabel: Label = $TopBar/XuContainer/XuLabel;
 @onready var inventoryButton: Button = $BottomBar/InventoryButton;
 @onready var mapButton: Button = $BottomBar/MapButton;
+@onready var hotbar: Hotbar = $Hotbar;
 
 # ═════════════════════════════════════════════════════════════════════════════
 # LIFECYCLE
@@ -40,6 +41,10 @@ func _ready() -> void:
 ## [param amount] is the current balance returned by the Go Server.
 func update_xu(amount: int) -> void:
 	xuLabel.text = "%d Xu" % amount;
+
+## Returns the Hotbar node so callers (e.g. FarmSlot) can read selected_seed_id.
+func get_hotbar() -> Hotbar:
+	return hotbar;
 
 # ═════════════════════════════════════════════════════════════════════════════
 # PRIVATE HANDLERS

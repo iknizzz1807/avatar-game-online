@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://tl438lomobmo"]
+
+[ext_resource type="Script" uid="uid://cmaq1ukhaaddn" path="res://scripts/client/prefabs/ui/hotbar.gd" id="1_hotbarscr"]
+[ext_resource type="PackedScene" uid="uid://cbfnig2hg4ehu" path="res://prefabs/ui/components/item_slot.tscn" id="2_islot"]
+[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="3_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+content_margin_left = 8.0
+content_margin_top = 6.0
+content_margin_right = 8.0
+content_margin_bottom = 6.0
+bg_color = Color(0.11, 0.075, 0.05, 0.88)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.72549, 0.52549, 0.286275, 0.7)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[node name="Hotbar" type="Control" unique_id=999100001]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -170.0
+offset_top = -140.0
+offset_right = 170.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_hotbarscr")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=999100002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="VBox" type="VBoxContainer" parent="PanelContainer" unique_id=999100003]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HeaderLabel" type="Label" parent="PanelContainer/VBox" unique_id=999100004]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.78, 0.47, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "🌱 Seeds"
+horizontal_alignment = 1
+
+[node name="SlotContainer" type="HBoxContainer" parent="PanelContainer/VBox" unique_id=999100005]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HotbarSlot1" parent="PanelContainer/VBox/SlotContainer" unique_id=999100011 instance=ExtResource("2_islot")]
+layout_mode = 2
+
+[node name="HotbarSlot2" parent="PanelContainer/VBox/SlotContainer" unique_id=999100012 instance=ExtResource("2_islot")]
+layout_mode = 2
+
+[node name="HotbarSlot3" parent="PanelContainer/VBox/SlotContainer" unique_id=999100013 instance=ExtResource("2_islot")]
+layout_mode = 2
+
+[node name="HotbarSlot4" parent="PanelContainer/VBox/SlotContainer" unique_id=999100014 instance=ExtResource("2_islot")]
+layout_mode = 2
+
+[node name="HotbarSlot5" parent="PanelContainer/VBox/SlotContainer" unique_id=999100015 instance=ExtResource("2_islot")]
+layout_mode = 2

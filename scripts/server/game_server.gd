@@ -20,7 +20,7 @@ var api_base: String = "http://127.0.0.1:8080"
 const CHAT_MAX_CHARS: int = 100
 const CHAT_WINDOW_SECONDS: float = 5.0
 const CHAT_MAX_IN_WINDOW: int = 3
-const REGISTER_COOLDOWN_SECONDS: float = 2.0
+const REGISTER_COOLDOWN_SECONDS: float = 0.5
 const MAP_CHANGE_COOLDOWN_SECONDS: float = 2.0
 const MOVEMENT_MAX_SPEED: float = 260.0
 const MOVEMENT_GRACE_DISTANCE: float = 80.0
@@ -116,10 +116,29 @@ func register_player(_user_id: int, _display_name: String, _map_id: String) -> v
 @rpc("any_peer", "reliable")
 func register_player_with_token(token: String, map_id: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
-	if _pending_registrations.has(sender_id) or not _allow_rpc(sender_id, "register", REGISTER_COOLDOWN_SECONDS):
-		push_warning("[GameServer] Rejected registration spam from peer %d" % sender_id)
-		multiplayer.multiplayer_peer.disconnect_peer(sender_id)
+	
+	# For already-registered peers (scene change re-registration), we trust the
+	# server-approved map_id from request_map_change rather than re-querying the
+	# DB (which can be stale due to async HTTP round-trip timing).
+	# Skip the cooldown check — this player is already authenticated.
+	if _players.has(sender_id):
+		var info: Dictionary = _players[sender_id]
+		var user_id: int = info.get("user_id", -1)
+		var display_name: String = info.get("display_name", "Player")
+		# Use client-supplied map_id (already validated server-side via request_map_change).
+		_register_verified_player(sender_id, user_id, display_name, map_id, token)
 		return
+	
+	# First-time registration — apply anti-spam checks then verify token.
+	if _pending_registrations.has(sender_id):
+		# A verification is already in-flight for this peer — ignore duplicate.
+		push_warning("[GameServer] Registration already in-flight for peer %d — ignoring." % sender_id)
+		return
+	if not _allow_rpc(sender_id, "register", REGISTER_COOLDOWN_SECONDS):
+		# Cooldown hit — soft-reject so the player isn't kicked.
+		push_warning("[GameServer] Registration cooldown for peer %d — soft reject." % sender_id)
+		return
+	
 	_pending_registrations[sender_id] = true
 	var user: Dictionary = await _verify_token(token)
 	_pending_registrations.erase(sender_id)
@@ -287,7 +306,7 @@ func _verify_token(token: String) -> Dictionary:
 
 func _map_id_from_user(user: Dictionary) -> String:
 	var user_id: int = int(user.get("id", -1))
-	var current_map: String = user.get("current_map", "central_park")
+	var current_map: String = user.get("current_map", "farm")
 	match current_map:
 		"farm", "game":
 			return "game_" + str(user_id)
@@ -296,7 +315,7 @@ func _map_id_from_user(user: Dictionary) -> String:
 		"fishing_lake":
 			return "fish_pond"
 		"":
-			return "park"
+			return "game_" + str(user_id)
 		_:
 			return current_map
 

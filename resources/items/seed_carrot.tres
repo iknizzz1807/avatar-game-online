@@ -1,15 +1,20 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://item0seed01"]
 
+[ext_resource type="Texture2D" uid="uid://jrfad3e4nijr" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/carrot_01.png" id="1_o2avt"]
 [ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b87bhng8bkarl" path="res://sprites/Objects/Basic Plants.png" id="2_tex"]
+[ext_resource type="Texture2D" uid="uid://dkkyoiv0elrve" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/carrot_02.png" id="2_phsjg"]
+[ext_resource type="Texture2D" uid="uid://exg5r3o7o2ir" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/carrot_00.png" id="2_pvjki"]
+[ext_resource type="Texture2D" uid="uid://d2kr6nwca5kin" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/carrot_03.png" id="3_5sr21"]
+[ext_resource type="Texture2D" uid="uid://3vfvughu82q2" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/carrot_04.png" id="4_dtdw8"]
 
 [resource]
 script = ExtResource("1_script")
 id = 1
 itemName = "Hạt Cà Rốt"
 icon = "🥕"
-texture = ExtResource("2_tex")
+texture = ExtResource("2_pvjki")
 buyPrice = 50
 type = "seed"
 growSecs = 120
 yieldsId = 11
+growthSprites = Array[Texture2D]([ExtResource("1_o2avt"), ExtResource("2_phsjg"), ExtResource("3_5sr21"), ExtResource("4_dtdw8")])

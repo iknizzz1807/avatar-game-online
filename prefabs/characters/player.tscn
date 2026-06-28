@@ -658,7 +658,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_water"]
-radius = 14.0
+radius = 16.0
 
 [node name="Player" type="CharacterBody2D" unique_id=349396540]
 y_sort_enabled = true
@@ -672,7 +672,6 @@ y_sort_enabled = true
 texture = ExtResource("1_72ieh")
 hframes = 4
 vframes = 4
-frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
 position = Vector2(0, 5)
@@ -704,10 +703,8 @@ script = ExtResource("11_fishst")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=658738122]
 
 [node name="HUD" parent="CanvasLayer" unique_id=1281974293 instance=ExtResource("4_p1jl7")]
-visible = false
 
 [node name="Chat" parent="CanvasLayer" unique_id=1850566308 instance=ExtResource("5_hc1fl")]
-visible = false
 
 [node name="FarmMap" parent="CanvasLayer" unique_id=1765950099 instance=ExtResource("7_jd78j")]
 

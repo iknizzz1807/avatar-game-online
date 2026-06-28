@@ -36,7 +36,7 @@ func Register(input RegisterInput) (string, *models.User, error) {
 	}
 
 	result, err := db.DB.Exec(
-		"INSERT INTO users (username, password_hash, display_name, coins, current_map) VALUES (?, ?, ?, 1000, 'central_park')",
+		"INSERT INTO users (username, password_hash, display_name, coins, current_map) VALUES (?, ?, ?, 1000, 'farm')",
 		input.Username, string(hash), input.DisplayName,
 	)
 	if err != nil {

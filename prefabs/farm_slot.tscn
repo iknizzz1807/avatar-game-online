@@ -4,11 +4,14 @@
 [ext_resource type="Texture2D" uid="uid://cwd77kmuayieo" path="res://sprites/Tilesets/Tilled_Dirt_v2.png" id="1_c0c2m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lsl1e"]
+size = Vector2(16, 16)
 
 [node name="FarmSlot" type="Area2D" unique_id=2131962941]
 script = ExtResource("1_38kc8")
+watering_distance = 32.0
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1690327330]
+visible = false
 texture = ExtResource("1_c0c2m")
 region_enabled = true
 region_rect = Rect2(48, 48, 16, 16)

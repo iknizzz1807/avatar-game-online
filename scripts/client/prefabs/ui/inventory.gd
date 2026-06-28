@@ -8,6 +8,8 @@ class_name Inventory
 signal sell_requested(itemId: String, quantity: int);
 signal close_requested();
 signal coins_changed(amount: int);
+## Fired whenever inventoryData changes so the Hotbar (and other listeners) can refresh.
+signal inventory_updated(data: Array);
 
 # ═════════════════════════════════════════════════════════════════════════════
 # INSPECTOR — Example data (editable in the Godot editor)
@@ -57,6 +59,8 @@ func _ready() -> void:
 	closeButton.pressed.connect(_on_close_pressed);
 	tooltipSellButton.pressed.connect(_on_sell_pressed);
 	_collect_slots();
+	# Connect hotbar nodes so they refresh whenever the inventory changes.
+	inventory_updated.connect(_on_inventory_updated_hotbar);
 	if ApiClient.has_auth_token():
 		load_inventory()
 	else:
@@ -158,6 +162,7 @@ func _refresh_slots() -> void:
 	for i: int in range(slots.size()):
 		slots[i].set_item(inventoryData[i] if i < inventoryData.size() else {});
 	_hide_tooltip();
+	inventory_updated.emit(inventoryData);
 
 # ═════════════════════════════════════════════════════════════════════════════
 # PRIVATE — event handlers
@@ -222,3 +227,8 @@ func _hide_tooltip() -> void:
 		slots[selectedSlot].set_selected(false);
 	tooltipSection.visible = false;
 	selectedSlot = -1;
+
+func _on_inventory_updated_hotbar(data: Array) -> void:
+	for hotbar in get_tree().get_nodes_in_group("hotbar"):
+		if hotbar.has_method("populate"):
+			hotbar.populate(data)

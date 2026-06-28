@@ -57,7 +57,8 @@ func SeedPlot(c *gin.Context) {
 
 	coins, _ := services.GetCoins(userID)
 	plots, _ := services.GetPlots(userID)
-	utils.RespondWithCoins(c, coins, gin.H{"plots": plots})
+	inventory, _ := services.GetInventory(userID)
+	utils.RespondWithCoins(c, coins, gin.H{"plots": plots, "inventory": inventory})
 }
 
 func WaterPlot(c *gin.Context) {

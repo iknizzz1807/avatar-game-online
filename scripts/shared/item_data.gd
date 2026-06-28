@@ -29,3 +29,9 @@ class_name ItemData
 @export var growSecs: int = 0;
 ## ID of the ItemData produced when this seed is harvested (0 = none).
 @export var yieldsId: int = 0;
+## Growth-stage sprites shown on the farm plot while this seed is planted.
+## Index 0 = just seeded, last index = fully mature (READY).
+## The farm slot selects a sprite by mapping elapsed-time progress
+## (0.0 → 1.0) linearly across this list.
+## Leave empty to use the fallback colour-tint behaviour.
+@export var growthSprites: Array[Texture2D] = [];

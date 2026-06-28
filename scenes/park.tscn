@@ -35,7 +35,7 @@ spawn_position = Vector2(184, 232)
 position = Vector2(-88, 109)
 scale = Vector2(1.7302588, 4.609323)
 target_map_id = "town"
-spawn_position = Vector2(210, 95)
+spawn_position = Vector2(424, 204)
 
 [node name="Player" parent="." unique_id=2017938755 instance=ExtResource("1_player")]
 position = Vector2(-43, 101)

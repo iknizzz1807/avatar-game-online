@@ -2,22 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnxamfcpwnwfc" path="res://scripts/client/prefabs/ui/hud.gd" id="1_hudscr"]
 [ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="2_theme"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chip"]
-content_margin_left = 12.0
-content_margin_top = 6.0
-content_margin_right = 12.0
-content_margin_bottom = 6.0
-bg_color = Color(0.152941, 0.101961, 0.0705882, 0.82)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.72549, 0.52549, 0.286275, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+[ext_resource type="PackedScene" path="res://prefabs/ui/components/hotbar.tscn" id="3_hotbar"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
 content_margin_left = 16.0
@@ -69,7 +54,7 @@ anchor_right = 1.0
 offset_left = 10.0
 offset_top = 8.0
 offset_right = -10.0
-offset_bottom = 44.0
+offset_bottom = 70.0
 grow_horizontal = 2
 theme_override_constants/separation = 8
 
@@ -80,11 +65,13 @@ theme_override_constants/separation = 6
 [node name="XuIcon" type="Label" parent="TopBar/XuContainer" unique_id=843722593]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.831373, 0.337255, 1)
+theme_override_font_sizes/font_size = 32
 text = "$"
 
 [node name="XuLabel" type="Label" parent="TopBar/XuContainer" unique_id=1161111553]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.945098, 0.784314, 1)
+theme_override_font_sizes/font_size = 32
 text = "-- Xu"
 
 [node name="BottomBar" type="HBoxContainer" parent="." unique_id=2109506948]
@@ -105,8 +92,8 @@ custom_minimum_size = Vector2(132, 38)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.964706, 0.843137, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "Tui do"
 
 [node name="MapButton" type="Button" parent="BottomBar" unique_id=2005933895]
@@ -114,6 +101,9 @@ custom_minimum_size = Vector2(132, 38)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.964706, 0.843137, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "Chuyen map"
+
+[node name="Hotbar" parent="." unique_id=999100001 instance=ExtResource("3_hotbar")]
+layout_mode = 1

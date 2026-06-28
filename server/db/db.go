@@ -44,7 +44,7 @@ func migrate() error {
 			password_hash TEXT NOT NULL,
 			display_name TEXT NOT NULL,
 			coins INTEGER DEFAULT 1000,
-			current_map TEXT DEFAULT 'central_park',
+			current_map TEXT DEFAULT 'farm',
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		)`,

@@ -18,6 +18,10 @@ enum PlotState {
 @onready var plantSprite: Sprite2D = $Plant
 @onready var timerLabel: Label = $Timer
 
+## How close (pixels) the player must be to interact with this plot.
+## Adjust this in the Inspector without changing the collision shape.
+@export var watering_distance: float = 80.0
+
 # State variables
 var plotId: int = -1
 var currentState: int = PlotState.EMPTY
@@ -47,6 +51,7 @@ func _process(_delta: float) -> void:
 		if timeLeft > 0:
 			timerLabel.text = _format_time(timeLeft)
 			timerLabel.visible = true
+			_update_visuals()  # refresh the growth-stage sprite every frame
 		else:
 			currentState = PlotState.READY
 			_ready_refresh_requested = false
@@ -144,23 +149,26 @@ func _on_context_action(actionId: String, target: Object) -> void:
 
 # ─── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
 
-## Returns true when the local-authority player is overlapping this slot.
+## Returns true when the local-authority player is within [watering_distance] pixels.
+## Uses a world-space distance check so the collision shape (click area) is unaffected.
 func _is_player_nearby() -> bool:
-	for body in get_overlapping_bodies():
-		if body.is_in_group("local_player"):
-			return true
+	for node in get_tree().get_nodes_in_group("local_player"):
+		if node is Node2D:
+			if global_position.distance_to(node.global_position) <= watering_distance:
+				return true
 	return false
 
 
-## Finds the local-authority player overlapping this slot and asks them to
+## Finds the local-authority player within [watering_distance] and asks them to
 ## perform the watering animation. The player will call water() when done.
 func _request_water_via_player() -> void:
 	if currentState != PlotState.SEEDED:
 		return
-	for body in get_overlapping_bodies():
-		if body.is_in_group("local_player") and body.has_method("request_water"):
-			body.request_water(self)
-			return
+	for node in get_tree().get_nodes_in_group("local_player"):
+		if node is Node2D and node.has_method("request_water"):
+			if global_position.distance_to(node.global_position) <= watering_distance:
+				node.request_water(self)
+				return
 	ToastManager.show_toast("Lại gần hơn để tưới nước.", ToastManager.Type.WARNING)
 
 
@@ -180,32 +188,49 @@ func sync_state(new_state: int, new_seed: String, new_ready_at: int) -> void:
 
 
 func _update_visuals() -> void:
+	var item_data: ItemData = Items.get_item_by_server_id(currentSeedId) if not currentSeedId.is_empty() else null
+	var sprites: Array = item_data.growthSprites if item_data and not item_data.growthSprites.is_empty() else []
+
 	match currentState:
 		PlotState.EMPTY:
 			plantSprite.visible = false
-			# Remove any modulate trick we use for local testing
 			$Background.modulate = Color(1.0, 1.0, 1.0)
-			
+
 		PlotState.SEEDED:
-			# TODO: Once you have sprites, assign the SeedBag or DirtMound texture
-			# plantSprite.texture = load("...")
-			# plantSprite.visible = true
-			# Local debug visual: darken the background a bit to show it's seeded/watered
-			$Background.modulate = Color(0.8, 0.6, 0.4)
-			
+			if sprites.is_empty():
+				plantSprite.visible = false
+				$Background.modulate = Color(0.8, 0.6, 0.4)
+			else:
+				plantSprite.texture = sprites[0]
+				plantSprite.visible = true
+				$Background.modulate = Color(1.0, 1.0, 1.0)
+
 		PlotState.GROWING:
-			# TODO: Assign the sprout texture
-			# plantSprite.texture = load("...")
-			# plantSprite.visible = true
-			# Local debug visual: make it a bit green
-			$Background.modulate = Color(0.5, 0.8, 0.5)
-			
+			if sprites.is_empty():
+				plantSprite.visible = false
+				$Background.modulate = Color(0.5, 0.8, 0.5)
+			else:
+				# Map elapsed time fraction → sprite index within [0, last]
+				var grow_secs: float = float(item_data.growSecs) if item_data.growSecs > 0 else 1.0
+				var current_unix: int = int(Time.get_unix_time_from_system())
+				# readyAtUnixTime was set when watering began
+				var start_unix: float = float(readyAtUnixTime) - grow_secs
+				var elapsed: float = clampf(float(current_unix) - start_unix, 0.0, grow_secs)
+				var progress: float = elapsed / grow_secs            # 0.0 → 1.0
+				var idx: int = int(progress * (sprites.size() - 1))  # 0 → last index
+				idx = clampi(idx, 0, sprites.size() - 1)
+				plantSprite.texture = sprites[idx]
+				plantSprite.visible = true
+				$Background.modulate = Color(1.0, 1.0, 1.0)
+
 		PlotState.READY:
-			# TODO: Assign the mature crop texture
-			# plantSprite.texture = load("...")
-			# plantSprite.visible = true
-			# Local debug visual: make it very green
-			$Background.modulate = Color(0.2, 0.9, 0.2)
+			if sprites.is_empty():
+				plantSprite.visible = false
+				$Background.modulate = Color(0.2, 0.9, 0.2)
+			else:
+				plantSprite.texture = sprites[sprites.size() - 1]
+				plantSprite.visible = true
+				$Background.modulate = Color(1.0, 1.0, 1.0)
 
 func _format_time(seconds: int) -> String:
 	var minutes: int = seconds / 60
@@ -233,6 +258,8 @@ func _request_server_action(action: String, seed_id: String = "") -> void:
 	match action:
 		"plant":
 			if seed_id.is_empty():
+				seed_id = _get_hotbar_seed_id()
+			if seed_id.is_empty():
 				seed_id = await _pick_available_seed_id()
 			if seed_id.is_empty():
 				ToastManager.show_toast("Bạn cần mua hạt giống trước.", ToastManager.Type.WARNING)
@@ -254,9 +281,18 @@ func _request_server_action(action: String, seed_id: String = "") -> void:
 	var data: Dictionary = ApiClient.response_data(response)
 	_apply_server_plots(data.get("plots", []), true)
 	if data.has("inventory"):
+		var raw_inv: Array = data.get("inventory", [])
+		# Push to the inventory panel so its internal state stays current.
 		for inv in get_tree().get_nodes_in_group("inventory"):
 			if inv.has_method("set_server_inventory"):
-				inv.set_server_inventory(data.get("inventory", []))
+				inv.set_server_inventory(raw_inv)
+
+	# Always refresh the hotbar directly from the server after any successful
+	# farm action — this works even when the inventory panel is closed and
+	# regardless of whether the server response included inventory data.
+	for hotbar in get_tree().get_nodes_in_group("hotbar"):
+		if hotbar.has_method("refresh_from_server"):
+			hotbar.refresh_from_server()
 
 
 func _apply_server_plots(plots: Array, broadcast: bool) -> void:
@@ -333,4 +369,15 @@ func _pick_available_seed_id() -> String:
 			var item_id: String = item.get("item_id", "")
 			if item_id.begins_with("seed_") and int(item.get("quantity", 0)) > 0:
 				return item_id
+	return ""
+
+
+## Reads the currently selected seed_id from the player's hotbar.
+## Returns an empty string if no seed is selected (caller should fall back to auto-pick).
+func _get_hotbar_seed_id() -> String:
+	for hud in get_tree().get_nodes_in_group("hud"):
+		if hud.has_method("get_hotbar"):
+			var hb = hud.get_hotbar()
+			if hb and not hb.selected_seed_id.is_empty():
+				return hb.selected_seed_id
 	return ""

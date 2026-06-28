@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cbfnig2hg4ehu"]
 
 [ext_resource type="Script" uid="uid://covf2spd6ditr" path="res://scripts/client/prefabs/ui/item_slot.gd" id="1_islotscr"]
-[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
 content_margin_left = 6.0

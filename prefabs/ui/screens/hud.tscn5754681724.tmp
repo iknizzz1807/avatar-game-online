@@ -1,0 +1,75 @@
+[gd_scene format=3 uid="uid://b0w6mcunr1u5d"]
+
+[ext_resource type="Script" uid="uid://cnxamfcpwnwfc" path="res://scripts/client/prefabs/ui/hud.gd" id="1_hudscr"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://y6fkjft3eryl" path="res://sprites/Sprout Lands - UI Pack - Basic pack/Sprout Lands - UI Pack - Basic pack/Sprite sheets/coinpanel.png" id="3_83q6g"]
+[ext_resource type="PackedScene" uid="uid://tl438lomobmo" path="res://prefabs/ui/components/hotbar.tscn" id="3_hotbar"]
+[ext_resource type="Texture2D" uid="uid://cgsks6orunk18" path="res://sprites/Sprout Lands - UI Pack - Basic pack/Sprout Lands - UI Pack - Basic pack/Sprite sheets/inventory.png" id="4_eagho"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tgh3m"]
+texture = ExtResource("4_eagho")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+
+[node name="HUD" type="Control" unique_id=1281974293]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_hudscr")
+
+[node name="XuContainer" type="TextureRect" parent="." unique_id=1680081395]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 174.70589
+offset_bottom = 88.0
+texture = ExtResource("3_83q6g")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="XuLabel" type="Label" parent="XuContainer" unique_id=1161111553]
+layout_mode = 1
+offset_left = 57.0
+offset_top = 16.0
+offset_right = 150.0
+offset_bottom = 63.0
+theme_override_colors/font_color = Color(0.7137255, 0.5372549, 0.38431373, 1)
+theme_override_font_sizes/font_size = 32
+text = "0000"
+vertical_alignment = 1
+autowrap_mode = 2
+clip_text = true
+text_overrun_behavior = 1
+uppercase = true
+
+[node name="InventoryButton" type="Button" parent="." unique_id=483438398]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -80.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.964706, 0.843137, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_tgh3m")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_tgh3m")
+theme_override_styles/hover = SubResource("StyleBoxTexture_tgh3m")
+theme_override_styles/focus = SubResource("StyleBoxTexture_tgh3m")
+
+[node name="Hotbar" parent="." unique_id=999100001 instance=ExtResource("3_hotbar")]
+layout_mode = 1
+offset_top = -98.0
+offset_bottom = -30.0

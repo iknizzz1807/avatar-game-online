@@ -1,0 +1,96 @@
+[gd_scene format=3 uid="uid://b1v6jiwpytn3w"]
+
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="1_qr6ex"]
+[ext_resource type="Script" uid="uid://cdiqtxr50p7jq" path="res://scripts/client/prefabs/ui/chat.gd" id="2_jeege"]
+[ext_resource type="StyleBox" uid="uid://c0r71un0cdua" path="res://resources/ui/panel.tres" id="3_uti5v"]
+[ext_resource type="FontFile" uid="uid://dkpbaknlgcqve" path="res://resources/Minecraft.ttf" id="4_rw701"]
+[ext_resource type="StyleBox" uid="uid://m2ay5qd62oxb" path="res://resources/ui/field.tres" id="5_0xvdy"]
+
+[node name="Chat" type="Control" unique_id=1850566308]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_qr6ex")
+script = ExtResource("2_jeege")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=738261046]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -226.0
+offset_right = 296.0
+offset_bottom = -16.0
+grow_vertical = 0
+theme_override_styles/panel = ExtResource("3_uti5v")
+
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=676671306]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="Panel/VBox" unique_id=2107173136]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 16
+text = "Chat"
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/VBox" unique_id=439116968]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+
+[node name="MessageList" type="VBoxContainer" parent="Panel/VBox/Scroll" unique_id=1881640948]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="InputRow" type="HBoxContainer" parent="Panel/VBox" unique_id=2028055906]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MessageInput" type="LineEdit" parent="Panel/VBox/InputRow" unique_id=1879568835]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.188235, 0.121569, 0.0705882, 1)
+theme_override_colors/font_placeholder_color = Color(0.19, 0.12324667, 0.0722, 0.49803922)
+theme_override_colors/caret_color = Color(0.188235, 0.121569, 0.0705882, 1)
+theme_override_colors/clear_button_color = Color(0.188235, 0.121569, 0.0705882, 1)
+theme_override_colors/clear_button_color_pressed = Color(0.188235, 0.121569, 0.0705882, 1)
+theme_override_fonts/font = ExtResource("4_rw701")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = ExtResource("5_0xvdy")
+theme_override_styles/focus = ExtResource("5_0xvdy")
+clear_button_enabled = true
+caret_blink = true
+secret = true
+
+[node name="SendButton" type="Button" parent="Panel/VBox/InputRow" unique_id=1029285633]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_qr6ex")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+text = "Send"
+
+[node name="Hide" type="Button" parent="." unique_id=594504661]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -721.0
+offset_top = -46.0
+offset_right = -689.0
+offset_bottom = -14.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+text = "-"

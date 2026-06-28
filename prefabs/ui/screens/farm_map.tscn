@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ccoxl121jeqgv"]
 
 [ext_resource type="Script" uid="uid://dxldafm8g0j7b" path="res://scripts/client/prefabs/ui/farm_map.gd" id="1_farmscr"]
-[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 content_margin_left = 12.0

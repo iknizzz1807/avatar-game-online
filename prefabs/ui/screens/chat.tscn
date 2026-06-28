@@ -1,23 +1,14 @@
 [gd_scene format=3 uid="uid://bkua1vn7fon5m"]
 
 [ext_resource type="Script" uid="uid://cdiqtxr50p7jq" path="res://scripts/client/prefabs/ui/chat.gd" id="1_chatscr"]
-[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 content_margin_left = 10.0
 content_margin_top = 8.0
 content_margin_right = 10.0
 content_margin_bottom = 8.0
-bg_color = Color(0.129412, 0.0901961, 0.0588235, 0.88)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.72549, 0.52549, 0.286275, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+bg_color = Color(0.13, 0.13, 0.13, 0.8784314)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
 content_margin_left = 8.0
@@ -64,16 +55,13 @@ script = ExtResource("1_chatscr")
 
 [node name="Panel" type="PanelContainer" parent="." unique_id=738261046]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -290.0
-offset_top = -220.0
-offset_right = -10.0
-offset_bottom = -10.0
-grow_horizontal = 0
+offset_left = 16.0
+offset_top = -226.0
+offset_right = 296.0
+offset_bottom = -16.0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
@@ -116,18 +104,3 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button")
 text = "Gui"
-
-[node name="Button" type="Button" parent="." unique_id=594504661]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -325.0
-offset_top = -42.0
-offset_right = -293.0
-offset_bottom = -10.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "-"

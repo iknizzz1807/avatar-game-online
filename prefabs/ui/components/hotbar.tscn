@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cmaq1ukhaaddn" path="res://scripts/client/prefabs/ui/hotbar.gd" id="1_hotbarscr"]
 [ext_resource type="PackedScene" uid="uid://cbfnig2hg4ehu" path="res://prefabs/ui/components/item_slot.tscn" id="2_islot"]
-[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="3_theme"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="3_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 content_margin_left = 8.0

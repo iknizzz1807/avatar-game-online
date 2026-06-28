@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bngrkb6gmkfy"]
 
 [ext_resource type="Script" path="res://scripts/client/prefabs/ui/toast.gd" id="1_toast"]
-[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
 content_margin_left = 10.0

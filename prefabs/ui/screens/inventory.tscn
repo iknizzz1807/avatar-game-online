@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://item0fish01" path="res://resources/items/fish_small.tres" id="6_fish"]
 [ext_resource type="Resource" uid="uid://co7uip3u7skm2" path="res://resources/items/rod_bamboo.tres" id="7_rod"]
 [ext_resource type="Resource" uid="uid://item0bait01" path="res://resources/items/bait_normal.tres" id="8_bait"]
-[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="9_theme"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="9_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 content_margin_left = 12.0

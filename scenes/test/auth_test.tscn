@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d1gfftnm3qh5w"]
 
-[ext_resource type="Theme" path="res://resources/ui_game_theme.tres" id="1_18pdd"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="1_18pdd"]
 [ext_resource type="Script" uid="uid://ccexgn8vhs36y" path="res://scenes/test/auth_test.gd" id="2_088ll"]
 [ext_resource type="FontFile" uid="uid://q8a55m1amoh" path="res://scenes/test/auth_asset/PixelifySans-VariableFont_wght.ttf" id="3_18pdd"]
 [ext_resource type="Texture2D" uid="uid://4jvhgc5vpmp6" path="res://scenes/test/auth_asset/rabbit.png" id="3_kl26l"]

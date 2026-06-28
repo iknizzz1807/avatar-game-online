@@ -2,6 +2,15 @@
 
 [ext_resource type="Script" uid="uid://w1cn4djqr2r6" path="res://scripts/client/prefabs/farm_slot.gd" id="1_38kc8"]
 [ext_resource type="Texture2D" uid="uid://cwd77kmuayieo" path="res://sprites/Tilesets/Tilled_Dirt_v2.png" id="1_c0c2m"]
+[ext_resource type="Shader" uid="uid://dgkqfkyhxsvak" path="res://resources/wind.gdshader" id="3_xirnb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8wq5s"]
+shader = ExtResource("3_xirnb")
+shader_parameter/start_y = 0.3
+shader_parameter/strength = 0.10000000475
+shader_parameter/curve_scale = 1.5
+shader_parameter/speed = 0.50000002375
+shader_parameter/wind_start = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lsl1e"]
 size = Vector2(16, 16)
@@ -17,6 +26,7 @@ region_enabled = true
 region_rect = Rect2(48, 48, 16, 16)
 
 [node name="Plant" type="Sprite2D" parent="." unique_id=1438899620]
+material = SubResource("ShaderMaterial_8wq5s")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=762390403]
 shape = SubResource("RectangleShape2D_lsl1e")

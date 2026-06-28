@@ -70,12 +70,6 @@ func _ready() -> void:
 	if _has_active_multiplayer_peer():
 		set_multiplayer_authority(multiplayer.get_unique_id())
 		
-	var pet : Node2D = PET_SCENE.instantiate()
-	pet.follow_target = self
-	pet.top_level = true
-	add_child(pet)
-	pet.global_position = pet_spawn.global_position;
-	
 	stateMachine = StateMachine.new(self);
 	stateMachine.state_to_state_name = func(s: int) -> String: return State.keys()[s];
 
@@ -106,6 +100,14 @@ func _ready() -> void:
 			TeleportData.spawn_position = Vector2.ZERO
 		else:
 			print("[Player:_ready] TeleportData is ZERO — keeping scene position %s" % global_position)
+
+	# Instantiate pet after player position is finalized
+	var pet : Node2D = PET_SCENE.instantiate()
+	pet.follow_target = self
+	pet.top_level = true
+	add_child(pet)
+	force_update_transform()
+	pet.global_position = pet_spawn.global_position;
 
 
 func _process(delta: float) -> void:

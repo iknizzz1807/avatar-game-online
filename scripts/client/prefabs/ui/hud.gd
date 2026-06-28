@@ -15,9 +15,8 @@ signal map_change_requested();
 # NODES
 # ═════════════════════════════════════════════════════════════════════════════
 
-@onready var xuLabel: Label = $TopBar/XuContainer/XuLabel;
-@onready var inventoryButton: Button = $BottomBar/InventoryButton;
-@onready var mapButton: Button = $BottomBar/MapButton;
+@onready var xuLabel: Label = $XuContainer/XuLabel;
+@onready var inventoryButton: Button = $InventoryButton
 @onready var hotbar: Hotbar = $Hotbar;
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -27,7 +26,6 @@ signal map_change_requested();
 func _ready() -> void:
 	add_to_group("hud")
 	inventoryButton.pressed.connect(_on_inventory_button_pressed);
-	mapButton.pressed.connect(_on_map_button_pressed);
 	ApiClient.coins_changed.connect(update_xu)
 	if ApiClient.current_coins > 0:
 		update_xu(ApiClient.current_coins)
@@ -40,7 +38,7 @@ func _ready() -> void:
 ## Update the Xu counter shown in the HUD.
 ## [param amount] is the current balance returned by the Go Server.
 func update_xu(amount: int) -> void:
-	xuLabel.text = "%d Xu" % amount;
+	xuLabel.text = str(amount);
 
 ## Returns the Hotbar node so callers (e.g. FarmSlot) can read selected_seed_id.
 func get_hotbar() -> Hotbar:
@@ -52,6 +50,3 @@ func get_hotbar() -> Hotbar:
 
 func _on_inventory_button_pressed() -> void:
 	inventory_requested.emit();
-
-func _on_map_button_pressed() -> void:
-	map_change_requested.emit();

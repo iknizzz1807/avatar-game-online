@@ -1,0 +1,10 @@
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://dtx53ap3anrf3"]
+
+[ext_resource type="Texture2D" uid="uid://cvdk81sv3ikot" path="res://sprites/Sprout Lands - UI Pack - Basic pack/button.png" id="1_8fjby"]
+
+[resource]
+texture = ExtResource("1_8fjby")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0

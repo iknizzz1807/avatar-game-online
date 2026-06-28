@@ -75,12 +75,20 @@ func _show_login() -> void:
 # ─── Button handlers ──────────────────────────────────────────────────────────
 
 func _on_login_pressed() -> void:
+	if _login_user.text.strip_edges() == "" or _login_pass.text == "":
+		ToastManager.show_toast("Vui lòng nhập tài khoản và mật khẩu.", ToastManager.Type.WARNING)
+		return
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/auth/login",
 		HTTPClient.METHOD_POST,
 		{ "username": _login_user.text.strip_edges(), "password": _login_pass.text }
 	)
-	_handle_auth_response(response)
+	if not response.get("ok", false):
+		push_error("[Auth] Server error %d: %s" % [response.get("code", 0), response.get("error", "unknown")])
+		ToastManager.show_toast("Đăng nhập thất bại: " + response.get("error", "unknown"), ToastManager.Type.ERROR)
+		return
+	ToastManager.show_toast("Đăng nhập thành công!", ToastManager.Type.SUCCESS)
+	_on_login_success(response.get("body", {}))
 
 func _on_skip_login_pressed() -> void:
 	var random_id = randi() % 10000 + 1
@@ -92,23 +100,25 @@ func _on_skip_login_pressed() -> void:
 			"current_map": "game"
 		}
 	}
+	ToastManager.show_toast("Đăng nhập ẩn danh thành công!", ToastManager.Type.SUCCESS)
 	_on_login_success(dummy_data)
 
 
 func _on_signup_pressed() -> void:
 	var username := _signup_user.text.strip_edges()
+	if username == "" or _signup_pass.text == "":
+		ToastManager.show_toast("Vui lòng nhập tài khoản và mật khẩu.", ToastManager.Type.WARNING)
+		return
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/auth/register",
 		HTTPClient.METHOD_POST,
 		{ "username": username, "password": _signup_pass.text, "display_name": username }
 	)
-	_handle_auth_response(response)
-
-
-func _handle_auth_response(response: Dictionary) -> void:
 	if not response.get("ok", false):
 		push_error("[Auth] Server error %d: %s" % [response.get("code", 0), response.get("error", "unknown")])
+		ToastManager.show_toast("Đăng ký thất bại: " + response.get("error", "unknown"), ToastManager.Type.ERROR)
 		return
+	ToastManager.show_toast("Đăng ký thành công!", ToastManager.Type.SUCCESS)
 	_on_login_success(response.get("body", {}))
 
 

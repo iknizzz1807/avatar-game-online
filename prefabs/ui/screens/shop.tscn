@@ -2,41 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dvpu2el1uwnq2" path="res://scripts/client/prefabs/ui/shop.gd" id="1_shopgd"]
 [ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-content_margin_left = 12.0
-content_margin_top = 10.0
-content_margin_right = 12.0
-content_margin_bottom = 10.0
-bg_color = Color(0.145098, 0.101961, 0.0705882, 0.94)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.72549, 0.52549, 0.286275, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-shadow_color = Color(0, 0, 0, 0.34)
-shadow_size = 12
-shadow_offset = Vector2(0, 4)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-content_margin_left = 10.0
-content_margin_top = 5.0
-content_margin_right = 10.0
-content_margin_bottom = 5.0
-bg_color = Color(0.352941, 0.235294, 0.137255, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 2
-border_color = Color(0.141176, 0.0901961, 0.0509804, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[ext_resource type="StyleBox" uid="uid://c0r71un0cdua" path="res://resources/ui/panel.tres" id="3_kyxx5"]
+[ext_resource type="StyleBox" uid="uid://dtx53ap3anrf3" path="res://resources/ui/button.tres" id="4_kyxx5"]
 
 [node name="Shop" type="Control" unique_id=850276504]
 layout_mode = 3
@@ -55,13 +22,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
+offset_left = -303.0
 offset_top = -200.0
-offset_right = 150.0
+offset_right = 303.0
 offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+theme_override_styles/panel = ExtResource("3_kyxx5")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel" unique_id=1968584580]
 layout_mode = 2
@@ -80,18 +47,19 @@ layout_mode = 2
 [node name="Title" type="Label" parent="Panel/MarginContainer/VBox/TitleBar" unique_id=1465331563]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
-theme_override_font_sizes/font_size = 16
-text = "Cua hang"
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 32
+text = "Shop"
 horizontal_alignment = 1
 
 [node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBox/TitleBar" unique_id=44507835]
 custom_minimum_size = Vector2(30, 28)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_styles/normal = ExtResource("4_kyxx5")
+theme_override_styles/pressed = ExtResource("4_kyxx5")
+theme_override_styles/hover = ExtResource("4_kyxx5")
+theme_override_styles/focus = ExtResource("4_kyxx5")
 text = "X"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBox" unique_id=268017537]
@@ -101,3 +69,4 @@ size_flags_vertical = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBox/ScrollContainer" unique_id=1884608815]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 16

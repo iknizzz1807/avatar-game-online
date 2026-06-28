@@ -47,41 +47,13 @@ func _populate_shop() -> void:
 			_add_shop_row(Items.get_server_id(item.id), item, item.buyPrice)
 
 
+const SHOP_ROW_PREFAB = preload("res://prefabs/ui/components/shop_row.tscn")
+
 func _add_shop_row(item_id: String, item: ItemData, price: int) -> void:
-	var row = HBoxContainer.new()
-	
-	if item.texture:
-		var icon = TextureRect.new()
-		icon.custom_minimum_size = Vector2(32, 32)
-		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.texture = item.texture
-		row.add_child(icon)
-	else:
-		var icon = Label.new()
-		icon.custom_minimum_size = Vector2(32, 32)
-		icon.text = item.icon
-		icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		icon.add_theme_font_size_override("font_size", 24)
-		row.add_child(icon)
-	
-	var name_label = Label.new()
-	name_label.text = item.itemName
-	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	row.add_child(name_label)
-	
-	var price_label = Label.new()
-	price_label.text = str(price) + " Xu"
-	price_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	row.add_child(price_label)
-	
-	var buy_btn = Button.new()
-	buy_btn.text = "Mua"
-	buy_btn.pressed.connect(func(): _on_buy_requested(item_id, price))
-	row.add_child(buy_btn)
-	
+	var row = SHOP_ROW_PREFAB.instantiate() as ShopRow
 	item_container.add_child(row)
+	row.setup(item_id, item, price)
+	row.buy_requested.connect(_on_buy_requested)
 
 func _on_buy_requested(item_id: String, price: int) -> void:
 	if ApiClient.has_auth_token() and not item_id.is_empty():

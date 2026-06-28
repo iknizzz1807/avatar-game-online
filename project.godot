@@ -21,6 +21,7 @@ MultiplayerManager="*res://scripts/client/shared/multiplayer_manager.gd"
 ApiClient="*res://scripts/client/shared/api_client.gd"
 TeleportData="*res://scripts/client/shared/teleport_data.gd"
 ToastManager="*res://prefabs/ui/components/toast_manager.tscn"
+TransitionManager="*res://prefabs/ui/components/transition_manager.tscn"
 ServerScene="res://scenes/server.tscn"
 
 [debug]

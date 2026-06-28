@@ -4,24 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cbfnig2hg4ehu" path="res://prefabs/ui/components/item_slot.tscn" id="2_islot"]
 [ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="3_theme"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-content_margin_left = 8.0
-content_margin_top = 6.0
-content_margin_right = 8.0
-content_margin_bottom = 6.0
-bg_color = Color(0.11, 0.075, 0.05, 0.88)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.72549, 0.52549, 0.286275, 0.7)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-shadow_color = Color(0, 0, 0, 0.3)
-shadow_size = 8
-shadow_offset = Vector2(0, 3)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rwr2d"]
 
 [node name="Hotbar" type="Control" unique_id=999100001]
 layout_mode = 3
@@ -48,22 +31,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_rwr2d")
 
 [node name="VBox" type="VBoxContainer" parent="PanelContainer" unique_id=999100003]
 layout_mode = 2
 theme_override_constants/separation = 4
-
-[node name="HeaderLabel" type="Label" parent="PanelContainer/VBox" unique_id=999100004]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.78, 0.47, 0.9)
-theme_override_font_sizes/font_size = 10
-text = "🌱 Seeds"
-horizontal_alignment = 1
+alignment = 1
 
 [node name="SlotContainer" type="HBoxContainer" parent="PanelContainer/VBox" unique_id=999100005]
 layout_mode = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 24
+alignment = 1
 
 [node name="HotbarSlot1" parent="PanelContainer/VBox/SlotContainer" unique_id=999100011 instance=ExtResource("2_islot")]
 layout_mode = 2

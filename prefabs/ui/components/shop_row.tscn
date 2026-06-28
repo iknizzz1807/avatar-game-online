@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://es8tm4i2cho3"]
+
+[ext_resource type="Script" uid="uid://flpbvld8ojt7" path="res://scripts/client/prefabs/ui/shop_row.gd" id="1_xrowx"]
+[ext_resource type="Texture2D" uid="uid://di6r4k3bffkp2" path="res://sprites/Objects/Egg_item.png" id="2_nv05r"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="3_aseht"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aseht"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_top = 4
+border_width_bottom = 4
+border_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+
+[node name="Panel" type="Panel" unique_id=1922560047]
+custom_minimum_size = Vector2(521, 64)
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -503.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_aseht")
+script = ExtResource("1_xrowx")
+
+[node name="CenterContainer" type="MarginContainer" parent="." unique_id=955949694]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ShopRow" type="HBoxContainer" parent="CenterContainer" unique_id=1099999621]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="IconTexture" type="TextureRect" parent="CenterContainer/ShopRow" unique_id=447093535]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+texture = ExtResource("2_nv05r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IconLabel" type="Label" parent="CenterContainer/ShopRow" unique_id=1805969096]
+visible = false
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme = ExtResource("3_aseht")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 16
+text = "EGG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NameLabel" type="Label" parent="CenterContainer/ShopRow" unique_id=1209868562]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme = ExtResource("3_aseht")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 24
+text = "EGG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PriceLabel" type="Label" parent="CenterContainer/ShopRow" unique_id=760296425]
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("3_aseht")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 24
+text = "1000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BuyButton" type="Button" parent="CenterContainer/ShopRow" unique_id=2102057147]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme = ExtResource("3_aseht")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 24
+text = "Mua"

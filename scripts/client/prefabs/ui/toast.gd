@@ -27,10 +27,9 @@ var TYPE_STYLES: Dictionary = {
 func setup(message: String, type: int) -> void:
 	var style: Dictionary = TYPE_STYLES[type]
 
-	# Colour the panel — duplicate the base StyleBox so each toast is independent
-	var box := (get_theme_stylebox("panel") as StyleBoxFlat).duplicate() as StyleBoxFlat
-	box.bg_color     = style["bg"]
-	box.border_color = style["border"]
-	add_theme_stylebox_override("panel", box)
-
+	## Colour the panel — duplicate the base StyleBox so each toast is independent
+	#var box := (get_theme_stylebox("panel") as StyleBoxFlat).duplicate() as StyleBoxFlat
+	#box.bg_color     = style["bg"]
+	#box.border_color = style["border"]
+	#add_theme_stylebox_override("panel", box)
 	_label.text = "%s  %s" % [style["icon"], message]

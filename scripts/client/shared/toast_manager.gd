@@ -51,19 +51,18 @@ func show_toast(message: String, type: Type = Type.INFO, duration: float = DEFAU
 
 func _animate(toast: PanelContainer, duration: float) -> void:
 	# Wait one frame for the container to position the toast
-	await get_tree().process_frame
+	await get_tree().process_frame;
 	if not is_instance_valid(toast):
 		return
 
-	var target_y: float = toast.position.y
-
-	var tween := create_tween()
+	toast.modulate.a = 0;
+	var target_y: float = get_viewport().get_visible_rect().size.y;
+	var tween : Tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 
 	# Slide in + fade in from slightly above the target layout position
-	toast.position.y = target_y - 20.0
 	tween.tween_property(toast, "modulate:a", 1.0, 0.18)
-	tween.parallel().tween_property(toast, "position:y", target_y, 0.18)
+	#tween.parallel().tween_property(toast, "position:y", target_y, 0.18)
 
 	# Hold
 	tween.tween_interval(duration)

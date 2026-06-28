@@ -21,10 +21,6 @@ var slotData: Dictionary = {};
 
 var isSelected: bool = false;
 var wasDragging: bool = false;
-var styleNormal: StyleBoxFlat;
-var styleSelected: StyleBoxFlat;
-var styleHover: StyleBoxFlat;
-
 # ═════════════════════════════════════════════════════════════════════════════
 # NODES
 # ═════════════════════════════════════════════════════════════════════════════
@@ -38,7 +34,6 @@ var styleHover: StyleBoxFlat;
 # ═════════════════════════════════════════════════════════════════════════════
 
 func _ready() -> void:
-	_build_styles();
 	# Ensure this root node is the sole mouse-event receiver.
 	# Children use MOUSE_FILTER_IGNORE so clicks/hover pass through to us.
 	mouse_filter = Control.MOUSE_FILTER_STOP;
@@ -60,7 +55,6 @@ func set_item(data: Dictionary) -> void:
 ## Toggle the selection highlight on this slot.
 func set_selected(selected: bool) -> void:
 	isSelected = selected;
-	_apply_style(styleSelected if selected else styleNormal);
 
 # ═════════════════════════════════════════════════════════════════════════════
 # DRAG-AND-DROP
@@ -148,32 +142,8 @@ func _refresh() -> void:
 
 func _on_mouse_entered() -> void:
 	if not isSelected:
-		_apply_style(styleHover);
+		modulate = Color.GRAY;
 
 func _on_mouse_exited() -> void:
 	if not isSelected:
-		_apply_style(styleNormal);
-
-func _apply_style(style: StyleBoxFlat) -> void:
-	add_theme_stylebox_override("panel", style);
-
-func _build_styles() -> void:
-	styleNormal = StyleBoxFlat.new();
-	styleNormal.bg_color = Color(0.12, 0.12, 0.15, 0.95);
-	styleNormal.set_border_width_all(1);
-	styleNormal.border_color = Color(0.35, 0.35, 0.4, 1.0);
-	styleNormal.set_corner_radius_all(4);
-
-	styleHover = StyleBoxFlat.new();
-	styleHover.bg_color = Color(0.2, 0.2, 0.28, 0.95);
-	styleHover.set_border_width_all(1);
-	styleHover.border_color = Color(0.6, 0.6, 0.8, 1.0);
-	styleHover.set_corner_radius_all(4);
-
-	styleSelected = StyleBoxFlat.new();
-	styleSelected.bg_color = Color(0.1, 0.28, 0.15, 0.95);
-	styleSelected.set_border_width_all(2);
-	styleSelected.border_color = Color(0.3, 0.9, 0.45, 1.0);
-	styleSelected.set_corner_radius_all(4);
-
-	_apply_style(styleNormal);
+		modulate = Color.WHITE;

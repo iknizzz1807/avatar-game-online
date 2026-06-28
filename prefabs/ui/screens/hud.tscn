@@ -78,5 +78,7 @@ theme_override_styles/focus = SubResource("StyleBoxTexture_tgh3m")
 
 [node name="Hotbar" parent="." unique_id=999100001 instance=ExtResource("3_hotbar")]
 layout_mode = 1
-offset_top = -98.0
-offset_bottom = -30.0
+offset_left = -230.0
+offset_top = -90.0
+offset_right = 231.0
+offset_bottom = -12.0

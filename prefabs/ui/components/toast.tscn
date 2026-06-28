@@ -1,8 +1,19 @@
 [gd_scene format=3 uid="uid://bngrkb6gmkfy"]
 
 [ext_resource type="Script" path="res://scripts/client/prefabs/ui/toast.gd" id="1_toast"]
-[ext_resource type="StyleBox" uid="uid://dtx53ap3anrf3" path="res://resources/ui/button.tres" id="2_kb3qc"]
+[ext_resource type="Texture2D" uid="uid://cvdk81sv3ikot" path="res://sprites/Sprout Lands - UI Pack - Basic pack/button.png" id="2_kb3qc"]
 [ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jprfs"]
+texture = ExtResource("2_kb3qc")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
 
 [node name="Toast" type="PanelContainer" unique_id=1019051139]
 anchors_preset = 3
@@ -17,7 +28,7 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 theme = ExtResource("2_theme")
-theme_override_styles/panel = ExtResource("2_kb3qc")
+theme_override_styles/panel = SubResource("StyleBoxTexture_jprfs")
 script = ExtResource("1_toast")
 
 [node name="Label" type="Label" parent="." unique_id=356206167]

@@ -28,8 +28,8 @@ func setup(item_id: String, item: ItemData, price: int) -> void:
 		icon_label.show()
 		icon_texture.hide()
 		
-	name_label.text = item.itemName
-	price_label.text = str(price) + " Xu"
+	name_label.text = tr(item.itemName)
+	price_label.text = str(price) + tr("COINS_SUFFIX")
 
 func _on_buy_pressed() -> void:
 	buy_requested.emit(_item_id, _price)

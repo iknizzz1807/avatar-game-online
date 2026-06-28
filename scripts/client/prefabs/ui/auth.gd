@@ -49,7 +49,7 @@ func _ready() -> void:
 		_login_panel.visible = false
 		_signup_panel.visible = false
 		var label = Label.new()
-		label.text = "DEDICATED SERVER\n(Do not login here)"
+		label.text = tr("DEDICATED_SERVER_DO_NOT_LOGIN")
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -76,7 +76,7 @@ func _show_login() -> void:
 
 func _on_login_pressed() -> void:
 	if _login_user.text.strip_edges() == "" or _login_pass.text == "":
-		ToastManager.show_toast("Vui lòng nhập tài khoản và mật khẩu.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("PLEASE_ENTER_USERNAME_AND_PASS"), ToastManager.Type.WARNING)
 		return
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/auth/login",
@@ -85,9 +85,9 @@ func _on_login_pressed() -> void:
 	)
 	if not response.get("ok", false):
 		push_error("[Auth] Server error %d: %s" % [response.get("code", 0), response.get("error", "unknown")])
-		ToastManager.show_toast("Đăng nhập thất bại: " + response.get("error", "unknown"), ToastManager.Type.ERROR)
+		ToastManager.show_toast(tr("ĐĂNG_NHẬP_THẤT_BẠI") + response.get("error", "unknown"), ToastManager.Type.ERROR)
 		return
-	ToastManager.show_toast("Đăng nhập thành công!", ToastManager.Type.SUCCESS)
+	ToastManager.show_toast(tr("LOGIN_SUCCESSFUL"), ToastManager.Type.SUCCESS)
 	_on_login_success(response.get("body", {}))
 
 func _on_skip_login_pressed() -> void:
@@ -100,14 +100,14 @@ func _on_skip_login_pressed() -> void:
 			"current_map": "game"
 		}
 	}
-	ToastManager.show_toast("Đăng nhập ẩn danh thành công!", ToastManager.Type.SUCCESS)
+	ToastManager.show_toast(tr("ANONYMOUS_LOGIN_SUCCESSFUL"), ToastManager.Type.SUCCESS)
 	_on_login_success(dummy_data)
 
 
 func _on_signup_pressed() -> void:
 	var username := _signup_user.text.strip_edges()
 	if username == "" or _signup_pass.text == "":
-		ToastManager.show_toast("Vui lòng nhập tài khoản và mật khẩu.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("PLEASE_ENTER_USERNAME_AND_PASS"), ToastManager.Type.WARNING)
 		return
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/auth/register",
@@ -116,9 +116,9 @@ func _on_signup_pressed() -> void:
 	)
 	if not response.get("ok", false):
 		push_error("[Auth] Server error %d: %s" % [response.get("code", 0), response.get("error", "unknown")])
-		ToastManager.show_toast("Đăng ký thất bại: " + response.get("error", "unknown"), ToastManager.Type.ERROR)
+		ToastManager.show_toast(tr("ĐĂNG_KÝ_THẤT_BẠI") + response.get("error", "unknown"), ToastManager.Type.ERROR)
 		return
-	ToastManager.show_toast("Đăng ký thành công!", ToastManager.Type.SUCCESS)
+	ToastManager.show_toast(tr("REGISTRATION_SUCCESSFUL"), ToastManager.Type.SUCCESS)
 	_on_login_success(response.get("body", {}))
 
 

@@ -89,7 +89,7 @@ func open_inventory() -> void:
 func load_inventory() -> void:
 	var response: Dictionary = await ApiClient.request_json("/api/inventory")
 	if not response.get("ok", false):
-		ToastManager.show_toast("Không tải được túi đồ.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("FAILED_TO_LOAD_INVENTORY"), ToastManager.Type.WARNING)
 		return
 	var data: Dictionary = ApiClient.response_data(response)
 	set_server_inventory(data.get("inventory", []))
@@ -181,7 +181,7 @@ func _on_slot_clicked(idx: int) -> void:
 	slots[selectedSlot].set_selected(true);
 
 	var res: ItemData = inventoryData[idx]["resource"] as ItemData;
-	tooltipName.text = res.itemName;
+	tooltipName.text = tr(res.itemName);
 	tooltipSellButton.visible = res.sellable or inventoryData[idx].get("server_id", "").begins_with("harvest_") or inventoryData[idx].get("server_id", "").begins_with("fish_");
 	tooltipSection.visible = true;
 
@@ -209,10 +209,10 @@ func _on_sell_pressed() -> void:
 			{ "item_id": server_id, "quantity": qty }
 		)
 		if response.get("ok", false):
-			ToastManager.show_toast("Đã bán vật phẩm.")
+			ToastManager.show_toast(tr("ITEM_SOLD"))
 			load_inventory()
 		else:
-			ToastManager.show_toast("Không bán được vật phẩm.", ToastManager.Type.WARNING)
+			ToastManager.show_toast(tr("FAILED_TO_SELL_ITEM"), ToastManager.Type.WARNING)
 	else:
 		sell_requested.emit(server_id, qty);
 	_hide_tooltip();

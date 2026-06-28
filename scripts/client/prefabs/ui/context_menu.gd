@@ -133,6 +133,8 @@ func _clear_items() -> void:
 		child.queue_free();
 
 
+const ITEM_PREFAB = preload("res://prefabs/ui/components/context_menu_item.tscn")
+
 func _set_actions(actions: Array) -> void:
 	_last_actions_signature = JSON.stringify(actions);
 	_clear_items();
@@ -143,34 +145,10 @@ func _set_actions(actions: Array) -> void:
 		var enabled: bool   = actionData.get("enabled", true);
 		var tooltip: String = actionData.get("tooltip", "");
 
-		var btn: Button = Button.new();
-		btn.text        = label;
-		btn.disabled    = not enabled;
-		btn.flat        = false;
-		btn.alignment   = HORIZONTAL_ALIGNMENT_LEFT;
-		btn.focus_mode  = Control.FOCUS_NONE;
-		# Use Godot's built-in tooltip for enabled buttons; we handle disabled ones manually.
-		if enabled and tooltip != "":
-			btn.tooltip_text = tooltip;
-
-		# Capture loop variable
-		var capturedId: String = id;
-		btn.pressed.connect(func() -> void: _on_action_pressed(capturedId));
-
-		itemList.add_child(btn);
-
-		# For disabled buttons: show a small inline hint label on hover
-		if not enabled and tooltip != "":
-			var hint := Label.new();
-			hint.text = "  ⚠ " + tooltip;
-			hint.add_theme_color_override("font_color", Color(0.9, 0.75, 0.3, 1.0));
-			hint.add_theme_font_size_override("font_size", 11);
-			hint.visible = false;
-			hint.mouse_filter = Control.MOUSE_FILTER_IGNORE;
-			itemList.add_child(hint);
-
-			btn.mouse_entered.connect(func() -> void: hint.show());
-			btn.mouse_exited.connect(func() -> void: hint.hide());
+		var item = ITEM_PREFAB.instantiate() as ContextMenuItem
+		itemList.add_child(item)
+		item.setup(id, label, enabled, tooltip)
+		item.action_pressed.connect(_on_action_pressed)
 
 
 func _can_refresh_target_actions() -> bool:

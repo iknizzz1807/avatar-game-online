@@ -79,7 +79,7 @@ func _build_plots() -> void:
 		var btn: Button = Button.new();
 		btn.custom_minimum_size = Vector2(72, 72);
 		btn.name = "Plot%d" % i;
-		btn.text = "🟫\nTrống";
+		btn.text = tr("EMPTY");
 		var idx: int = i;
 		btn.pressed.connect(func() -> void: _on_plot_pressed(idx));
 		gridContainer.add_child(btn);
@@ -114,7 +114,7 @@ func _tick_countdowns(delta: float) -> void:
 		growTimers[i] -= delta;
 		if growTimers[i] <= 0.0:
 			growTimers[i] = 0.0;
-			plotButtons[i].text = "🌾\nChín!";
+			plotButtons[i].text = tr("READY");
 		else:
 			var mins: int = int(growTimers[i]) / 60;
 			var secs: int = int(growTimers[i]) % 60;
@@ -124,15 +124,15 @@ func _set_display(idx: int, state: String, seedType: String, remaining: float) -
 	var btn: Button = plotButtons[idx];
 	match state:
 		"EMPTY":
-			btn.text = "🟫\nTrống";
+			btn.text = tr("EMPTY");
 		"SEEDED":
-			btn.text = "🌱\n%s" % seedType;
+			btn.text = "🌱\n%s" % tr(seedType);
 		"GROWING":
 			var mins: int = int(remaining) / 60;
 			var secs: int = int(remaining) % 60;
 			btn.text = "🌿\n%02d:%02d" % [mins, secs];
 		"READY":
-			btn.text = "🌾\nChín!";
+			btn.text = tr("READY");
 		_:
 			btn.text = "❓\n???";
 

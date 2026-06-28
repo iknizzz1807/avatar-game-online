@@ -10,7 +10,7 @@ class_name ShopkeeperInteraction
 
 func _build_actions() -> Array:
 	return [
-		{ "id": "shop", "label": "🛒 Cửa hàng" }
+		{ "id": "shop", "label": tr("SHOP_ACTION") }
 	];
 
 func _on_context_action(actionId: String, target: Object) -> void:

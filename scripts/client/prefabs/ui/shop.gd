@@ -20,7 +20,7 @@ func open_shop() -> void:
 func _load_server_shop() -> void:
 	var response: Dictionary = await ApiClient.request_json("/api/shop/seeds")
 	if not response.get("ok", false):
-		ToastManager.show_toast("Không tải được cửa hàng.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("FAILED_TO_LOAD_SHOP"), ToastManager.Type.WARNING)
 		return
 	var data: Dictionary = ApiClient.response_data(response)
 	_populate_server_shop(data.get("seeds", []))
@@ -63,12 +63,12 @@ func _on_buy_requested(item_id: String, price: int) -> void:
 			{ "item_id": item_id, "quantity": 1 }
 		)
 		if response.get("ok", false):
-			ToastManager.show_toast("Đã mua vật phẩm.")
+			ToastManager.show_toast(tr("ITEM_PURCHASED"))
 			for inv in get_tree().get_nodes_in_group("inventory"):
 				if inv.has_method("load_inventory"):
 					inv.load_inventory()
 		else:
-			ToastManager.show_toast("Không mua được vật phẩm.", ToastManager.Type.WARNING)
+			ToastManager.show_toast(tr("FAILED_TO_PURCHASE_ITEM"), ToastManager.Type.WARNING)
 		return
 
 	var inventories = get_tree().get_nodes_in_group("inventory")
@@ -84,11 +84,11 @@ func _on_buy_requested(item_id: String, price: int) -> void:
 			inv.coins_changed.emit(inv.coins)
 			if ToastManager:
 				var bought_item = Items.get_item(local_item_id)
-				var msg = "Đã mua " + bought_item.itemName if bought_item else "Đã mua vật phẩm"
+				var msg = tr("ĐÃ_MUA") % tr(bought_item.itemName) if bought_item else tr("ITEM_PURCHASED")
 				ToastManager.show_toast(msg)
 		else:
 			if ToastManager:
-				ToastManager.show_toast("Túi đồ đã đầy!")
+				ToastManager.show_toast(tr("INVENTORY_IS_FULL"))
 	else:
 		if ToastManager:
-			ToastManager.show_toast("Không đủ tiền!")
+			ToastManager.show_toast(tr("NOT_ENOUGH_COINS"))

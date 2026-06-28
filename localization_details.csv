@@ -1,0 +1,196 @@
+Key,English,Vietnamese,Original,Source Type,Occurrences
+S_S,%s  %s,%s  %s,%s  %s,GDScript (UI Assign),scripts\client\prefabs\ui\toast.gd:35
+AVATAR_FARM,Avatar Farm,Avatar Farm,AVATAR_FARM,Manual,
+BAMBOO_ROD,Bamboo Rod,Cần Câu Tre,BAMBOO_ROD,Manual,
+BACK_TO_LOGIN,Back to Login,Quay lại đăng nhập,Back to Login,Static Fallback,
+YOU_ARE_NOT_CURRENTLY_FISHING,You are not currently fishing.,Bạn chưa đang câu cá.,Ban chua dang cau ca.,Static Fallback,
+BÁO_CÁO,🚩 Report,🚩 Báo cáo,BÁO_CÁO,Manual,
+HEALTH_POTION,Health Potion,Bình Máu,Bình Máu,Static Fallback,
+BẠN_CHƯA_CÂU,You have not fished.,Bạn chưa câu.,BẠN_CHƯA_CÂU,Manual,
+BẠN_KHÔNG_ĐỦ_XU_ĐỂ_MUA_VẬT_PHẨ,You do not have enough Coins to buy this item.,Bạn không đủ Xu để mua vật phẩm.,BẠN_KHÔNG_ĐỦ_XU_ĐỂ_MUA_VẬT_PHẨ,Manual,
+BẠN_S,[You]: %s,[Bạn]: %s,BẠN_S,Manual,
+BẠN_ĐỨNG_QUÁ_XA_MẶT_NƯỚC,You are standing too far from the water.,Bạn đứng quá xa mặt nước.,BẠN_ĐỨNG_QUÁ_XA_MẶT_NƯỚC,Manual,
+YOU,You,Bạn,Bạn,Static Fallback,
+YOU_HAVE_NOT_FISHED,You have not fished.,Bạn chưa câu.,Bạn chưa câu.,Static Fallback,
+YOU_ARE_NOT_IN_THE_CORRECT_FIS,You are not in the correct fishing spot or data is invalid.,Bạn chưa ở đúng khu câu cá hoặc dữ liệu không hợp lệ.,Bạn chưa ở đúng khu câu cá hoặc dữ liệu không hợp lệ.,GDScript (Vietnamese),scripts\client\prefabs\pond_input_handler.gd:275
+YOU_NEED_TO_BUY_A_ROD_FIRST,You need to buy a rod first.,Bạn cần mua cần câu trước.,Bạn cần mua cần câu trước.,GDScript (Vietnamese),scripts\client\prefabs\pond_input_handler.gd:269
+YOU_NEED_TO_BUY_SEEDS_OR_ARE_I,You need to buy seeds or are in the wrong area.,Bạn cần mua hạt giống hoặc đang ở sai khu vực.,Bạn cần mua hạt giống hoặc đang ở sai khu vực.,Static Fallback,
+YOU_NEED_TO_BUY_SEEDS_FIRST,You need to buy seeds first.,Bạn cần mua hạt giống trước.,Bạn cần mua hạt giống trước.,Static Fallback,
+YOU_NEED_TO_BUY_BAIT_FIRST,You need to buy bait first.,Bạn cần mua mồi câu trước.,Bạn cần mua mồi câu trước.,GDScript (Vietnamese),scripts\client\prefabs\pond_input_handler.gd:271
+YOU_DO_NOT_HAVE_ENOUGH_COINS_T,You do not have enough Coins to buy this item.,Bạn không đủ Xu để mua vật phẩm.,Bạn không đủ Xu để mua vật phẩm.,Static Fallback,
+YOU_ARE_STANDING_TOO_FAR_FROM,You are standing too far from the water.,Bạn đứng quá xa mặt nước.,Bạn đứng quá xa mặt nước.,Static Fallback,
+CORN,Corn,Bắp,Bắp,Static Fallback,
+CORN_1,Corn,Bắp Ngô,Bắp Ngô,Static Fallback,
+FISH_BITING_PRESS_SPACE_CLICK,FISH BITING! Press Space / Click!,CÁ CẮN CÂU! Nhấn Space / Click!,CA CAN CAU! Nhan Space / Click!,TSCN (text),prefabs\ui\screens\fishing_minigame.tscn:151
+CARROT,Carrot,Cà Rốt,CARROT,Manual,
+CARROT_SEED,Carrot Seed,Hạt Cà Rốt,CARROT_SEED,Manual,
+CHAT,Chat,Chat,CHAT,Manual,
+CHƯA_CÓ_CÁ_CẮN_CÂU,No fish biting yet.,Chưa có cá cắn câu.,CHƯA_CÓ_CÁ_CẮN_CÂU,Manual,
+COINS_SUFFIX, Coins, Xu,COINS_SUFFIX,Manual,
+CORN_SEED,Corn Seed,Hạt Bắp,CORN_SEED,Manual,
+FISH_BITING,Fish biting!,Cá cắn câu!,Ca can cau!,TSCN (text),prefabs\ui\screens\fishing_minigame.tscn:235
+FISH_WILL_BITE_IN_D_SECONDS,Fish will bite in %d seconds.,Ca se can cau sau %d giay.,Ca se can cau sau %d giay.,GDScript (Toast),scripts\client\prefabs\fishing_spot.gd:110
+MUST_LOG_IN_TO_THE_SERVER_TO_F,Must log in to the server to fish.,Cần đăng nhập server để câu cá.,Can dang nhap server de cau ca.,Static Fallback,
+FISH,Fish,Câu cá,Cau ca,Static Fallback,
+NO_FISH_BITING_YET,No fish biting yet.,Chua co ca can cau.,Chua co ca can cau.,GDScript (Toast),scripts\client\prefabs\fishing_spot.gd:120
+READY,Ready!,Chín!,Chín!,Static Fallback,
+REMOVING_SEED_NOT_SUPPORTED_ON,Removing seed not supported on server yet.,Chưa hỗ trợ nhổ hạt giống trên server.,Chưa hỗ trợ nhổ hạt giống trên server.,Static Fallback,
+CÁ_CHẠY_MẤT_RỒI,The fish got away.,Cá chạy mất rồi.,CÁ_CHẠY_MẤT_RỒI,Manual,
+CÁ_CẮN_CÂU,🐟 Fish biting!,🐟 Cá cắn câu!,CÁ_CẮN_CÂU,Manual,
+CÂU_CÁ,🎣 Start Fishing,🎣 Câu cá,CÂU_CÁ,Manual,
+CÂU_ĐƯỢC,🐟 Caught %s!,🐟 Câu được %s!,CÂU_ĐƯỢC,Manual,
+CÂU_ĐƯỢC_CÁ,🐟 Caught fish!,🐟 Câu được cá!,CÂU_ĐƯỢC_CÁ,Manual,
+TOMATO,Tomato,Cà Chua,Cà Chua,Static Fallback,
+LARGE_FISH,Large Fish,Cá Lớn,Cá Lớn,Static Fallback,
+SMALL_FISH,Small Fish,Cá Nhỏ,Cá Nhỏ,Static Fallback,
+MEDIUM_FISH,Medium Fish,Cá Vừa,Cá Vừa,Static Fallback,
+THE_FISH_GOT_AWAY_REACTED_TOO,The fish got away! Reacted too slowly.,Cá chạy mất rồi! Phản ứng chậm quá.,Cá chạy mất rồi! Phản ứng chậm quá.,GDScript (Vietnamese),scripts\client\prefabs\ui\fishing_minigame.gd:136
+LARGE_FISH_1,Large Fish,Cá lớn,Cá lớn,Static Fallback,
+SMALL_FISH_1,Small Fish,Cá nhỏ,Cá nhỏ,Static Fallback,
+THE_FISH_ESCAPED_BETTER_LUCK_N,The fish escaped! Better luck next time.,Cá thoát mất rồi! Lần sau cố hơn nhé.,Cá thoát mất rồi! Lần sau cố hơn nhé.,GDScript (Vietnamese),scripts\client\prefabs\ui\fishing_minigame.gd:186
+MEDIUM_FISH_1,Medium Fish,Cá vừa,Cá vừa,Static Fallback,
+PLANT_IS_NOT_READY_FOR_HARVEST,Plant is not ready for harvest.,Cây chưa đến lúc thu hoạch.,Cây chưa đến lúc thu hoạch.,Static Fallback,
+PLANT_IS_GROWING_PLEASE_WAIT,"Plant is growing, please wait","Cây đang phát triển, hãy đợi thêm","Cây đang phát triển, hãy đợi thêm",Static Fallback,
+CẦN_ĐĂNG_NHẬP_SERVER,Must log in to the server.,Cần đăng nhập server.,CẦN_ĐĂNG_NHẬP_SERVER,Manual,
+MUST_LOG_IN_TO_THE_SERVER_TO_B,Must log in to the server to buy items.,Cần đăng nhập server để mua vật phẩm.,Cần đăng nhập server để mua vật phẩm.,GDScript (Toast); GDScript (Vietnamese),"scripts\client\prefabs\pond_input_handler.gd:222, scripts\client\prefabs\pond_input_handler.gd:222"
+MUST_LOG_IN_TO_THE_SERVER_TO_M,Must log in to the server to manage the farm.,Cần đăng nhập server để thao tác nông trại.,Cần đăng nhập server để thao tác nông trại.,Static Fallback,
+MUST_LOG_IN_TO_THE_SERVER,Must log in to the server.,Cần đăng nhập server.,Cần đăng nhập server.,Static Fallback,
+CARROT_1,Carrot,Củ Cà Rốt,Củ Cà Rốt,Static Fallback,
+SHOP,Shop,Cửa hàng,Cửa hàng,Static Fallback,
+DEDICATED_SERVER_DO_NOT_LOGIN,"DEDICATED SERVER
+(Do not login here)","DEDICATED SERVER
+(Do không thể đăng nhập ở đây)","DEDICATED SERVER
+(Do not login here)",Static Fallback,
+STOPPED_FISHING,Stopped fishing.,Đã dừng câu cá.,Da dung cau ca.,Static Fallback,
+ITEM_PURCHASED,Item purchased.,Đã mua vật phẩm.,Da mua vat pham.,Static Fallback,
+FISHING,Fishing...,Đang câu cá...,Dang cau ca...,Static Fallback,
+WAITING_FOR_FISH,Waiting for fish...,Đang chờ cá...,Dang cho ca...,TSCN (text),prefabs\ui\screens\fishing_minigame.tscn:119
+DISPLAY_NAME,Display Name:,Tên hiển thị:,Display Name:,Static Fallback,
+DONT_HAVE_AN_ACCOUNT_SIGN_UP,Don't have an account? Sign up,Chưa có tài khoản? Đăng ký,Don't have an account? Sign up,Static Fallback,
+STOP_FISHING,Stop Fishing,Dừng câu,Dung cau,Static Fallback,
+STOPPED_FISHING_1,Stopped fishing.,Dừng câu cá.,Dung cau ca.,Static Fallback,
+DỪNG_CÂU,🚶 Stop Fishing,🚶 Dừng câu,DỪNG_CÂU,Manual,
+EGG,EGG,EGG,EGG,TSCN (text),"prefabs\ui\components\shop_row.tscn:54, prefabs\ui\components\shop_row.tscn:65"
+ENTER,ENTER,ENTER,ENTER,TSCN (text),prefabs\teleport_zone.tscn:29
+ENTER_MESSAGE,Enter message...,Nhập tin nhắn...,ENTER_MESSAGE,Manual,
+SEND,Send,Gửi,Gui,Static Fallback,
+HARVEST,Harvest,Thu hoạch,HARVEST,Manual,
+HELLO,Hello,Hello,Hello,TSCN (text),prefabs\ui\components\context_menu_item.tscn:21
+TOMATO_SEED,Tomato Seed,Hạt Cà Chua,Hạt Cà Chua,Static Fallback,
+CORN_SEED_1,Corn Seed,Hạt Ngô,Hạt Ngô,Static Fallback,
+INSPECT_PLANT,Inspect Plant,Kiểm tra cây,INSPECT_PLANT,Manual,
+INVENTORY_020,Inventory (0/20),Túi đồ (0/20),INVENTORY_020,Manual,
+KHÔNG_MUA_ĐƯỢC_VẬT_PHẨM,Failed to purchase item.,Không mua được vật phẩm.,KHÔNG_MUA_ĐƯỢC_VẬT_PHẨM,Manual,
+FAILED_TO_PURCHASE_ITEM,Failed to purchase item.,Không mua được vật phẩm.,Khong mua duoc vat pham.,Static Fallback,
+FAILED_TO_LOAD_PLAYER_PROFILE,Failed to load player profile.,Khong tai duoc ho so nguoi choi.,Khong tai duoc ho so nguoi choi.,GDScript (Toast),scripts\client\prefabs\player\other_player.gd:75
+CANNOT_START_FISHING,Cannot start fishing.,Không thể bắt đầu câu cá.,Khong the bat dau cau ca.,Static Fallback,
+FAILED_TO_SELL_ITEM,Failed to sell item.,Không bán được vật phẩm.,Không bán được vật phẩm.,Static Fallback,
+CANNOT_WATER_RIGHT_NOW,Cannot water right now.,Không thể tưới ngay lúc này.,Không thể tưới ngay lúc này.,GDScript (Toast); GDScript (Vietnamese),"scripts\client\prefabs\player\player.gd:142, scripts\client\prefabs\player\player.gd:142"
+FAILED_TO_LOAD_SHOP,Failed to load shop.,Không tải được cửa hàng.,Không tải được cửa hàng.,Static Fallback,
+FAILED_TO_LOAD_FARM,Failed to load farm.,Không tải được nông trại.,Không tải được nông trại.,Static Fallback,
+FAILED_TO_LOAD_INVENTORY,Failed to load inventory.,Không tải được túi đồ.,Không tải được túi đồ.,Static Fallback,
+NOT_ENOUGH_COINS,Not enough coins!,Không đủ tiền!,Không đủ tiền!,Static Fallback,
+LOGIN,Login,Đăng nhập,LOGIN,Manual,
+LOGIN_DOTS,Login...,Đăng nhập...,LOGIN_DOTS,Manual,
+LOGIN_GO_SERVER,Login (Go Server),Đăng nhập (Máy chủ Go),Login (Go Server),Static Fallback,
+MOVE_CLOSER_TO_REMOVE_SEED,Move closer to remove seed,Lại gần hơn để nhổ hạt giống,Lại gần hơn để nhổ hạt giống,Static Fallback,
+MOVE_CLOSER_TO_HARVEST,Move closer to harvest,Lại gần hơn để thu hoạch,Lại gần hơn để thu hoạch,Static Fallback,
+MOVE_CLOSER_TO_PLANT,Move closer to plant,Lại gần hơn để trồng cây,Lại gần hơn để trồng cây,Static Fallback,
+MOVE_CLOSER_TO_PLANT_1,Move closer to plant.,Lại gần hơn để trồng cây.,Lại gần hơn để trồng cây.,Static Fallback,
+MOVE_CLOSER_TO_WATER,Move closer to water,Lại gần hơn để tưới nước,Lại gần hơn để tưới nước,Static Fallback,
+MOVE_CLOSER_TO_THE_WATER_TO_FI,Move closer to the water to fish.,Lại gần mặt nước hơn để câu cá.,Lại gần mặt nước hơn để câu cá.,GDScript (Toast); GDScript (Vietnamese),"scripts\client\prefabs\pond_input_handler.gd:242, scripts\client\prefabs\pond_input_handler.gd:242"
+MUA,Buy,Mua,MUA,Manual,
+MUA_CẦN_CÂU,🛒 Buy Rod,🛒 Mua cần câu,MUA_CẦN_CÂU,Manual,
+MUA_MỒI_CÂU,🪱 Buy Bait,🪱 Mua mồi câu,MUA_MỒI_CÂU,Manual,
+BUY_ROD,Buy Rod,Mua cần câu,Mua can cau,Static Fallback,
+BUY_BAIT,Buy Bait,Mua mồi câu,Mua moi cau,Static Fallback,
+NORMAL_BAIT,Normal Bait,Mồi Thường,Mồi Thường,Static Fallback,
+NORMAL_BAIT_1,Normal Bait,Mồi câu thường,Mồi câu thường,Static Fallback,
+MỜI_ĐẾN_NÔNG_TRẠI,🌾 Invite to Farm,🌾 Mới đến nông trại,MỜI_ĐẾN_NÔNG_TRẠI,Manual,
+NHẮN_RIÊNG,💬 Whisper,💬 Nhắn riêng,NHẮN_RIÊNG,Manual,
+REMOVE_SEED,Remove Seed,Nhổ hạt giống,Nhổ hạt giống,Static Fallback,
+NÓI_CHUYỆN,💬 Chat,💬 Nói chuyện,NÓI_CHUYỆN,Manual,
+PASSWORD_LABEL,Password:,Mật khẩu:,PASSWORD_LABEL,Manual,
+PASSWORD_PLACEHOLDER,Password...,Mật khẩu...,PASSWORD_PLACEHOLDER,Manual,
+PLANT,Plant,Trồng cây,PLANT,Manual,
+PASSWORD,Password:,Mật khẩu:,Password:,Static Fallback,
+LOGIN_SESSION_EXPIRED,Login session expired.,Phien dang nhap het han.,Phien dang nhap het han.,GDScript (Toast),scripts\client\shared\api_client.gd:88
+PLAYER,Player,Player,Player,TSCN (text),prefabs\characters\remote_player.tscn:665
+TOMATO_1,Tomato,Quả Cà Chua,Quả Cà Chua,Static Fallback,
+REGISTER,Register,Đăng ký,REGISTER,Manual,
+SELL,Sell,Bán,SELL,Manual,
+SHOP_ACTION,🛒 Shop,🛒 Cửa hàng,SHOP_ACTION,Manual,
+SKIP_LOGIN,Skip Login,Bỏ qua đăng nhập,SKIP_LOGIN,Manual,
+SKIP_LOGIN_DEMO,Skip Login (Demo),Bỏ qua đăng nhập (Chạy thử),Skip Login (Demo),Static Fallback,
+THIS_IS_A_TOAST,THIS IS A TOAST,THIS IS A TOAST,THIS IS A TOAST,TSCN (text),prefabs\ui\components\toast.tscn:28
+THIS_IS_A_TOOL_TIP,This is a tooltip,Đây là tooltip,THIS_IS_A_TOOL_TIP,Manual,
+TRAO_ĐỔI,🤝 Trade,🤝 Trao đổi,TRAO_ĐỔI,Manual,
+TRAO_ĐỔI_VẬT_PHẨM,🤝 Trade Items,🤝 Trao đổi vật phẩm,TRAO_ĐỔI_VẬT_PHẨM,Manual,
+FARM_ACTION_FAILED,Farm action failed.,Thao tác nông trại thất bại.,Thao tác nông trại thất bại.,Static Fallback,
+THIS_IS_A_TOOL_TIP_1,This is a tool tip,Đây là tooltip,This is a tool tip,Static Fallback,
+HEALTH_POTION_1,Health Potion,Thuốc Hồi Máu,Thuốc Hồi Máu,Static Fallback,
+FARM,Farm,Nông trại,Trang trai,TSCN (text),prefabs\ui\screens\farm_map.tscn:87
+EMPTY,Empty,Trống,Trống,Static Fallback,
+INVENTORY_IS_FULL,Inventory is full!,Túi đồ đã đầy!,Túi đồ đã đầy!,Static Fallback,
+INVENTORY_IS_FULL_1,Inventory is full.,Túi đồ đã đầy.,Túi đồ đã đầy.,Static Fallback,
+WATER,Water,Tưới nước,Tưới nước,Static Fallback,
+USERNAME_LABEL,Username:,Tài khoản:,USERNAME_LABEL,Manual,
+USERNAME_PLACEHOLDER,Username...,Tài khoản...,USERNAME_PLACEHOLDER,Manual,
+USERNAME,Username:,Tài khoản:,Username:,Static Fallback,
+PLEASE_ENTER_USERNAME_AND_PASS,Please enter username and password.,Vui lòng nhập tài khoản và mật khẩu.,Vui lòng nhập tài khoản và mật khẩu.,Static Fallback,
+VẬT_PHẨM_NÀY_KHÔNG_BÁN_TRONG_S,This item is not sold in the shop.,Vật phẩm này không bán trong shop.,VẬT_PHẨM_NÀY_KHÔNG_BÁN_TRONG_S,Manual,
+THIS_ITEM_IS_NOT_SOLD_IN_THE_S,This item is not sold in the shop.,Vật phẩm này không bán trong shop.,Vật phẩm này không bán trong shop.,Static Fallback,
+THIS_FISHING_SPOT_IS_OCCUPIED,This fishing spot is occupied.,Vị trí câu này đang có người.,Vị trí câu này đang có người.,GDScript (Vietnamese),scripts\client\prefabs\pond_input_handler.gd:273
+WARNING,Warning,Warning,Warning,TSCN (text),prefabs\ui\components\context_menu_item.tscn:29
+WHISPER_WILL_BE_IMPLEMENTED_IN,Whisper will be implemented in the next phase.,Whisper se lam o phase sau.,Whisper se lam o phase sau.,GDScript (Toast),scripts\client\prefabs\player\other_player.gd:62
+XEM_TRANG_CÁ_NHÂN,👤 View Profile,👤 Xem trang cá nhân,XEM_TRANG_CÁ_NHÂN,Manual,
+YOU_S,[You]: %s,[Bạn]: %s,[Bạn]: %s,Static Fallback,
+seed_carrot,Carrot Seed,Hạt Cà Rốt,seed_carrot,Manual,
+seed_corn,Corn Seed,Hạt Bắp,seed_corn,Manual,
+seed_tomato,Tomato Seed,Hạt Cà Chua,seed_tomato,Manual,
+XD,x%d,x%d,x%d,GDScript (UI Assign),scripts\client\prefabs\ui\item_slot.gd:141
+THIS_PLOT_IS_NOT_SEEDED,This plot is not seeded.,Ô này chưa gieo hạt.,Ô này chưa gieo hạt.,Static Fallback,
+THIS_PLOT_HAS_ALREADY_BEEN_PLA,This plot has already been planted.,Ô đất này đã được trồng.,Ô đất này đã được trồng.,Static Fallback,
+ĐANG_CHỜ_CÁ,🎣 Waiting for fish...,🎣 Đang chờ cá...,ĐANG_CHỜ_CÁ,Manual,
+ĐANG_CÂU_RỒI,Already fishing.,Đang câu rồi.,ĐANG_CÂU_RỒI,Manual,
+ALREADY_FISHING,Already fishing.,Đang câu rồi.,Đang câu rồi.,Static Fallback,
+ĐÃ_MUA,Bought %s,Đã mua %s,ĐÃ_MUA,Manual,
+ITEM_SOLD,Item sold.,Đã bán vật phẩm.,Đã bán vật phẩm.,Static Fallback,
+BOUGHT,Bought ,Đã mua ,Đã mua ,Static Fallback,
+ĐĂNG_KÝ_THẤT_BẠI,Registration failed: ,Đăng ký thất bại: ,ĐĂNG_KÝ_THẤT_BẠI,Manual,
+ĐĂNG_NHẬP_THẤT_BẠI,Login failed: ,Đăng nhập thất bại: ,ĐĂNG_NHẬP_THẤT_BẠI,Manual,
+REGISTRATION_SUCCESSFUL,Registration successful!,Đăng ký thành công!,Đăng ký thành công!,Static Fallback,
+REGISTRATION_FAILED,Registration failed:,Đăng ký thất bại:,Đăng ký thất bại:,Static Fallback,
+REGISTRATION_FAILED_1,Registration failed: ,Đăng ký thất bại: ,Đăng ký thất bại: ,Static Fallback,
+LOGIN_SUCCESSFUL,Login successful!,Đăng nhập thành công!,Đăng nhập thành công!,Static Fallback,
+LOGIN_FAILED,Login failed:,Đăng nhập thất bại:,Đăng nhập thất bại:,Static Fallback,
+LOGIN_FAILED_1,Login failed: ,Đăng nhập thất bại: ,Đăng nhập thất bại: ,Static Fallback,
+ANONYMOUS_LOGIN_SUCCESSFUL,Anonymous login successful!,Đăng nhập ẩn danh thành công!,Đăng nhập ẩn danh thành công!,Static Fallback,
+TXT_2037,⚠,⚠,⚠,GDScript (UI Assign),scripts\client\prefabs\ui\context_menu_item.gd:27
+TXT_385,"❓
+???","❓
+???","❓
+???",GDScript (UI Assign),scripts\client\prefabs\ui\farm_map.gd:137
+S,"🌱
+%s","🌱
+%s","🌱
+%s",GDScript (UI Assign),scripts\client\prefabs\ui\farm_map.gd:129
+PLANT_1,🌱 Plant,🌱 Trồng cây,🌱 Trồng cây,Static Fallback,
+READY_1,"🌾
+Ready!","🌾
+Chín!","🌾
+Chín!",Static Fallback,
+HARVEST_1,🌾 Harvest,🌾 Thu hoạch,🌾 Thu hoạch,Static Fallback,
+02D02D,"🌿
+%02d:%02d","🌿
+%02d:%02d","🌿
+%02d:%02d",GDScript (UI Assign),"scripts\client\prefabs\ui\farm_map.gd:121, scripts\client\prefabs\ui\farm_map.gd:133"
+WATER_1,💧 Water,💧 Tưới nước,💧 Tưới nước,Static Fallback,
+TXT_8395,💨,💨,💨,GDScript (UI Assign),scripts\client\prefabs\ui\fishing_minigame.gd:256
+INSPECT_PLANT_1,🔍 Inspect Plant,🔍 Kiểm tra cây,🔍 Kiểm tra cây,Static Fallback,
+REMOVE_SEED_1,🗑 Remove Seed,🗑 Nhổ hạt giống,🗑 Nhổ hạt giống,Static Fallback,
+SHOP_1,🛒 Shop,🛒 Cửa hàng,🛒 Cửa hàng,Static Fallback,
+EMPTY_1,"🟫
+Empty","🟫
+Trống","🟫
+Trống",Static Fallback,

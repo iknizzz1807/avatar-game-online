@@ -41,12 +41,12 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void
 
 func _build_actions() -> Array:
 	return [
-		{ "id": "view_profile", "label": "👤 Xem trang cá nhân" },
-		{ "id": "trade",        "label": "🤝 Trao đổi vật phẩm" },
-		{ "id": "whisper",      "label": "💬 Nhắn riêng" },
+		{ "id": "view_profile", "label": tr("XEM_TRANG_CÁ_NHÂN") },
+		{ "id": "trade",        "label": tr("TRAO_ĐỔI_VẬT_PHẨM") },
+		{ "id": "whisper",      "label": tr("NHẮN_RIÊNG") },
 		# ── Add future social actions below ──
-		# { "id": "invite_farm",  "label": "🌾 Mời đến nông trại" },
-		# { "id": "report",       "label": "🚩 Báo cáo" },
+		# { "id": "invite_farm",  "label": tr("MỜI_ĐẾN_NÔNG_TRẠI") },
+		# { "id": "report",       "label": tr("BÁO_CÁO") },
 	]
 
 func _on_context_action(actionId: String, target: Object) -> void:

@@ -102,7 +102,7 @@ func _on_fishing_success() -> void:
 	if handler and handler.has_method("on_minigame_success"):
 		handler.on_minigame_success()
 	else:
-		ToastManager.show_toast("🐟 Câu được cá!", ToastManager.Type.SUCCESS)
+		ToastManager.show_toast(tr("CÂU_ĐƯỢC_CÁ"), ToastManager.Type.SUCCESS)
 
 	# A brief delay so the result panel is readable, then return to normal
 	await player.get_tree().create_timer(2.0).timeout

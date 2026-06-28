@@ -80,27 +80,27 @@ func _build_actions(tile_world_pos: Vector2, player: Node) -> Array:
 	return [
 		{
 			"id": "start",
-			"label": "🎣 Câu cá",
+			"label": tr("CÂU_CÁ"),
 			"enabled": in_range and not _is_fishing,
-			"tooltip": "Bạn đứng quá xa mặt nước." if not in_range else ("Đang câu rồi." if _is_fishing else "")
+			"tooltip": tr("BẠN_ĐỨNG_QUÁ_XA_MẶT_NƯỚC") if not in_range else (tr("ĐANG_CÂU_RỒI") if _is_fishing else "")
 		},
 		{
 			"id": "stop",
-			"label": "🚶 Dừng câu",
+			"label": tr("DỪNG_CÂU"),
 			"enabled": _is_fishing,
-			"tooltip": "Bạn chưa câu." if not _is_fishing else ""
+			"tooltip": tr("BẠN_CHƯA_CÂU") if not _is_fishing else ""
 		},
 		{
 			"id": "buy_rod",
-			"label": "🛒 Mua cần câu",
+			"label": tr("MUA_CẦN_CÂU"),
 			"enabled": ApiClient.has_auth_token(),
-			"tooltip": "Cần đăng nhập server."
+			"tooltip": tr("CẦN_ĐĂNG_NHẬP_SERVER")
 		},
 		{
 			"id": "buy_bait",
-			"label": "🪱 Mua mồi câu",
+			"label": tr("MUA_MỒI_CÂU"),
 			"enabled": ApiClient.has_auth_token(),
-			"tooltip": "Cần đăng nhập server."
+			"tooltip": tr("CẦN_ĐĂNG_NHẬP_SERVER")
 		},
 	]
 
@@ -190,19 +190,19 @@ func on_minigame_success() -> void:
 			var result: Dictionary = data.get("result", {})
 			var item_id: String = result.get("item_id", "")
 			if item_id.is_empty():
-				ToastManager.show_toast("Cá chạy mất rồi.", ToastManager.Type.WARNING)
+				ToastManager.show_toast(tr("CÁ_CHẠY_MẤT_RỒI"), ToastManager.Type.WARNING)
 			else:
 				var item_name: String = item_id
 				if Engine.has_singleton("Items"):
 					var item = Items.get_item_by_server_id(item_id)
 					if item:
-						item_name = item.itemName
-				ToastManager.show_toast("🐟 Câu được " + item_name + "!", ToastManager.Type.SUCCESS)
+						item_name = tr(item.itemName)
+				ToastManager.show_toast(tr("CÂU_ĐƯỢC") % item_name, ToastManager.Type.SUCCESS)
 		else:
-			ToastManager.show_toast("Chưa có cá cắn câu.", ToastManager.Type.WARNING)
+			ToastManager.show_toast(tr("CHƯA_CÓ_CÁ_CẮN_CÂU"), ToastManager.Type.WARNING)
 	else:
 		# Offline / no auth — give a placeholder reward toast
-		ToastManager.show_toast("🐟 Câu được cá!", ToastManager.Type.SUCCESS)
+		ToastManager.show_toast(tr("CÂU_ĐƯỢC_CÁ"), ToastManager.Type.SUCCESS)
 
 
 ## Called by PlayerFishingState after the minigame is lost.
@@ -280,10 +280,10 @@ func _fishing_error_message(error_code: String) -> String:
 func _shop_error_message(error_code: String) -> String:
 	match error_code:
 		"INSUFFICIENT_FUNDS":
-			return "Bạn không đủ Xu để mua vật phẩm."
+			return tr("BẠN_KHÔNG_ĐỦ_XU_ĐỂ_MUA_VẬT_PHẨ")
 		"INVENTORY_FULL":
-			return "Túi đồ đã đầy."
+			return tr("INVENTORY_IS_FULL_DOT")
 		"INVALID_INPUT":
-			return "Vật phẩm này không bán trong shop."
+			return tr("VẬT_PHẨM_NÀY_KHÔNG_BÁN_TRONG_S")
 		_:
-			return "Không mua được vật phẩm."
+			return tr("KHÔNG_MUA_ĐƯỢC_VẬT_PHẨM")

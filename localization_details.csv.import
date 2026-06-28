@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://c0qwhd2gmvfvf"
+
+[deps]
+
+files=["res://localization_details.English.translation", "res://localization_details.Vietnamese.translation", "res://localization_details.Original.translation", "res://localization_details.Source Type.translation", "res://localization_details.Occurrences.translation"]
+
+source_file="res://localization_details.csv"
+dest_files=["res://localization_details.English.translation", "res://localization_details.Vietnamese.translation", "res://localization_details.Original.translation", "res://localization_details.Source Type.translation", "res://localization_details.Occurrences.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

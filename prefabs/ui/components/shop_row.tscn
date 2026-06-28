@@ -82,4 +82,4 @@ layout_mode = 2
 theme = ExtResource("3_aseht")
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 24
-text = "Mua"
+text = "MUA"

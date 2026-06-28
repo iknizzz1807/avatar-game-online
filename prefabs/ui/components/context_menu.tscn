@@ -1,87 +1,69 @@
-[gd_scene format=3 uid="uid://context_menu_comp"]
+[gd_scene format=3 uid="uid://bvwu5ukugqbwo"]
 
-[ext_resource type="Script" path="res://scripts/client/prefabs/ui/context_menu.gd" id="1_ctxmenu"]
-[ext_resource type="Font" path="res://resources/ui_system_font.tres" id="2_font"]
+[ext_resource type="Script" uid="uid://crvqosb4l7asl" path="res://scripts/client/prefabs/ui/context_menu.gd" id="1_ctxmenu"]
+[ext_resource type="SystemFont" path="res://resources/ui_system_font.tres" id="2_font"]
+[ext_resource type="StyleBox" uid="uid://c0r71un0cdua" path="res://resources/ui/panel.tres" id="2_ry7qn"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
-bg_color = Color(0.145098, 0.101961, 0.0705882, 0.95)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.72549, 0.52549, 0.286275, 0.9)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-shadow_color = Color(0, 0, 0, 0.4)
-shadow_size = 10
-shadow_offset = Vector2(0, 4)
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_btn_focus"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
-bg_color = Color(0, 0, 0, 0)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
 content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
 bg_color = Color(0.282353, 0.498039, 0.25098, 0.55)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
 content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
 bg_color = Color(0.352941, 0.235294, 0.137255, 0.8)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-content_margin_left = 10.0
-content_margin_top = 5.0
-content_margin_right = 10.0
-content_margin_bottom = 5.0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_btn_focus"]
 
 [sub_resource type="Theme" id="Theme_context"]
 default_font = ExtResource("2_font")
 default_font_size = 13
-Button/styles/normal = SubResource("StyleBoxFlat_btn_normal")
-Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
-Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
-Button/styles/focus = SubResource("StyleBoxEmpty_btn_focus")
 Button/colors/font_color = Color(1, 0.929412, 0.741176, 1)
+Button/colors/font_disabled_color = Color(0.5, 0.5, 0.55, 0.6)
 Button/colors/font_hover_color = Color(1, 0.964706, 0.843137, 1)
 Button/colors/font_pressed_color = Color(1, 0.964706, 0.843137, 1)
-Button/colors/font_disabled_color = Color(0.5, 0.5, 0.55, 0.6)
+Button/styles/focus = SubResource("StyleBoxEmpty_btn_focus")
+Button/styles/hover = SubResource("StyleBoxFlat_btn_hover")
+Button/styles/normal = SubResource("StyleBoxFlat_btn_normal")
+Button/styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
 
-[node name="ContextMenu" type="PanelContainer"]
-theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+[node name="ContextMenu" type="PanelContainer" unique_id=182500538]
+custom_minimum_size = Vector2(160, 32)
 theme = SubResource("Theme_context")
+theme_override_styles/panel = ExtResource("2_ry7qn")
 script = ExtResource("1_ctxmenu")
-custom_minimum_size = Vector2(160, 0)
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=559097098]
 layout_mode = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=12184288]
 layout_mode = 2
 theme_override_constants/separation = 2

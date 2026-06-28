@@ -165,14 +165,14 @@ layout_mode = 2
 theme = ExtResource("2_theme")
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 36
-text = "Avatar Farm"
+text = "AVATAR_FARM"
 horizontal_alignment = 1
 
 [node name="SubtitleLabel" type="Label" parent="CanvasLayer/Auth/Login/VBoxContainer" unique_id=100000006]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 24
-text = "Login"
+text = "LOGIN"
 horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/Auth/Login/VBoxContainer" unique_id=259371175]
@@ -187,7 +187,7 @@ columns = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 16
-text = "Username:"
+text = "USERNAME_LABEL"
 
 [node name="TextEdit" type="LineEdit" parent="CanvasLayer/Auth/Login/VBoxContainer/GridContainer" unique_id=1758065951]
 custom_minimum_size = Vector2(210, 36)
@@ -201,7 +201,7 @@ theme_override_fonts/font = ExtResource("4_rgw86")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = ExtResource("5_y6olf")
 theme_override_styles/focus = ExtResource("5_y6olf")
-placeholder_text = "Username..."
+placeholder_text = "USERNAME_PLACEHOLDER"
 clear_button_enabled = true
 caret_blink = true
 
@@ -209,7 +209,7 @@ caret_blink = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 16
-text = "Password:"
+text = "PASSWORD_LABEL"
 
 [node name="TextEdit2" type="LineEdit" parent="CanvasLayer/Auth/Login/VBoxContainer/GridContainer" unique_id=1515658287]
 custom_minimum_size = Vector2(210, 36)
@@ -223,7 +223,7 @@ theme_override_fonts/font = ExtResource("4_rgw86")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = ExtResource("5_y6olf")
 theme_override_styles/focus = ExtResource("5_y6olf")
-placeholder_text = "Password..."
+placeholder_text = "PASSWORD_PLACEHOLDER"
 clear_button_enabled = true
 caret_blink = true
 secret = true
@@ -235,7 +235,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_theme")
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
-text = "Login"
+text = "LOGIN"
 
 [node name="SkipButton" type="Button" parent="CanvasLayer/Auth/Login/VBoxContainer" unique_id=987654321]
 visible = false
@@ -245,7 +245,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_theme")
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
-text = "Skip Login"
+text = "SKIP_LOGIN"
 
 [node name="RegisterButton" type="Button" parent="CanvasLayer/Auth/Login/VBoxContainer" unique_id=112233445]
 custom_minimum_size = Vector2(65, 24)
@@ -257,7 +257,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_link")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_link")
 theme_override_styles/hover = SubResource("StyleBoxFlat_link_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_link")
-text = "Register"
+text = "REGISTER"
 
 [node name="SignUp" type="Control" parent="CanvasLayer/Auth" unique_id=751365117]
 visible = false
@@ -306,7 +306,7 @@ layout_mode = 2
 theme = ExtResource("2_theme")
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 36
-text = "Register"
+text = "REGISTER"
 horizontal_alignment = 1
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/Auth/SignUp/VBoxContainer" unique_id=632175893]
@@ -321,7 +321,7 @@ columns = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 16
-text = "Username:"
+text = "USERNAME_LABEL"
 
 [node name="TextEdit" type="LineEdit" parent="CanvasLayer/Auth/SignUp/VBoxContainer/GridContainer" unique_id=780278808]
 custom_minimum_size = Vector2(210, 36)
@@ -335,7 +335,7 @@ theme_override_fonts/font = ExtResource("4_rgw86")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = ExtResource("5_y6olf")
 theme_override_styles/focus = ExtResource("5_y6olf")
-placeholder_text = "Username..."
+placeholder_text = "USERNAME_PLACEHOLDER"
 clear_button_enabled = true
 caret_blink = true
 
@@ -343,7 +343,7 @@ caret_blink = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 16
-text = "Password:"
+text = "PASSWORD_LABEL"
 
 [node name="TextEdit2" type="LineEdit" parent="CanvasLayer/Auth/SignUp/VBoxContainer/GridContainer" unique_id=76581671]
 custom_minimum_size = Vector2(210, 36)
@@ -357,7 +357,7 @@ theme_override_fonts/font = ExtResource("4_rgw86")
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = ExtResource("5_y6olf")
 theme_override_styles/focus = ExtResource("5_y6olf")
-placeholder_text = "Password..."
+placeholder_text = "PASSWORD_PLACEHOLDER"
 clear_button_enabled = true
 caret_blink = true
 secret = true
@@ -369,7 +369,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_theme")
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
-text = "Register"
+text = "REGISTER"
 
 [node name="BackToLoginButton" type="Button" parent="CanvasLayer/Auth/SignUp/VBoxContainer" unique_id=112233447]
 custom_minimum_size = Vector2(65, 24)
@@ -381,4 +381,4 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_link")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_link")
 theme_override_styles/hover = SubResource("StyleBoxFlat_link_hover")
 theme_override_styles/focus = SubResource("StyleBoxFlat_link")
-text = "Login..."
+text = "LOGIN_DOTS"

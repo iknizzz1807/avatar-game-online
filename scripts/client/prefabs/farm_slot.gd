@@ -77,7 +77,7 @@ func _handle_click() -> void:
 	match currentState:
 		PlotState.EMPTY:
 			if not _is_player_nearby():
-				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
+				ToastManager.show_toast(tr("MOVE_CLOSER_TO_PLANT"), ToastManager.Type.WARNING)
 				return
 			_request_server_action("plant")
 			
@@ -101,29 +101,29 @@ func _build_actions() -> Array:
 	match currentState:
 		PlotState.EMPTY:
 			return [
-				{ "id": "plant", "label": "🌱 Trồng cây",
+				{ "id": "plant", "label": tr("PLANT"),
 				  "enabled": nearby,
-				  "tooltip": "" if nearby else "Lại gần hơn để trồng cây" },
+				  "tooltip": "" if nearby else tr("MOVE_CLOSER_TO_PLANT") },
 			]
 		PlotState.SEEDED:
 			return [
-				{ "id": "water", "label": "💧 Tưới nước",
+				{ "id": "water", "label": tr("WATER"),
 				  "enabled": nearby,
-				  "tooltip": "" if nearby else "Lại gần hơn để tưới nước" },
-				{ "id": "remove_seed", "label": "🗑 Nhổ hạt giống",
+				  "tooltip": "" if nearby else tr("MOVE_CLOSER_TO_WATER") },
+				{ "id": "remove_seed", "label": tr("REMOVE_SEED"),
 				  "enabled": nearby,
-				  "tooltip": "" if nearby else "Lại gần hơn để nhổ hạt giống" },
+				  "tooltip": "" if nearby else tr("MOVE_CLOSER_TO_REMOVE_SEED") },
 			]
 		PlotState.GROWING:
 			return [
-				{ "id": "inspect", "label": "🔍 Kiểm tra cây", "enabled": false,
-				  "tooltip": "Cây đang phát triển, hãy đợi thêm" },
+				{ "id": "inspect", "label": tr("INSPECT_PLANT"), "enabled": false,
+				  "tooltip": tr("PLANT_IS_GROWING_PLEASE_WAIT") },
 			]
 		PlotState.READY:
 			return [
-				{ "id": "harvest", "label": "🌾 Thu hoạch",
+				{ "id": "harvest", "label": tr("HARVEST"),
 				  "enabled": nearby,
-				  "tooltip": "" if nearby else "Lại gần hơn để thu hoạch" },
+				  "tooltip": "" if nearby else tr("MOVE_CLOSER_TO_HARVEST") },
 			]
 		_:
 			return []
@@ -134,14 +134,14 @@ func _on_context_action(actionId: String, target: Object) -> void:
 	match actionId:
 		"plant":
 			if not _is_player_nearby():
-				ToastManager.show_toast("Lại gần hơn để trồng cây.", ToastManager.Type.WARNING)
+				ToastManager.show_toast(tr("MOVE_CLOSER_TO_PLANT"), ToastManager.Type.WARNING)
 				return
 			_request_server_action("plant")
 		"water":
 			# Delegate to the nearby local player so the watering animation plays first.
 			_request_water_via_player()
 		"remove_seed":
-			ToastManager.show_toast("Chưa hỗ trợ nhổ hạt giống trên server.", ToastManager.Type.WARNING)
+			ToastManager.show_toast(tr("REMOVING_SEED_NOT_SUPPORTED_ON"), ToastManager.Type.WARNING)
 		"harvest":
 			_request_server_action("harvest")
 		"inspect":
@@ -169,7 +169,7 @@ func _request_water_via_player() -> void:
 			if global_position.distance_to(node.global_position) <= watering_distance:
 				node.request_water(self)
 				return
-	ToastManager.show_toast("Lại gần hơn để tưới nước.", ToastManager.Type.WARNING)
+	ToastManager.show_toast(tr("MOVE_CLOSER_TO_WATER"), ToastManager.Type.WARNING)
 
 
 ## Called by PlayerUseWaterState after the watering animation finishes.
@@ -243,14 +243,14 @@ func _load_farm_from_server() -> void:
 		return
 	var response: Dictionary = await ApiClient.request_json("/api/farm/plots")
 	if not response.get("ok", false):
-		ToastManager.show_toast("Không tải được nông trại.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("FAILED_TO_LOAD_FARM"), ToastManager.Type.WARNING)
 		return
 	_apply_server_plots(ApiClient.response_data(response).get("plots", []), false)
 
 
 func _request_server_action(action: String, seed_id: String = "") -> void:
 	if not ApiClient.has_auth_token():
-		ToastManager.show_toast("Cần đăng nhập server để thao tác nông trại.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("MUST_LOG_IN_TO_THE_SERVER_TO_M"), ToastManager.Type.WARNING)
 		return
 
 	var endpoint := ""
@@ -262,7 +262,7 @@ func _request_server_action(action: String, seed_id: String = "") -> void:
 			if seed_id.is_empty():
 				seed_id = await _pick_available_seed_id()
 			if seed_id.is_empty():
-				ToastManager.show_toast("Bạn cần mua hạt giống trước.", ToastManager.Type.WARNING)
+				ToastManager.show_toast(tr("YOU_NEED_TO_BUY_SEEDS_FIRST"), ToastManager.Type.WARNING)
 				return
 			endpoint = "/api/farm/seed"
 			body["seed_id"] = seed_id
@@ -328,22 +328,22 @@ func _farm_error_message(response: Dictionary) -> String:
 		var body: Dictionary = response.get("body", {})
 		var debug_message: String = body.get("message", "")
 		if debug_message == "INVALID_INPUT":
-			return "Bạn cần mua hạt giống hoặc đang ở sai khu vực."
+			return tr("YOU_NEED_TO_BUY_SEEDS_OR_ARE_I")
 		if not debug_message.is_empty():
 			return debug_message
 	match error_code:
 		"INVALID_INPUT":
-			return "Bạn cần mua hạt giống hoặc đang ở sai khu vực."
+			return tr("YOU_NEED_TO_BUY_SEEDS_OR_ARE_I")
 		"PLOT_NOT_EMPTY":
-			return "Ô đất này đã được trồng."
+			return tr("THIS_PLOT_HAS_ALREADY_BEEN_PLA")
 		"PLOT_NOT_SEEDED":
-			return "Ô này chưa gieo hạt."
+			return tr("THIS_PLOT_IS_NOT_SEEDED")
 		"PLOT_NOT_READY":
-			return "Cây chưa đến lúc thu hoạch."
+			return tr("PLANT_IS_NOT_READY_FOR_HARVEST")
 		"INVENTORY_FULL":
-			return "Túi đồ đã đầy."
+			return tr("INVENTORY_IS_FULL")
 		_:
-			return "Thao tác nông trại thất bại."
+			return tr("FARM_ACTION_FAILED")
 
 
 func _pick_available_seed_id() -> String:

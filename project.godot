@@ -21,8 +21,8 @@ MultiplayerManager="*res://scripts/client/shared/multiplayer_manager.gd"
 ApiClient="*res://scripts/client/shared/api_client.gd"
 TeleportData="*res://scripts/client/shared/teleport_data.gd"
 ToastManager="*res://prefabs/ui/components/toast_manager.tscn"
-TransitionManager="*res://prefabs/ui/components/transition_manager.tscn"
 ServerScene="res://scenes/server.tscn"
+TransitionManager="*res://prefabs/ui/components/transition_manager.tscn"
 
 [debug]
 
@@ -88,6 +88,10 @@ use_water={
 ]
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization.vi.translation", "res://localization.en.translation")
+
 [layer_names]
 
 2d_physics/layer_2="Wall"
@@ -102,3 +106,9 @@ use_water={
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization.en.translation", "res://localization.vi.translation")
+locale/fallback="vi"
+

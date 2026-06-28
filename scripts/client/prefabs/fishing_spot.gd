@@ -28,10 +28,10 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void
 
 func _build_actions() -> Array:
 	return [
-		{ "id": "start", "label": "Cau ca" },
-		{ "id": "stop", "label": "Dung cau" },
-		{ "id": "buy_rod", "label": "Mua can cau" },
-		{ "id": "buy_bait", "label": "Mua moi cau" },
+		{ "id": "start", "label": tr("CÂU_CÁ") },
+		{ "id": "stop", "label": tr("DỪNG_CÂU") },
+		{ "id": "buy_rod", "label": tr("MUA_CẦN_CÂU") },
+		{ "id": "buy_bait", "label": tr("MUA_MỒI_CÂU") },
 	]
 
 
@@ -39,7 +39,7 @@ func _on_context_action(action_id: String, target: Object) -> void:
 	if target != self:
 		return
 	if not ApiClient.has_auth_token():
-		ToastManager.show_toast("Can dang nhap server de cau ca.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("MUST_LOG_IN_TO_THE_SERVER_TO_F"), ToastManager.Type.WARNING)
 		return
 
 	match action_id:
@@ -62,22 +62,22 @@ func _start_fishing() -> void:
 	if response.get("ok", false):
 		var data := ApiClient.response_data(response)
 		var finish_at := int(data.get("finish_at", data.get("fishing_status", {}).get("finish_at", 0)))
-		ToastManager.show_toast("Dang cau ca...")
+		ToastManager.show_toast(tr("FISHING"))
 		_sync_inventory(data)
 		_set_local_player_fishing(true)
 		_wait_then_claim(finish_at)
 	else:
-		ToastManager.show_toast("Khong the bat dau cau ca.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("CANNOT_START_FISHING"), ToastManager.Type.WARNING)
 
 
 func _stop_fishing() -> void:
 	var response: Dictionary = await ApiClient.request_json("/api/fishing/stop", HTTPClient.METHOD_POST)
 	if response.get("ok", false):
-		ToastManager.show_toast("Da dung cau ca.")
+		ToastManager.show_toast(tr("STOPPED_FISHING"))
 		_sync_inventory(ApiClient.response_data(response))
 		_set_local_player_fishing(false)
 	else:
-		ToastManager.show_toast("Ban chua dang cau ca.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("YOU_ARE_NOT_CURRENTLY_FISHING"), ToastManager.Type.WARNING)
 
 
 func _buy_item(item_id: String) -> void:
@@ -87,10 +87,10 @@ func _buy_item(item_id: String) -> void:
 		{ "item_id": item_id, "quantity": 1 }
 	)
 	if response.get("ok", false):
-		ToastManager.show_toast("Da mua vat pham.")
+		ToastManager.show_toast(tr("ITEM_PURCHASED"))
 		_sync_inventory(ApiClient.response_data(response))
 	else:
-		ToastManager.show_toast("Khong mua duoc vat pham.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("FAILED_TO_PURCHASE_ITEM"), ToastManager.Type.WARNING)
 
 
 func _sync_inventory(data: Dictionary) -> void:
@@ -124,11 +124,11 @@ func _claim_fishing() -> void:
 	var result: Dictionary = data.get("result", {})
 	var item_id: String = result.get("item_id", "")
 	if item_id.is_empty():
-		ToastManager.show_toast("Ca chay mat roi.", ToastManager.Type.WARNING)
+		ToastManager.show_toast(tr("CA_CHAY_MAT_ROI"), ToastManager.Type.WARNING)
 	else:
 		var item: ItemData = Items.get_item_by_server_id(item_id)
-		var item_name: String = item.itemName if item else item_id
-		ToastManager.show_toast("Cau duoc " + item_name + "!")
+		var item_name: String = tr(item.itemName) if item else item_id
+		ToastManager.show_toast(tr("CAUGHT_FORMAT") % item_name)
 
 
 func _set_local_player_fishing(enabled: bool) -> void:

@@ -10,7 +10,7 @@
 [resource]
 script = ExtResource("1_script")
 id = 1
-itemName = "Hạt Cà Rốt"
+itemName = "CARROT_SEED"
 icon = "🥕"
 texture = ExtResource("2_pvjki")
 buyPrice = 50

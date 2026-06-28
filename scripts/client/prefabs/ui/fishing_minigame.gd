@@ -116,8 +116,7 @@ func _process_waiting(delta: float) -> void:
 
 	# Animate bobber label
 	var bob_offset := sin(_bobber_time * 3.5) * 4.0
-	_bobber.position.y = bob_offset
-	_wait_label.text   = "🎣 Đang chờ cá..."
+	_wait_label.text   = tr("ĐANG_CHỜ_CÁ")
 
 	if _phase_timer <= 0.0:
 		_set_phase(Phase.BITE)
@@ -250,7 +249,7 @@ func _finish(success: bool, reason: String) -> void:
 	_set_phase(Phase.RESULT)
 	_result_timer = 1.8
 	if success:
-		_result_label.text     = "🐟 Cá cắn câu!"
+		_result_label.text     = tr("CÁ_CẮN_CÂU")
 		_result_label.modulate = Color(0.3, 1.0, 0.4)
 		fishing_success.emit()
 	else:

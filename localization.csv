@@ -1,0 +1,190 @@
+id,en,vi
+S_S,%s  %s,%s  %s
+AVATAR_FARM,Avatar Farm,Avatar Farm
+BAMBOO_ROD,Bamboo Rod,Cần Câu Tre
+BACK_TO_LOGIN,Back to Login,Quay lại đăng nhập
+YOU_ARE_NOT_CURRENTLY_FISHING,You are not currently fishing.,Bạn chưa đang câu cá.
+BÁO_CÁO,🚩 Report,🚩 Báo cáo
+HEALTH_POTION,Health Potion,Bình Máu
+BẠN_CHƯA_CÂU,You have not fished.,Bạn chưa câu.
+BẠN_KHÔNG_ĐỦ_XU_ĐỂ_MUA_VẬT_PHẨ,You do not have enough Coins to buy this item.,Bạn không đủ Xu để mua vật phẩm.
+BẠN_S,[You]: %s,[Bạn]: %s
+BẠN_ĐỨNG_QUÁ_XA_MẶT_NƯỚC,You are standing too far from the water.,Bạn đứng quá xa mặt nước.
+YOU,You,Bạn
+YOU_HAVE_NOT_FISHED,You have not fished.,Bạn chưa câu.
+YOU_ARE_NOT_IN_THE_CORRECT_FIS,You are not in the correct fishing spot or data is invalid.,Bạn chưa ở đúng khu câu cá hoặc dữ liệu không hợp lệ.
+YOU_NEED_TO_BUY_A_ROD_FIRST,You need to buy a rod first.,Bạn cần mua cần câu trước.
+YOU_NEED_TO_BUY_SEEDS_OR_ARE_I,You need to buy seeds or are in the wrong area.,Bạn cần mua hạt giống hoặc đang ở sai khu vực.
+YOU_NEED_TO_BUY_SEEDS_FIRST,You need to buy seeds first.,Bạn cần mua hạt giống trước.
+YOU_NEED_TO_BUY_BAIT_FIRST,You need to buy bait first.,Bạn cần mua mồi câu trước.
+YOU_DO_NOT_HAVE_ENOUGH_COINS_T,You do not have enough Coins to buy this item.,Bạn không đủ Xu để mua vật phẩm.
+YOU_ARE_STANDING_TOO_FAR_FROM,You are standing too far from the water.,Bạn đứng quá xa mặt nước.
+CORN,Corn,Bắp
+CORN_1,Corn,Bắp Ngô
+FISH_BITING_PRESS_SPACE_CLICK,FISH BITING! Press Space / Click!,CÁ CẮN CÂU! Nhấn Space / Click!
+CARROT,Carrot,Cà Rốt
+CARROT_SEED,Carrot Seed,Hạt Cà Rốt
+CHAT,Chat,Chat
+CHƯA_CÓ_CÁ_CẮN_CÂU,No fish biting yet.,Chưa có cá cắn câu.
+COINS_SUFFIX, Coins, Xu
+CORN_SEED,Corn Seed,Hạt Bắp
+FISH_BITING,Fish biting!,Cá cắn câu!
+FISH_WILL_BITE_IN_D_SECONDS,Fish will bite in %d seconds.,Ca se can cau sau %d giay.
+MUST_LOG_IN_TO_THE_SERVER_TO_F,Must log in to the server to fish.,Cần đăng nhập server để câu cá.
+FISH,Fish,Câu cá
+NO_FISH_BITING_YET,No fish biting yet.,Chua co ca can cau.
+READY,Ready!,Chín!
+REMOVING_SEED_NOT_SUPPORTED_ON,Removing seed not supported on server yet.,Chưa hỗ trợ nhổ hạt giống trên server.
+CÁ_CHẠY_MẤT_RỒI,The fish got away.,Cá chạy mất rồi.
+CÁ_CẮN_CÂU,🐟 Fish biting!,🐟 Cá cắn câu!
+CÂU_CÁ,🎣 Start Fishing,🎣 Câu cá
+CÂU_ĐƯỢC,🐟 Caught %s!,🐟 Câu được %s!
+CÂU_ĐƯỢC_CÁ,🐟 Caught fish!,🐟 Câu được cá!
+TOMATO,Tomato,Cà Chua
+LARGE_FISH,Large Fish,Cá Lớn
+SMALL_FISH,Small Fish,Cá Nhỏ
+MEDIUM_FISH,Medium Fish,Cá Vừa
+THE_FISH_GOT_AWAY_REACTED_TOO,The fish got away! Reacted too slowly.,Cá chạy mất rồi! Phản ứng chậm quá.
+LARGE_FISH_1,Large Fish,Cá lớn
+SMALL_FISH_1,Small Fish,Cá nhỏ
+THE_FISH_ESCAPED_BETTER_LUCK_N,The fish escaped! Better luck next time.,Cá thoát mất rồi! Lần sau cố hơn nhé.
+MEDIUM_FISH_1,Medium Fish,Cá vừa
+PLANT_IS_NOT_READY_FOR_HARVEST,Plant is not ready for harvest.,Cây chưa đến lúc thu hoạch.
+PLANT_IS_GROWING_PLEASE_WAIT,"Plant is growing, please wait","Cây đang phát triển, hãy đợi thêm"
+CẦN_ĐĂNG_NHẬP_SERVER,Must log in to the server.,Cần đăng nhập server.
+MUST_LOG_IN_TO_THE_SERVER_TO_B,Must log in to the server to buy items.,Cần đăng nhập server để mua vật phẩm.
+MUST_LOG_IN_TO_THE_SERVER_TO_M,Must log in to the server to manage the farm.,Cần đăng nhập server để thao tác nông trại.
+MUST_LOG_IN_TO_THE_SERVER,Must log in to the server.,Cần đăng nhập server.
+CARROT_1,Carrot,Củ Cà Rốt
+SHOP,Shop,Cửa hàng
+DEDICATED_SERVER_DO_NOT_LOGIN,"DEDICATED SERVER
+(Do not login here)","DEDICATED SERVER
+(Do không thể đăng nhập ở đây)"
+STOPPED_FISHING,Stopped fishing.,Đã dừng câu cá.
+ITEM_PURCHASED,Item purchased.,Đã mua vật phẩm.
+FISHING,Fishing...,Đang câu cá...
+WAITING_FOR_FISH,Waiting for fish...,Đang chờ cá...
+DISPLAY_NAME,Display Name:,Tên hiển thị:
+DONT_HAVE_AN_ACCOUNT_SIGN_UP,Don't have an account? Sign up,Chưa có tài khoản? Đăng ký
+STOP_FISHING,Stop Fishing,Dừng câu
+STOPPED_FISHING_1,Stopped fishing.,Dừng câu cá.
+DỪNG_CÂU,🚶 Stop Fishing,🚶 Dừng câu
+EGG,EGG,EGG
+ENTER,ENTER,ENTER
+ENTER_MESSAGE,Enter message...,Nhập tin nhắn...
+SEND,Send,Gửi
+HARVEST,Harvest,Thu hoạch
+HELLO,Hello,Hello
+TOMATO_SEED,Tomato Seed,Hạt Cà Chua
+CORN_SEED_1,Corn Seed,Hạt Ngô
+INSPECT_PLANT,Inspect Plant,Kiểm tra cây
+INVENTORY_020,Inventory (0/20),Túi đồ (0/20)
+KHÔNG_MUA_ĐƯỢC_VẬT_PHẨM,Failed to purchase item.,Không mua được vật phẩm.
+FAILED_TO_PURCHASE_ITEM,Failed to purchase item.,Không mua được vật phẩm.
+FAILED_TO_LOAD_PLAYER_PROFILE,Failed to load player profile.,Khong tai duoc ho so nguoi choi.
+CANNOT_START_FISHING,Cannot start fishing.,Không thể bắt đầu câu cá.
+FAILED_TO_SELL_ITEM,Failed to sell item.,Không bán được vật phẩm.
+CANNOT_WATER_RIGHT_NOW,Cannot water right now.,Không thể tưới ngay lúc này.
+FAILED_TO_LOAD_SHOP,Failed to load shop.,Không tải được cửa hàng.
+FAILED_TO_LOAD_FARM,Failed to load farm.,Không tải được nông trại.
+FAILED_TO_LOAD_INVENTORY,Failed to load inventory.,Không tải được túi đồ.
+NOT_ENOUGH_COINS,Not enough coins!,Không đủ tiền!
+LOGIN,Login,Đăng nhập
+LOGIN_DOTS,Login...,Đăng nhập...
+LOGIN_GO_SERVER,Login (Go Server),Đăng nhập (Máy chủ Go)
+MOVE_CLOSER_TO_REMOVE_SEED,Move closer to remove seed,Lại gần hơn để nhổ hạt giống
+MOVE_CLOSER_TO_HARVEST,Move closer to harvest,Lại gần hơn để thu hoạch
+MOVE_CLOSER_TO_PLANT,Move closer to plant,Lại gần hơn để trồng cây
+MOVE_CLOSER_TO_PLANT_1,Move closer to plant.,Lại gần hơn để trồng cây.
+MOVE_CLOSER_TO_WATER,Move closer to water,Lại gần hơn để tưới nước
+MOVE_CLOSER_TO_THE_WATER_TO_FI,Move closer to the water to fish.,Lại gần mặt nước hơn để câu cá.
+MUA,Buy,Mua
+MUA_CẦN_CÂU,🛒 Buy Rod,🛒 Mua cần câu
+MUA_MỒI_CÂU,🪱 Buy Bait,🪱 Mua mồi câu
+BUY_ROD,Buy Rod,Mua cần câu
+BUY_BAIT,Buy Bait,Mua mồi câu
+NORMAL_BAIT,Normal Bait,Mồi Thường
+NORMAL_BAIT_1,Normal Bait,Mồi câu thường
+MỜI_ĐẾN_NÔNG_TRẠI,🌾 Invite to Farm,🌾 Mới đến nông trại
+NHẮN_RIÊNG,💬 Whisper,💬 Nhắn riêng
+REMOVE_SEED,Remove Seed,Nhổ hạt giống
+NÓI_CHUYỆN,💬 Chat,💬 Nói chuyện
+PASSWORD_LABEL,Password:,Mật khẩu:
+PASSWORD_PLACEHOLDER,Password...,Mật khẩu...
+PLANT,Plant,Trồng cây
+PASSWORD,Password:,Mật khẩu:
+LOGIN_SESSION_EXPIRED,Login session expired.,Phien dang nhap het han.
+PLAYER,Player,Player
+TOMATO_1,Tomato,Quả Cà Chua
+REGISTER,Register,Đăng ký
+SELL,Sell,Bán
+SHOP_ACTION,🛒 Shop,🛒 Cửa hàng
+SKIP_LOGIN,Skip Login,Bỏ qua đăng nhập
+SKIP_LOGIN_DEMO,Skip Login (Demo),Bỏ qua đăng nhập (Chạy thử)
+THIS_IS_A_TOAST,THIS IS A TOAST,THIS IS A TOAST
+THIS_IS_A_TOOL_TIP,This is a tooltip,Đây là tooltip
+TRAO_ĐỔI,🤝 Trade,🤝 Trao đổi
+TRAO_ĐỔI_VẬT_PHẨM,🤝 Trade Items,🤝 Trao đổi vật phẩm
+FARM_ACTION_FAILED,Farm action failed.,Thao tác nông trại thất bại.
+THIS_IS_A_TOOL_TIP_1,This is a tool tip,Đây là tooltip
+HEALTH_POTION_1,Health Potion,Thuốc Hồi Máu
+FARM,Farm,Nông trại
+EMPTY,Empty,Trống
+INVENTORY_IS_FULL,Inventory is full!,Túi đồ đã đầy!
+INVENTORY_IS_FULL_1,Inventory is full.,Túi đồ đã đầy.
+WATER,Water,Tưới nước
+USERNAME_LABEL,Username:,Tài khoản:
+USERNAME_PLACEHOLDER,Username...,Tài khoản...
+USERNAME,Username:,Tài khoản:
+PLEASE_ENTER_USERNAME_AND_PASS,Please enter username and password.,Vui lòng nhập tài khoản và mật khẩu.
+VẬT_PHẨM_NÀY_KHÔNG_BÁN_TRONG_S,This item is not sold in the shop.,Vật phẩm này không bán trong shop.
+THIS_ITEM_IS_NOT_SOLD_IN_THE_S,This item is not sold in the shop.,Vật phẩm này không bán trong shop.
+THIS_FISHING_SPOT_IS_OCCUPIED,This fishing spot is occupied.,Vị trí câu này đang có người.
+WARNING,Warning,Warning
+WHISPER_WILL_BE_IMPLEMENTED_IN,Whisper will be implemented in the next phase.,Whisper se lam o phase sau.
+XEM_TRANG_CÁ_NHÂN,👤 View Profile,👤 Xem trang cá nhân
+YOU_S,[You]: %s,[Bạn]: %s
+seed_carrot,Carrot Seed,Hạt Cà Rốt
+seed_corn,Corn Seed,Hạt Bắp
+seed_tomato,Tomato Seed,Hạt Cà Chua
+XD,x%d,x%d
+THIS_PLOT_IS_NOT_SEEDED,This plot is not seeded.,Ô này chưa gieo hạt.
+THIS_PLOT_HAS_ALREADY_BEEN_PLA,This plot has already been planted.,Ô đất này đã được trồng.
+ĐANG_CHỜ_CÁ,🎣 Waiting for fish...,🎣 Đang chờ cá...
+ĐANG_CÂU_RỒI,Already fishing.,Đang câu rồi.
+ALREADY_FISHING,Already fishing.,Đang câu rồi.
+ĐÃ_MUA,Bought %s,Đã mua %s
+ITEM_SOLD,Item sold.,Đã bán vật phẩm.
+BOUGHT,Bought ,Đã mua 
+ĐĂNG_KÝ_THẤT_BẠI,Registration failed: ,Đăng ký thất bại: 
+ĐĂNG_NHẬP_THẤT_BẠI,Login failed: ,Đăng nhập thất bại: 
+REGISTRATION_SUCCESSFUL,Registration successful!,Đăng ký thành công!
+REGISTRATION_FAILED,Registration failed:,Đăng ký thất bại:
+REGISTRATION_FAILED_1,Registration failed: ,Đăng ký thất bại: 
+LOGIN_SUCCESSFUL,Login successful!,Đăng nhập thành công!
+LOGIN_FAILED,Login failed:,Đăng nhập thất bại:
+LOGIN_FAILED_1,Login failed: ,Đăng nhập thất bại: 
+ANONYMOUS_LOGIN_SUCCESSFUL,Anonymous login successful!,Đăng nhập ẩn danh thành công!
+TXT_2037,⚠,⚠
+TXT_385,"❓
+???","❓
+???"
+S,"🌱
+%s","🌱
+%s"
+PLANT_1,🌱 Plant,🌱 Trồng cây
+READY_1,"🌾
+Ready!","🌾
+Chín!"
+HARVEST_1,🌾 Harvest,🌾 Thu hoạch
+02D02D,"🌿
+%02d:%02d","🌿
+%02d:%02d"
+WATER_1,💧 Water,💧 Tưới nước
+TXT_8395,💨,💨
+INSPECT_PLANT_1,🔍 Inspect Plant,🔍 Kiểm tra cây
+REMOVE_SEED_1,🗑 Remove Seed,🗑 Nhổ hạt giống
+SHOP_1,🛒 Shop,🛒 Cửa hàng
+EMPTY_1,"🟫
+Empty","🟫
+Trống"

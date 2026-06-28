@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_script")
 id = 41
-itemName = "Bình Máu"
+itemName = "HEALTH_POTION"
 icon = "🧪"
 buyPrice = 150
 sellPrice = 50

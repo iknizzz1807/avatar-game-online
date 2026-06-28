@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 id = 32
-itemName = "Mồi Thường"
+itemName = "NORMAL_BAIT"
 icon = "🪱"
 texture = ExtResource("2_tex")
 buyPrice = 20

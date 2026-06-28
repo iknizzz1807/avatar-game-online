@@ -105,7 +105,7 @@ func _submit() -> void:
 		return;
 	messageInput.text = "";
 	message_sent.emit(text);
-	_add_line("[Bạn]: %s" % text);
+	_add_line(tr("BẠN_S") % text);
 
 func _add_line(text: String) -> void:
 	if messageList.get_child_count() >= MAX_DISPLAYED:

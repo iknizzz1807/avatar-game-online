@@ -72,7 +72,7 @@ theme_override_constants/separation = 6
 [node name="TitleLabel" type="Label" parent="Panel/VBox" unique_id=2107173136]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.929412, 0.741176, 1)
-text = "Chat"
+text = "CHAT"
 
 [node name="Scroll" type="ScrollContainer" parent="Panel/VBox" unique_id=439116968]
 custom_minimum_size = Vector2(0, 130)
@@ -95,7 +95,7 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.188235, 0.121569, 0.0705882, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_input")
 theme_override_styles/focus = SubResource("StyleBoxFlat_input")
-placeholder_text = "Nhap tin nhan..."
+placeholder_text = "ENTER_MESSAGE"
 
 [node name="SendButton" type="Button" parent="Panel/VBox/InputRow" unique_id=1029285633]
 layout_mode = 2
@@ -103,4 +103,4 @@ theme_override_colors/font_color = Color(1, 0.964706, 0.843137, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button")
-text = "Gui"
+text = "SEND"

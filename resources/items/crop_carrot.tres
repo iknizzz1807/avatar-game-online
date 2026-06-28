@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 id = 11
-itemName = "Cà Rốt"
+itemName = "CARROT"
 texture = ExtResource("2_qpxa0")
 sellPrice = 90
 sellable = true

@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_script")
 id = 12
-itemName = "Cà Chua"
+itemName = "TOMATO"
 icon = "🍅"
 texture = ExtResource("2_ycs6h")
 sellPrice = 160

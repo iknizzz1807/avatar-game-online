@@ -33,12 +33,12 @@ material = SubResource("ShaderMaterial_8wq5s")
 shape = SubResource("RectangleShape2D_lsl1e")
 
 [node name="Timer" type="Label" parent="." unique_id=498076834]
-offset_left = -8.0
-offset_top = -16.0
-offset_right = 8.0
+offset_left = -11.0
+offset_top = -20.0
+offset_right = 12.0
 offset_bottom = -8.0
 theme_override_fonts/font = ExtResource("4_8wq5s")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 12
 text = "0:00"
 horizontal_alignment = 1
 vertical_alignment = 1

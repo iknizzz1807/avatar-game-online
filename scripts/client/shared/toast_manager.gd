@@ -56,7 +56,7 @@ func _animate(toast: PanelContainer, duration: float) -> void:
 		return
 
 	toast.modulate.a = 0;
-	var target_y: float = get_viewport().get_visible_rect().size.y;
+	#var target_y: float = get_viewport().get_visible_rect().size.y;
 	var tween : Tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 

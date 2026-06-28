@@ -29,7 +29,7 @@ const GAME_SCENE: String = "res://scenes/game.tscn"
 @onready var _signup_btn:       Button   = $SignUp/VBoxContainer/Button
 @onready var _back_to_login:    Button   = $SignUp/VBoxContainer/BackToLoginButton
 
-@onready var _http: HTTPRequest = $HTTPRequest
+#@onready var _http: HTTPRequest = $HTTPRequest
 
 
 func _ready() -> void:

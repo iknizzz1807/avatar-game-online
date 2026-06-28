@@ -34,7 +34,7 @@ var _pending_registrations: Dictionary = {}
 var _pending_map_changes: Dictionary = {}
 
 # Reference to the spawner so we can call spawn/despawn
-@onready var _spawner: MultiplayerSpawner = $MultiplayerSpawner
+#@onready var _spawner: MultiplayerSpawner = $MultiplayerSpawner
 
 
 func _ready() -> void:

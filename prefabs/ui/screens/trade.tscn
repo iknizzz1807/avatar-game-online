@@ -1,0 +1,177 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/client/prefabs/ui/trade.gd" id="1_trade"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="2_theme"]
+[ext_resource type="StyleBox" uid="uid://c0r71un0cdua" path="res://resources/ui/panel.tres" id="3_panel"]
+
+[node name="Trade" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_trade")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -390.0
+offset_top = -205.0
+offset_right = 390.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_panel")
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleBar" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Panel/Margin/VBox/TitleBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Trade"
+
+[node name="CloseButton" type="Button" parent="Panel/Margin/VBox/TitleBar"]
+custom_minimum_size = Vector2(34, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "X"
+
+[node name="StatusLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Trang thai"
+
+[node name="Lists" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="InventoryPanel" type="VBoxContainer" parent="Panel/Margin/VBox/Lists"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="InventoryTitle" type="Label" parent="Panel/Margin/VBox/Lists/InventoryPanel"]
+layout_mode = 2
+text = "Tui do"
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="InventoryList" type="ItemList" parent="Panel/Margin/VBox/Lists/InventoryPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
+
+[node name="QuantityRow" type="HBoxContainer" parent="Panel/Margin/VBox/Lists/InventoryPanel"]
+layout_mode = 2
+
+[node name="QuantityLabel" type="Label" parent="Panel/Margin/VBox/Lists/InventoryPanel/QuantityRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "So luong"
+theme_override_font_sizes/font_size = 14
+
+[node name="QuantitySpin" type="SpinBox" parent="Panel/Margin/VBox/Lists/InventoryPanel/QuantityRow"]
+layout_mode = 2
+min_value = 1.0
+max_value = 99.0
+value = 1.0
+theme_override_font_sizes/font_size = 14
+
+[node name="ButtonRow" type="HBoxContainer" parent="Panel/Margin/VBox/Lists/InventoryPanel"]
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="Panel/Margin/VBox/Lists/InventoryPanel/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "Them"
+
+[node name="ClearButton" type="Button" parent="Panel/Margin/VBox/Lists/InventoryPanel/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "Xoa offer"
+
+[node name="MyOfferPanel" type="VBoxContainer" parent="Panel/Margin/VBox/Lists"]
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="MyOfferTitle" type="Label" parent="Panel/Margin/VBox/Lists/MyOfferPanel"]
+layout_mode = 2
+text = "Ban dua"
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="MyOfferList" type="ItemList" parent="Panel/Margin/VBox/Lists/MyOfferPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
+
+[node name="TheirOfferPanel" type="VBoxContainer" parent="Panel/Margin/VBox/Lists"]
+custom_minimum_size = Vector2(185, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="TheirOfferTitle" type="Label" parent="Panel/Margin/VBox/Lists/TheirOfferPanel"]
+layout_mode = 2
+text = "Doi phuong dua"
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+
+[node name="TheirOfferList" type="ItemList" parent="Panel/Margin/VBox/Lists/TheirOfferPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 14
+
+[node name="Actions" type="HBoxContainer" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AcceptButton" type="Button" parent="Panel/Margin/VBox/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "Nhan loi moi"
+
+[node name="ReadyButton" type="Button" parent="Panel/Margin/VBox/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "Ready"
+
+[node name="RefreshButton" type="Button" parent="Panel/Margin/VBox/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "Tai lai"
+
+[node name="CancelButton" type="Button" parent="Panel/Margin/VBox/Actions"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "Huy"

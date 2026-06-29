@@ -82,6 +82,13 @@ func addItemTx(tx *sql.Tx, userID int, itemID string, quantity int) error {
 	var existingQty int
 	err = tx.QueryRow("SELECT quantity FROM inventory WHERE user_id = ? AND item_id = ?", userID, itemID).Scan(&existingQty)
 	if err == sql.ErrNoRows {
+		count, countErr := inventoryCountTx(tx, userID)
+		if countErr != nil {
+			return countErr
+		}
+		if count >= 20 {
+			return utils.ErrCodeInventoryFull
+		}
 		_, err = tx.Exec("INSERT INTO inventory (user_id, item_id, quantity) VALUES (?, ?, ?)", userID, itemID, quantity)
 		return err
 	}

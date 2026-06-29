@@ -87,6 +87,40 @@ func migrate() error {
 			FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
 			UNIQUE(user_id)
 		)`,
+		`CREATE TABLE IF NOT EXISTS trade_sessions (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			requester_id INTEGER NOT NULL,
+			target_id INTEGER NOT NULL,
+			status TEXT NOT NULL DEFAULT 'pending',
+			requester_ready INTEGER NOT NULL DEFAULT 0,
+			target_ready INTEGER NOT NULL DEFAULT 0,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE,
+			FOREIGN KEY (target_id) REFERENCES users(id) ON DELETE CASCADE
+		)`,
+		`CREATE TABLE IF NOT EXISTS trade_items (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			session_id INTEGER NOT NULL,
+			user_id INTEGER NOT NULL,
+			item_id TEXT NOT NULL,
+			quantity INTEGER NOT NULL,
+			FOREIGN KEY (session_id) REFERENCES trade_sessions(id) ON DELETE CASCADE,
+			FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+			FOREIGN KEY (item_id) REFERENCES items(id),
+			UNIQUE(session_id, user_id, item_id)
+		)`,
+		`CREATE TABLE IF NOT EXISTS friendships (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			requester_id INTEGER NOT NULL,
+			target_id INTEGER NOT NULL,
+			status TEXT NOT NULL DEFAULT 'pending',
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE CASCADE,
+			FOREIGN KEY (target_id) REFERENCES users(id) ON DELETE CASCADE,
+			UNIQUE(requester_id, target_id)
+		)`,
 	}
 
 	for _, q := range queries {

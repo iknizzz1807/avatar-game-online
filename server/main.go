@@ -70,6 +70,21 @@ func main() {
 		api.POST("/fishing/claim", handlers.ClaimFishing)
 		api.POST("/fishing/fail", handlers.FailFishing)
 		api.POST("/fishing/stop", handlers.StopFishing)
+
+		api.GET("/trade/active", handlers.GetActiveTrade)
+		api.POST("/trade/request", handlers.CreateTradeRequest)
+		api.GET("/trade/:id", handlers.GetTradeSession)
+		api.POST("/trade/:id/accept", handlers.AcceptTrade)
+		api.POST("/trade/:id/cancel", handlers.CancelTrade)
+		api.POST("/trade/:id/offer", handlers.SetTradeOffer)
+		api.POST("/trade/:id/ready", handlers.SetTradeReady)
+
+		api.GET("/friends", handlers.GetFriends)
+		api.GET("/friends/requests", handlers.GetFriendRequests)
+		api.POST("/friends/request", handlers.SendFriendRequest)
+		api.POST("/friends/:id/accept", handlers.AcceptFriendRequest)
+		api.POST("/friends/:id/decline", handlers.DeclineFriendRequest)
+		api.DELETE("/friends/:id", handlers.RemoveFriend)
 	}
 
 	log.Printf("Server starting on port %s", cfg.Port)

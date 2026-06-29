@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 MultiplayerManager="*res://scripts/client/shared/multiplayer_manager.gd"
 ApiClient="*res://scripts/client/shared/api_client.gd"
+TradeManager="*res://scripts/client/shared/trade_manager.gd"
+FriendManager="*res://scripts/client/shared/friend_manager.gd"
 TeleportData="*res://scripts/client/shared/teleport_data.gd"
 ToastManager="*res://prefabs/ui/components/toast_manager.tscn"
 ServerScene="res://scenes/server.tscn"

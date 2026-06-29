@@ -147,6 +147,7 @@ func ChangeMap(c *gin.Context) {
 }
 
 func GetUserProfile(c *gin.Context) {
+	viewerID := middleware.GetUserID(c)
 	profileID, err := strconv.Atoi(c.Param("id"))
 	if err != nil || profileID <= 0 {
 		utils.RespondError(c, utils.ErrCodeInvalidInput, 400)
@@ -159,11 +160,13 @@ func GetUserProfile(c *gin.Context) {
 		return
 	}
 
+	friendStatus, _ := services.GetFriendshipStatus(viewerID, profileID)
 	utils.RespondSuccess(c, gin.H{
-		"id":           user.ID,
-		"display_name": user.DisplayName,
-		"coins":        user.Coins,
-		"current_map":  user.CurrentMap,
-		"created_at":   user.CreatedAt,
+		"id":            user.ID,
+		"display_name":  user.DisplayName,
+		"coins":         user.Coins,
+		"current_map":   user.CurrentMap,
+		"created_at":    user.CreatedAt,
+		"friend_status": friendStatus,
 	})
 }

@@ -42,6 +42,7 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void
 func _build_actions() -> Array:
 	return [
 		{ "id": "view_profile", "label": tr("XEM_TRANG_CÁ_NHÂN") },
+		{ "id": "add_friend",   "label": "Ket ban" },
 		{ "id": "trade",        "label": tr("TRAO_ĐỔI_VẬT_PHẨM") },
 		{ "id": "whisper",      "label": tr("NHẮN_RIÊNG") },
 		# ── Add future social actions below ──
@@ -55,9 +56,10 @@ func _on_context_action(actionId: String, target: Object) -> void:
 	match actionId:
 		"view_profile":
 			_show_profile()
+		"add_friend":
+			FriendManager.send_friend_request(playerId, playerName)
 		"trade":
-			print("[OtherPlayer] Trade request to: %s (id=%d)" % [playerName, playerId])
-			# TODO [SERVER SYNC]: NetworkManager.send_trade_request(playerId)
+			TradeManager.request_trade(playerId, playerName)
 		"whisper":
 			ToastManager.show_toast("Whisper se lam o phase sau.", ToastManager.Type.INFO)
 		_:
@@ -78,11 +80,12 @@ func _show_profile() -> void:
 func _show_profile_dialog(profile: Dictionary) -> void:
 	var dialog := AcceptDialog.new()
 	dialog.title = "Ho so nguoi choi"
-	dialog.dialog_text = "Ten: %s\nID: %s\nXu: %s\nMap: %s" % [
+	dialog.dialog_text = "Ten: %s\nID: %s\nXu: %s\nMap: %s\nBan be: %s" % [
 		profile.get("display_name", playerName),
 		str(profile.get("id", playerId)),
 		str(profile.get("coins", "?")),
 		profile.get("current_map", "?"),
+		profile.get("friend_status", "none"),
 	]
 	get_tree().root.add_child(dialog)
 	dialog.confirmed.connect(dialog.queue_free)

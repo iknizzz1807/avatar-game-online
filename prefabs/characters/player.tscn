@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bkua1vn7fon5m" path="res://prefabs/ui/screens/chat.tscn" id="5_hc1fl"]
 [ext_resource type="PackedScene" uid="uid://cvmb2balyxwr5" path="res://prefabs/ui/screens/inventory.tscn" id="6_kylil"]
 [ext_resource type="PackedScene" uid="uid://ccoxl121jeqgv" path="res://prefabs/ui/screens/farm_map.tscn" id="7_jd78j"]
-[ext_resource type="PackedScene" path="res://prefabs/ui/components/context_menu.tscn" id="8_ctxmenu"]
+[ext_resource type="PackedScene" uid="uid://bvwu5ukugqbwo" path="res://prefabs/ui/components/context_menu.tscn" id="8_ctxmenu"]
 [ext_resource type="Script" path="res://scripts/client/prefabs/player/player_use_water_state.gd" id="9_uwst"]
 [ext_resource type="Script" uid="uid://bagfxkfa7im1l" path="res://scripts/shared/inventory_slot.gd" id="10_ku2fq"]
 [ext_resource type="PackedScene" uid="uid://byjvxs4buyyy2" path="res://prefabs/ui/screens/shop.tscn" id="10_shop"]
@@ -672,6 +672,7 @@ y_sort_enabled = true
 texture = ExtResource("1_72ieh")
 hframes = 4
 vframes = 4
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
 position = Vector2(0, 5)

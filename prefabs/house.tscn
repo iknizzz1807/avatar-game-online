@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b505ec80qc0rv"]
+
+[ext_resource type="Texture2D" uid="uid://b7shgx1tmsjyj" path="res://sprites/Pixel 16 v2 village free/Pixel 16 v2 village free/Pixel 16 v2 village free.png" id="1_25t6t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dinhu"]
+size = Vector2(58.5, 63)
+
+[node name="House" type="StaticBody2D" unique_id=77309321]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1408656691]
+y_sort_enabled = true
+texture = ExtResource("1_25t6t")
+offset = Vector2(0, -51)
+region_enabled = true
+region_rect = Rect2(68, 123, 72, 101)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=205855336]
+position = Vector2(-0.25, -32.5)
+shape = SubResource("RectangleShape2D_dinhu")

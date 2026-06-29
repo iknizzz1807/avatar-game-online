@@ -347,7 +347,7 @@ func _farm_error_message(response: Dictionary) -> String:
 
 
 func _pick_available_seed_id() -> String:
-	var preferred := ["seed_tomato", "seed_carrot", "seed_corn"]
+	var preferred := ["seed_beetroot", "seed_cabbage", "seed_carrot", "seed_cauliflower", "seed_kale", "seed_parsnip", "seed_potato", "seed_pumpkin", "seed_radish", "seed_sunflower", "seed_wheat"]
 	var seed_counts := {}
 	for inv in get_tree().get_nodes_in_group("inventory"):
 		if "inventoryData" in inv:

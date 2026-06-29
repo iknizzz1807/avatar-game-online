@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://blc4t1tsfmgh7"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c58cqb0pq564j" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/radish_05.png" id="2_8ip0k"]
+
+[resource]
+script = ExtResource("1_script")
+id = 109
+itemName = "RADISH"
+texture = ExtResource("2_8ip0k")
+sellPrice = 260
+sellable = true
+type = "crop"

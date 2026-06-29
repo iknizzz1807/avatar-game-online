@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://djm760hyoaqkv"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c133qonnyhxsi" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/beetroot_05.png" id="6_fmrc3"]
+
+[resource]
+script = ExtResource("1_script")
+id = 101
+itemName = "BEETROOT"
+texture = ExtResource("6_fmrc3")
+sellPrice = 100
+sellable = true
+type = "crop"

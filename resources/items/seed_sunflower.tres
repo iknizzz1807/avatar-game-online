@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://qwmenru71u1a"]
+
+[ext_resource type="Texture2D" uid="uid://cq3rekoyfaoa6" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/sunflower_01.png" id="1_i2hgc"]
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dvbw6mnuvf5k0" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/sunflower_02.png" id="2_w2fxf"]
+[ext_resource type="Texture2D" uid="uid://d3xs1nml3eoil" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/sunflower_03.png" id="3_jxs7s"]
+[ext_resource type="Texture2D" uid="uid://duc03357hw4j6" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/sunflower_04.png" id="4_a58y0"]
+[ext_resource type="Texture2D" uid="uid://dheu0rtml7xqq" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/sunflower_00.png" id="7_7b61x"]
+
+[resource]
+script = ExtResource("1_script")
+id = 10
+itemName = "SUNFLOWER_SEED"
+texture = ExtResource("7_7b61x")
+buyPrice = 140
+type = "seed"
+growSecs = 660
+yieldsId = 110
+growthSprites = Array[Texture2D]([ExtResource("1_i2hgc"), ExtResource("2_w2fxf"), ExtResource("3_jxs7s"), ExtResource("4_a58y0")])

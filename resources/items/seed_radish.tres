@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bn6djmeasuxsi"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ffpcnfmy6td5" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/radish_01.png" id="1_yq8wp"]
+[ext_resource type="Texture2D" uid="uid://d0478pork350v" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/radish_02.png" id="2_kuhy5"]
+[ext_resource type="Texture2D" uid="uid://br8mvq76qmdcw" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/radish_03.png" id="3_8pd23"]
+[ext_resource type="Texture2D" uid="uid://dsgluy7mw5072" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/radish_04.png" id="4_jv1vl"]
+[ext_resource type="Texture2D" uid="uid://b7witg70exwkq" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/radish_00.png" id="6_eeu5p"]
+
+[resource]
+script = ExtResource("1_script")
+id = 9
+itemName = "RADISH_SEED"
+texture = ExtResource("6_eeu5p")
+buyPrice = 130
+type = "seed"
+growSecs = 600
+yieldsId = 109
+growthSprites = Array[Texture2D]([ExtResource("1_yq8wp"), ExtResource("2_kuhy5"), ExtResource("3_8pd23"), ExtResource("4_jv1vl")])

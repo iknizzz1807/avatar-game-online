@@ -7,7 +7,6 @@
 script = ExtResource("1_script")
 id = 21
 itemName = "SMALL_FISH"
-icon = "🐟"
 texture = ExtResource("2_xypp0")
 sellPrice = 30
 sellable = true

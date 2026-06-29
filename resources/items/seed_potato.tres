@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cg7ir0lk00kn4"]
+
+[ext_resource type="Texture2D" uid="uid://ccyei4dgm7c6k" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/potato_01.png" id="1_aa7qk"]
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bre5bb36e7ymu" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/potato_02.png" id="2_iuh0i"]
+[ext_resource type="Texture2D" uid="uid://dfbv0qmhi0mp1" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/potato_03.png" id="3_yskjp"]
+[ext_resource type="Texture2D" uid="uid://14pjd6bbpsdw" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/potato_04.png" id="4_j3inw"]
+[ext_resource type="Texture2D" uid="uid://brssei5qelrie" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/potato_00.png" id="6_7n7gs"]
+
+[resource]
+script = ExtResource("1_script")
+id = 7
+itemName = "POTATO_SEED"
+texture = ExtResource("6_7n7gs")
+buyPrice = 110
+type = "seed"
+growSecs = 480
+yieldsId = 107
+growthSprites = Array[Texture2D]([ExtResource("1_aa7qk"), ExtResource("2_iuh0i"), ExtResource("3_yskjp"), ExtResource("4_j3inw")])

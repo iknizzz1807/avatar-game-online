@@ -12,13 +12,29 @@ const TYPE_BAIT: String = "bait";
 const TYPE_POTION: String = "potion";
 
 # ─── Item IDs ─────────────────────────────────────────────────────────────────
-const ID_SEED_CARROT: int = 1;
-const ID_SEED_TOMATO: int = 2;
-const ID_SEED_CORN:   int = 3;
+const ID_SEED_BEETROOT: int = 1;
+const ID_SEED_CABBAGE: int = 2;
+const ID_SEED_CARROT: int = 3;
+const ID_SEED_CAULIFLOWER: int = 4;
+const ID_SEED_KALE: int = 5;
+const ID_SEED_PARSNIP: int = 6;
+const ID_SEED_POTATO: int = 7;
+const ID_SEED_PUMPKIN: int = 8;
+const ID_SEED_RADISH: int = 9;
+const ID_SEED_SUNFLOWER: int = 10;
+const ID_SEED_WHEAT: int = 11;
 
-const ID_CROP_CARROT: int = 11;
-const ID_CROP_TOMATO: int = 12;
-const ID_CROP_CORN:   int = 13;
+const ID_CROP_BEETROOT: int = 101;
+const ID_CROP_CABBAGE: int = 102;
+const ID_CROP_CARROT: int = 103;
+const ID_CROP_CAULIFLOWER: int = 104;
+const ID_CROP_KALE: int = 105;
+const ID_CROP_PARSNIP: int = 106;
+const ID_CROP_POTATO: int = 107;
+const ID_CROP_PUMPKIN: int = 108;
+const ID_CROP_RADISH: int = 109;
+const ID_CROP_SUNFLOWER: int = 110;
+const ID_CROP_WHEAT: int = 111;
 
 const ID_FISH_SMALL:  int = 21;
 const ID_FISH_MEDIUM: int = 22;
@@ -32,12 +48,28 @@ const ID_POTION_HEALTH: int = 41;
 static var CATALOGUE: Array[ItemData] = [];
 
 const SERVER_ID_BY_INT_ID: Dictionary = {
+	ID_SEED_BEETROOT: "seed_beetroot",
+	ID_SEED_CABBAGE: "seed_cabbage",
 	ID_SEED_CARROT: "seed_carrot",
-	ID_SEED_TOMATO: "seed_tomato",
-	ID_SEED_CORN: "seed_corn",
+	ID_SEED_CAULIFLOWER: "seed_cauliflower",
+	ID_SEED_KALE: "seed_kale",
+	ID_SEED_PARSNIP: "seed_parsnip",
+	ID_SEED_POTATO: "seed_potato",
+	ID_SEED_PUMPKIN: "seed_pumpkin",
+	ID_SEED_RADISH: "seed_radish",
+	ID_SEED_SUNFLOWER: "seed_sunflower",
+	ID_SEED_WHEAT: "seed_wheat",
+	ID_CROP_BEETROOT: "harvest_beetroot",
+	ID_CROP_CABBAGE: "harvest_cabbage",
 	ID_CROP_CARROT: "harvest_carrot",
-	ID_CROP_TOMATO: "harvest_tomato",
-	ID_CROP_CORN: "harvest_corn",
+	ID_CROP_CAULIFLOWER: "harvest_cauliflower",
+	ID_CROP_KALE: "harvest_kale",
+	ID_CROP_PARSNIP: "harvest_parsnip",
+	ID_CROP_POTATO: "harvest_potato",
+	ID_CROP_PUMPKIN: "harvest_pumpkin",
+	ID_CROP_RADISH: "harvest_radish",
+	ID_CROP_SUNFLOWER: "harvest_sunflower",
+	ID_CROP_WHEAT: "harvest_wheat",
 	ID_FISH_SMALL: "fish_small",
 	ID_FISH_MEDIUM: "fish_medium",
 	ID_FISH_LARGE: "fish_large",
@@ -46,12 +78,28 @@ const SERVER_ID_BY_INT_ID: Dictionary = {
 };
 
 const INT_ID_BY_SERVER_ID: Dictionary = {
+	"seed_beetroot": ID_SEED_BEETROOT,
+	"seed_cabbage": ID_SEED_CABBAGE,
 	"seed_carrot": ID_SEED_CARROT,
-	"seed_tomato": ID_SEED_TOMATO,
-	"seed_corn": ID_SEED_CORN,
+	"seed_cauliflower": ID_SEED_CAULIFLOWER,
+	"seed_kale": ID_SEED_KALE,
+	"seed_parsnip": ID_SEED_PARSNIP,
+	"seed_potato": ID_SEED_POTATO,
+	"seed_pumpkin": ID_SEED_PUMPKIN,
+	"seed_radish": ID_SEED_RADISH,
+	"seed_sunflower": ID_SEED_SUNFLOWER,
+	"seed_wheat": ID_SEED_WHEAT,
+	"harvest_beetroot": ID_CROP_BEETROOT,
+	"harvest_cabbage": ID_CROP_CABBAGE,
 	"harvest_carrot": ID_CROP_CARROT,
-	"harvest_tomato": ID_CROP_TOMATO,
-	"harvest_corn": ID_CROP_CORN,
+	"harvest_cauliflower": ID_CROP_CAULIFLOWER,
+	"harvest_kale": ID_CROP_KALE,
+	"harvest_parsnip": ID_CROP_PARSNIP,
+	"harvest_potato": ID_CROP_POTATO,
+	"harvest_pumpkin": ID_CROP_PUMPKIN,
+	"harvest_radish": ID_CROP_RADISH,
+	"harvest_sunflower": ID_CROP_SUNFLOWER,
+	"harvest_wheat": ID_CROP_WHEAT,
 	"fish_small": ID_FISH_SMALL,
 	"fish_medium": ID_FISH_MEDIUM,
 	"fish_large": ID_FISH_LARGE,

@@ -33,6 +33,7 @@ material = SubResource("ShaderMaterial_8wq5s")
 shape = SubResource("RectangleShape2D_lsl1e")
 
 [node name="Timer" type="Label" parent="." unique_id=498076834]
+visible = false
 offset_left = -11.0
 offset_top = -20.0
 offset_right = 12.0

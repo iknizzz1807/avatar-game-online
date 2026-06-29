@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cturf1or3toia"]
+
+[ext_resource type="Texture2D" uid="uid://3bxyqnj7l0lx" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/cabbage_01.png" id="1_8fpr7"]
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cknygxjvt06fg" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/cabbage_02.png" id="2_4188u"]
+[ext_resource type="Texture2D" uid="uid://bgfw1pnc7ahj" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/cabbage_03.png" id="3_raprh"]
+[ext_resource type="Texture2D" uid="uid://d2wsvcor56o56" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/cabbage_04.png" id="4_cnaki"]
+[ext_resource type="Texture2D" uid="uid://bcojobsj5wuu2" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/cabbage_00.png" id="6_sdjcj"]
+
+[resource]
+script = ExtResource("1_script")
+id = 4
+itemName = "CAULIFLOWER_SEED"
+texture = ExtResource("6_sdjcj")
+buyPrice = 80
+type = "seed"
+growSecs = 300
+yieldsId = 104
+growthSprites = Array[Texture2D]([ExtResource("1_8fpr7"), ExtResource("2_4188u"), ExtResource("3_raprh"), ExtResource("4_cnaki")])

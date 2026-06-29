@@ -17,11 +17,6 @@ size = Vector2(520, 340)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dinhu"]
 size = Vector2(38, 17.5)
 
-[sub_resource type="Environment" id="Environment_5q1rr"]
-adjustment_enabled = true
-adjustment_contrast = 1.195
-adjustment_saturation = 1.6
-
 [node name="Town" type="Node2D" unique_id=94325562]
 y_sort_enabled = true
 
@@ -186,8 +181,9 @@ position = Vector2(299, 49)
 
 [node name="Sprite2D" type="Sprite2D" parent="Decors/House3" unique_id=1080189320]
 y_sort_enabled = true
+position = Vector2(0, -18)
 texture = ExtResource("9_5q1rr")
-offset = Vector2(0, -19.795)
+offset = Vector2(0, -2)
 region_enabled = true
 region_rect = Rect2(19, 120, 43, 40)
 
@@ -201,8 +197,9 @@ position = Vector2(360, 49)
 
 [node name="Sprite2D" type="Sprite2D" parent="Decors/House4" unique_id=1408690087]
 y_sort_enabled = true
+position = Vector2(0, -18)
 texture = ExtResource("9_5q1rr")
-offset = Vector2(0, -19.795)
+offset = Vector2(0, -2)
 region_enabled = true
 region_rect = Rect2(19, 120, 43, 40)
 
@@ -227,7 +224,4 @@ position = Vector2(-56, 206)
 position = Vector2(424, 204)
 
 [node name="Shopkeeper" parent="." unique_id=349396540 instance=ExtResource("7_cq4yp")]
-position = Vector2(273, 40)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1965036269]
-environment = SubResource("Environment_5q1rr")
+position = Vector2(270, 41)

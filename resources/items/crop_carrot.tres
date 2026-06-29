@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://item0crop01"]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bm3vqjnijqkhq"]
 
 [ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://n7pryhusapwd" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/carrot_05.png" id="2_qpxa0"]
 
 [resource]
 script = ExtResource("1_script")
-id = 11
+id = 103
 itemName = "CARROT"
 texture = ExtResource("2_qpxa0")
-sellPrice = 90
+sellPrice = 140
 sellable = true
 type = "crop"

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://pviakw7pk110"]
+
+[ext_resource type="Texture2D" uid="uid://bclc8lqpxgnrv" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/beetroot_01.png" id="1_8s6ue"]
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cjcg5pbsujn3s" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/beetroot_02.png" id="2_tqrx2"]
+[ext_resource type="Texture2D" uid="uid://cdop0lfbt1o3o" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/beetroot_03.png" id="3_n6kia"]
+[ext_resource type="Texture2D" uid="uid://bm386cxhuhrl8" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/beetroot_04.png" id="4_nqxmq"]
+[ext_resource type="Texture2D" uid="uid://dwaudwf068g0d" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/beetroot_00.png" id="6_ni301"]
+
+[resource]
+script = ExtResource("1_script")
+id = 1
+itemName = "BEETROOT_SEED"
+texture = ExtResource("6_ni301")
+buyPrice = 50
+type = "seed"
+growSecs = 120
+yieldsId = 101
+growthSprites = Array[Texture2D]([ExtResource("1_8s6ue"), ExtResource("2_tqrx2"), ExtResource("3_n6kia"), ExtResource("4_nqxmq")])

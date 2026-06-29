@@ -15,9 +15,17 @@ type ShopItem struct {
 
 func GetSeeds() ([]ShopItem, error) {
 	items := []ShopItem{
-		{ItemID: "seed_carrot", Name: "Cà rốt", Type: models.ItemTypeSeed, BuyPrice: 50},
-		{ItemID: "seed_tomato", Name: "Cà chua", Type: models.ItemTypeSeed, BuyPrice: 80},
-		{ItemID: "seed_corn", Name: "Bắp", Type: models.ItemTypeSeed, BuyPrice: 120},
+		{ItemID: "seed_beetroot", Name: "Beetroot", Type: models.ItemTypeSeed, BuyPrice: 50},
+		{ItemID: "seed_cabbage", Name: "Cabbage", Type: models.ItemTypeSeed, BuyPrice: 60},
+		{ItemID: "seed_carrot", Name: "Carrot", Type: models.ItemTypeSeed, BuyPrice: 70},
+		{ItemID: "seed_cauliflower", Name: "Cauliflower", Type: models.ItemTypeSeed, BuyPrice: 80},
+		{ItemID: "seed_kale", Name: "Kale", Type: models.ItemTypeSeed, BuyPrice: 90},
+		{ItemID: "seed_parsnip", Name: "Parsnip", Type: models.ItemTypeSeed, BuyPrice: 100},
+		{ItemID: "seed_potato", Name: "Potato", Type: models.ItemTypeSeed, BuyPrice: 110},
+		{ItemID: "seed_pumpkin", Name: "Pumpkin", Type: models.ItemTypeSeed, BuyPrice: 120},
+		{ItemID: "seed_radish", Name: "Radish", Type: models.ItemTypeSeed, BuyPrice: 130},
+		{ItemID: "seed_sunflower", Name: "Sunflower", Type: models.ItemTypeSeed, BuyPrice: 140},
+		{ItemID: "seed_wheat", Name: "Wheat", Type: models.ItemTypeSeed, BuyPrice: 150},
 	}
 	return items, nil
 }

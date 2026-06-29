@@ -144,12 +144,28 @@ func HarvestPlot(userID int, plotIndex int) (string, error) {
 
 	harvestID := ""
 	switch seedID {
+	case "seed_beetroot":
+		harvestID = "harvest_beetroot"
+	case "seed_cabbage":
+		harvestID = "harvest_cabbage"
 	case "seed_carrot":
 		harvestID = "harvest_carrot"
-	case "seed_tomato":
-		harvestID = "harvest_tomato"
-	case "seed_corn":
-		harvestID = "harvest_corn"
+	case "seed_cauliflower":
+		harvestID = "harvest_cauliflower"
+	case "seed_kale":
+		harvestID = "harvest_kale"
+	case "seed_parsnip":
+		harvestID = "harvest_parsnip"
+	case "seed_potato":
+		harvestID = "harvest_potato"
+	case "seed_pumpkin":
+		harvestID = "harvest_pumpkin"
+	case "seed_radish":
+		harvestID = "harvest_radish"
+	case "seed_sunflower":
+		harvestID = "harvest_sunflower"
+	case "seed_wheat":
+		harvestID = "harvest_wheat"
 	}
 
 	if harvestID == "" {

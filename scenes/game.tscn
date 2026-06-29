@@ -60,6 +60,7 @@ position = Vector2(308, 35)
 position = Vector2(258, 63)
 
 [node name="Cow" parent="." unique_id=1583978460 instance=ExtResource("9_0tnpc")]
+visible = false
 position = Vector2(253, 24)
 
 [node name="Cow2" parent="." unique_id=63176455 instance=ExtResource("9_0tnpc")]
@@ -72,7 +73,7 @@ position = Vector2(300, 56)
 modulate = Color(0, 0, 0, 0.19607843)
 z_index = -1
 y_sort_enabled = true
-position = Vector2(-4, -3)
+position = Vector2(-1, -1)
 
 [node name="ChickenHouse" type="Sprite2D" parent="Shadow" unique_id=2037193460]
 y_sort_enabled = true

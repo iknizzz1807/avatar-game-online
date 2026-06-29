@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c0llpk3fxnhna"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c7dowiyp5vus3" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/pumpkin_05.png" id="2_s4n8c"]
+
+[resource]
+script = ExtResource("1_script")
+id = 108
+itemName = "PUMPKIN"
+texture = ExtResource("2_s4n8c")
+sellPrice = 240
+sellable = true
+type = "crop"

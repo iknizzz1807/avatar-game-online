@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cxensr08r5l0d"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cpba3bqjfgkk7" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/parsnip_01.png" id="1_ykmxe"]
+[ext_resource type="Texture2D" uid="uid://6phlfxojegx1" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/parsnip_02.png" id="2_fpsn5"]
+[ext_resource type="Texture2D" uid="uid://y07crrj87hkw" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/parsnip_03.png" id="3_5uwtr"]
+[ext_resource type="Texture2D" uid="uid://chb84csrbycey" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/parsnip_04.png" id="4_5vkha"]
+[ext_resource type="Texture2D" uid="uid://hwux4bhhkv6o" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/parsnip_00.png" id="6_rp5hn"]
+
+[resource]
+script = ExtResource("1_script")
+id = 6
+itemName = "PARSNIP_SEED"
+texture = ExtResource("6_rp5hn")
+buyPrice = 100
+type = "seed"
+growSecs = 420
+yieldsId = 106
+growthSprites = Array[Texture2D]([ExtResource("1_ykmxe"), ExtResource("2_fpsn5"), ExtResource("3_5uwtr"), ExtResource("4_5vkha")])

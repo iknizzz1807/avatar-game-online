@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bwrltj7cerj8o"]
+
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ds3ps0idni8bp" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/wheat_01.png" id="1_w64tq"]
+[ext_resource type="Texture2D" uid="uid://cjdykny1y1msv" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/wheat_02.png" id="2_mhvdj"]
+[ext_resource type="Texture2D" uid="uid://dgddsdram5xpy" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/wheat_03.png" id="3_60lr0"]
+[ext_resource type="Texture2D" uid="uid://cy38rqc14fux1" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/wheat_04.png" id="4_41xlu"]
+[ext_resource type="Texture2D" uid="uid://bpd20mdx44b1h" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/wheat_00.png" id="6_b1oas"]
+
+[resource]
+script = ExtResource("1_script")
+id = 11
+itemName = "WHEAT_SEED"
+texture = ExtResource("6_b1oas")
+buyPrice = 150
+type = "seed"
+growSecs = 720
+yieldsId = 111
+growthSprites = Array[Texture2D]([ExtResource("1_w64tq"), ExtResource("2_mhvdj"), ExtResource("3_60lr0"), ExtResource("4_41xlu")])

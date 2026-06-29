@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ce0kl5jgrqgj7"]
+
+[ext_resource type="Texture2D" uid="uid://cg022y84eooa8" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/pumpkin_01.png" id="1_gdq3a"]
+[ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dofrj0xeqcpxf" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/pumpkin_02.png" id="2_3a353"]
+[ext_resource type="Texture2D" uid="uid://puu0fwq4vxux" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/pumpkin_03.png" id="3_ugffq"]
+[ext_resource type="Texture2D" uid="uid://qa3d1u0gcgwk" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/pumpkin_04.png" id="4_0o6qf"]
+[ext_resource type="Texture2D" uid="uid://bwe1ub25707p4" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/pumpkin_00.png" id="6_vmmj1"]
+
+[resource]
+script = ExtResource("1_script")
+id = 8
+itemName = "PUMPKIN_SEED"
+texture = ExtResource("6_vmmj1")
+buyPrice = 120
+type = "seed"
+growSecs = 540
+yieldsId = 108
+growthSprites = Array[Texture2D]([ExtResource("1_gdq3a"), ExtResource("2_3a353"), ExtResource("3_ugffq"), ExtResource("4_0o6qf")])

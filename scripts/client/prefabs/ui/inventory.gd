@@ -33,6 +33,8 @@ const SLOT_COUNT: int = 20;
 @onready var gridContainer: GridContainer = $TabContainer/InventoryPanel/MC/VBox/GridContainer;
 @onready var closeButton: Button = $TabContainer/InventoryPanel/MC/VBox/TitleBar/CloseButton;
 @onready var closeButton2: Button = $TabContainer/FriendsPanel/MC/VBox/TitleBar/CloseButton2;
+@onready var logoutButton1: Button = $TabContainer/InventoryPanel/MC/VBox/TitleBar/LogoutButton;
+@onready var logoutButton2: Button = $TabContainer/FriendsPanel/MC/VBox/TitleBar/LogoutButton2;
 @onready var tooltipSection: VBoxContainer = $TabContainer/InventoryPanel/MC/VBox/TooltipSection;
 @onready var tooltipName: Label = $TabContainer/InventoryPanel/MC/VBox/TooltipSection/TooltipName;
 @onready var tooltipSellButton: Button = $TabContainer/InventoryPanel/MC/VBox/TooltipSection/SellButton;
@@ -70,6 +72,9 @@ func _ready() -> void:
 	closeButton2.pressed.connect(_on_close_pressed);
 	tooltipSellButton.pressed.connect(_on_sell_pressed);
 	
+	logoutButton1.pressed.connect(_on_logout_pressed)
+	logoutButton2.pressed.connect(_on_logout_pressed)
+
 	removeFriendButton.pressed.connect(_on_remove_friend_pressed)
 	acceptButton.pressed.connect(_on_accept_pressed)
 	declineButton.pressed.connect(_on_decline_pressed)
@@ -365,3 +370,22 @@ func _on_decline_pressed() -> void:
 	if request_id is int and request_id > 0:
 		await FriendManager.decline_request(request_id)
 		_refresh_friend_requests()
+
+
+func _on_logout_pressed() -> void:
+	var confirm_dialog := ConfirmationDialog.new()
+	confirm_dialog.title = tr("CONFIRM_LOGOUT")
+	confirm_dialog.dialog_text = tr("CONFIRM_LOGOUT_PROMPT")
+	confirm_dialog.confirmed.connect(func() -> void:
+		confirm_dialog.queue_free()
+		hide()
+		MultiplayerManager.disconnect_from_server()
+		ApiClient.clear_auth_token()
+		MultiplayerManager.set_auth_token("")
+		TransitionManager.transition_to("res://scenes/auth.tscn")
+	)
+	confirm_dialog.canceled.connect(func() -> void:
+		confirm_dialog.queue_free()
+	)
+	get_tree().root.add_child(confirm_dialog)
+	confirm_dialog.popup_centered()

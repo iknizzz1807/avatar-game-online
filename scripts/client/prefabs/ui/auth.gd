@@ -31,10 +31,14 @@ const GAME_SCENE: String = "res://scenes/game.tscn"
 
 #@onready var _http: HTTPRequest = $HTTPRequest
 
+@onready var _remember_me_checkbox: CheckBox = $Login/VBoxContainer/RememberMe
+
 
 func _ready() -> void:
 	_login_pass.secret = true
 	_signup_pass.secret = true
+
+	_load_credentials()
 
 	_login_btn.pressed.connect(_on_login_pressed)
 	_signup_btn.pressed.connect(_on_signup_pressed)
@@ -138,6 +142,8 @@ func _on_login_success(data: Dictionary) -> void:
 	MultiplayerManager.set_auth_token(token)
 	MultiplayerManager.set_local_player(user_id, display_name, map_id)
 
+	_save_credentials()
+
 	# Connect to the Godot dedicated server
 	MultiplayerManager.connected_to_server.connect(_on_server_connected, CONNECT_ONE_SHOT)
 	MultiplayerManager.connection_failed.connect(_on_server_connection_failed, CONNECT_ONE_SHOT)
@@ -152,3 +158,55 @@ func _on_server_connected() -> void:
 func _on_server_connection_failed() -> void:
 	push_warning("[Auth] Could not connect to game server — loading offline.")
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % MultiplayerManager.local_scene_name)
+
+
+# ─── Save & Load Credentials ──────────────────────────────────────────────────
+
+func _get_save_path() -> String:
+	var profile := ""
+	var prefix := "--profile="
+	for arg in OS.get_cmdline_args():
+		if arg.begins_with(prefix):
+			profile = arg.substr(prefix.length())
+			break
+	if not profile.is_empty():
+		return "user://credentials_" + profile + ".cfg"
+	return "user://credentials.cfg"
+
+
+func _save_credentials() -> void:
+	var path := _get_save_path()
+	var config := ConfigFile.new()
+	if _remember_me_checkbox != null and _remember_me_checkbox.button_pressed:
+		var username := _login_user.text.strip_edges()
+		var password := _login_pass.text
+		if username.is_empty():
+			username = _signup_user.text.strip_edges()
+			password = _signup_pass.text
+		
+		config.set_value("login", "username", username)
+		config.set_value("login", "password", password)
+		config.set_value("login", "remember", true)
+		config.save(path)
+	else:
+		var dir := DirAccess.open("user://")
+		if dir != null:
+			var filename := path.get_file()
+			if dir.file_exists(filename):
+				dir.remove(filename)
+
+
+func _load_credentials() -> void:
+	var path := _get_save_path()
+	var config := ConfigFile.new()
+	var err := config.load(path)
+	if err == OK:
+		var username = config.get_value("login", "username", "")
+		var password = config.get_value("login", "password", "")
+		var remember = config.get_value("login", "remember", false)
+		
+		if _remember_me_checkbox != null:
+			_remember_me_checkbox.button_pressed = remember
+		if remember:
+			_login_user.text = username
+			_login_pass.text = password

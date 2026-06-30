@@ -224,3 +224,7 @@ FARM_INVITE_PROMPT,%s has invited you to their farm. Do you want to go?,%s muố
 FRIEND_OFFLINE_OR_NOT_IN_GAME,Friend is offline or not in game.,Bạn bè đang ngoại tuyến hoặc không trong game.
 INVITATION_SENT,Invitation sent to %s.,Đã gửi lời mời tới %s.
 FAILED_TO_JOIN_FARM,Failed to join farm.,Không thể tham gia nông trại.
+REMEMBER_ME,Remember Me,Ghi nhớ đăng nhập
+LOGOUT,Log Out,Đăng xuất
+CONFIRM_LOGOUT,Log Out,Đăng xuất
+CONFIRM_LOGOUT_PROMPT,Are you sure you want to log out?,Bạn có chắc chắn muốn đăng xuất không?

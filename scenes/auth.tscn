@@ -226,7 +226,17 @@ theme_override_styles/focus = ExtResource("5_y6olf")
 placeholder_text = "PASSWORD_PLACEHOLDER"
 clear_button_enabled = true
 caret_blink = true
-secret = true
+
+[node name="RememberMe" type="CheckBox" parent="CanvasLayer/Auth/Login/VBoxContainer" unique_id=741852963]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_colors/font_pressed_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_colors/font_hover_color = Color(0.40392157, 0.5137255, 0.36078432, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.40392157, 0.5137255, 0.36078432, 1)
+theme_override_fonts/font = ExtResource("4_rgw86")
+button_pressed = true
+text = "REMEMBER_ME"
 
 [node name="Button" type="Button" parent="CanvasLayer/Auth/Login/VBoxContainer" unique_id=1320622470]
 custom_minimum_size = Vector2(116, 34)

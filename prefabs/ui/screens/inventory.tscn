@@ -114,6 +114,14 @@ theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 32
 text = "INVENTORY_020"
 
+[node name="LogoutButton" type="Button" parent="TabContainer/InventoryPanel/MC/VBox/TitleBar" unique_id=987654329]
+custom_minimum_size = Vector2(80, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "LOGOUT"
+
 [node name="CloseButton" type="Button" parent="TabContainer/InventoryPanel/MC/VBox/TitleBar" unique_id=1952120787]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
@@ -236,6 +244,14 @@ size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 32
 text = "FRIENDS"
+
+[node name="LogoutButton2" type="Button" parent="TabContainer/FriendsPanel/MC/VBox/TitleBar" unique_id=987654330]
+custom_minimum_size = Vector2(80, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_colors/font_hover_color = Color(0.8, 0.3, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "LOGOUT"
 
 [node name="CloseButton2" type="Button" parent="TabContainer/FriendsPanel/MC/VBox/TitleBar" unique_id=516844652]
 custom_minimum_size = Vector2(36, 36)

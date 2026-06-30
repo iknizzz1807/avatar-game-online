@@ -44,6 +44,8 @@ var local_map_id:       String = "game"
 
 # ─── Internal ─────────────────────────────────────────────────────────────────
 var _peer: ENetMultiplayerPeer = null
+var _invite_dialog: ConfirmationDialog = null
+var _pending_invite_user_id: int = -1
 
 
 func _ready() -> void:
@@ -75,9 +77,18 @@ func set_auth_token(token: String) -> void:
 
 ## Sets the scene name and automatically computes the map_id to isolate personal maps.
 func set_map(scene_name: String) -> void:
+	var target_map_id_override := ""
+	if scene_name.contains("_"):
+		var parts := scene_name.split("_")
+		if parts.size() == 2 and parts[1].is_valid_int():
+			target_map_id_override = scene_name
+			scene_name = parts[0]
+			
 	scene_name = _server_map_to_scene(scene_name)
 	local_scene_name = scene_name
-	if scene_name in INSTANCED_SCENES:
+	if not target_map_id_override.is_empty():
+		local_map_id = target_map_id_override
+	elif scene_name in INSTANCED_SCENES:
 		local_map_id = scene_name + "_" + str(local_user_id)
 	else:
 		local_map_id = scene_name
@@ -98,6 +109,8 @@ func get_server_map_name(scene_name: String = "") -> String:
 
 
 func _server_map_to_scene(map_id: String) -> String:
+	if map_id.begins_with("game_"):
+		return "game"
 	match map_id:
 		"farm":
 			return "game"
@@ -314,3 +327,65 @@ func _read_arg_or_env(arg_name: String, env_name: String, default_value: String)
 			return arg.substr(prefix.length())
 	var env_value := OS.get_environment(env_name)
 	return env_value if not env_value.is_empty() else default_value
+
+
+# ─── Farm Invitation RPCs ────────────────────────────────────────────────────
+
+func send_farm_invite(target_user_id: int) -> void:
+	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
+	if server_node and multiplayer.has_multiplayer_peer():
+		server_node.send_farm_invite.rpc_id(1, target_user_id)
+
+
+@rpc("authority", "reliable")
+func receive_farm_invite(inviter_name: String, inviter_user_id: int) -> void:
+	if _invite_dialog != null:
+		_invite_dialog.queue_free()
+		_invite_dialog = null
+	
+	_pending_invite_user_id = inviter_user_id
+	
+	_invite_dialog = ConfirmationDialog.new()
+	_invite_dialog.title = tr("FARM_INVITATION")
+	_invite_dialog.dialog_text = tr("FARM_INVITE_PROMPT") % inviter_name
+	_invite_dialog.confirmed.connect(_on_invite_confirmed)
+	_invite_dialog.canceled.connect(_on_invite_canceled)
+	get_tree().root.add_child(_invite_dialog)
+	_invite_dialog.popup_centered()
+
+
+func _on_invite_confirmed() -> void:
+	if _pending_invite_user_id > 0:
+		var target_map_id := "game_" + str(_pending_invite_user_id)
+		var approved: bool = await request_map_change(target_map_id)
+		if approved:
+			TransitionManager.transition_to("res://scenes/game.tscn")
+		else:
+			ToastManager.show_toast(tr("FAILED_TO_JOIN_FARM"), ToastManager.Type.WARNING)
+	_cleanup_invite_dialog()
+
+
+func _on_invite_canceled() -> void:
+	_cleanup_invite_dialog()
+
+
+func _cleanup_invite_dialog() -> void:
+	if _invite_dialog != null:
+		_invite_dialog.queue_free()
+		_invite_dialog = null
+	_pending_invite_user_id = -1
+
+
+@rpc("authority", "reliable")
+func farm_invite_sent_status(success: bool, friend_name: String) -> void:
+	if success:
+		ToastManager.show_toast(tr("INVITATION_SENT") % friend_name, ToastManager.Type.SUCCESS)
+	else:
+		ToastManager.show_toast(tr("FRIEND_OFFLINE_OR_NOT_IN_GAME"), ToastManager.Type.WARNING)
+
+
+func broadcast_farm_slots(slots_data: Dictionary) -> void:
+	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
+	if server_node and multiplayer.has_multiplayer_peer():
+		server_node.sync_farm_slots_from_owner.rpc_id(1, local_map_id, slots_data)
+

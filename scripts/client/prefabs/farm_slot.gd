@@ -16,7 +16,7 @@ enum PlotState {
 }
 
 @onready var plantSprite: Sprite2D = $Plant
-@onready var timerLabel: Label = $Timer
+#@onready var timerLabel: Label = $Timer
 
 ## How close (pixels) the player must be to interact with this plot.
 ## Adjust this in the Inspector without changing the collision shape.
@@ -32,6 +32,16 @@ var _ready_refresh_requested: bool = false
 # For local testing, simulate a short growth time (e.g. 5 seconds)
 var LOCAL_GROWTH_DURATION: int = 5
 
+var is_visitor: bool:
+	get:
+		if not multiplayer.has_multiplayer_peer() or multiplayer.multiplayer_peer == null:
+			return false
+		if MultiplayerManager.local_scene_name != "game":
+			return false
+		var owner_map_id := "game_" + str(MultiplayerManager.local_user_id)
+		return MultiplayerManager.local_map_id != owner_map_id
+
+
 # ─── LIFECYCLE ────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
@@ -42,6 +52,7 @@ func _ready() -> void:
 	_update_visuals()
 	if plotId == 0:
 		call_deferred("_load_farm_from_server")
+		MultiplayerManager.player_joined.connect(_on_multiplayer_player_joined)
 
 func _process(_delta: float) -> void:
 	if currentState == PlotState.GROWING:
@@ -49,20 +60,23 @@ func _process(_delta: float) -> void:
 		var timeLeft: int = readyAtUnixTime - currentTime
 		
 		if timeLeft > 0:
-			timerLabel.text = _format_time(timeLeft)
-			timerLabel.visible = true
+			#timerLabel.text = _format_time(timeLeft)
+			#timerLabel.visible = true
 			_update_visuals()  # refresh the growth-stage sprite every frame
 		else:
 			currentState = PlotState.READY
 			_ready_refresh_requested = false
 			_update_visuals()
 	else:
-		timerLabel.visible = false
+		pass;
+		#timerLabel.visible = false
 
 # ─── INPUT ────────────────────────────────────────────────────────────────────
 # Override to add left-click on top of the right-click from ContextMenuTarget.
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void:
+	if is_visitor:
+		return
 	if not (event is InputEventMouseButton and event.pressed):
 		return
 	match event.button_index:
@@ -97,6 +111,8 @@ func _handle_click() -> void:
 ## Returns state-appropriate actions for this plot.
 ## Add new actions by appending dicts here; no other file needs changing.
 func _build_actions() -> Array:
+	if is_visitor:
+		return []
 	var nearby := _is_player_nearby()
 	match currentState:
 		PlotState.EMPTY:
@@ -241,11 +257,13 @@ func _format_time(seconds: int) -> String:
 func _load_farm_from_server() -> void:
 	if not ApiClient.has_auth_token():
 		return
+	if is_visitor:
+		return
 	var response: Dictionary = await ApiClient.request_json("/api/farm/plots")
 	if not response.get("ok", false):
 		ToastManager.show_toast(tr("FAILED_TO_LOAD_FARM"), ToastManager.Type.WARNING)
 		return
-	_apply_server_plots(ApiClient.response_data(response).get("plots", []), false)
+	_apply_server_plots(ApiClient.response_data(response).get("plots", []), true)
 
 
 func _request_server_action(action: String, seed_id: String = "") -> void:
@@ -308,6 +326,27 @@ func _apply_server_plots(plots: Array, broadcast: bool) -> void:
 			if slot.plotId == index:
 				slot.sync_state(state, seed_id, ready_at)
 				break
+	if broadcast:
+		_broadcast_all_plots()
+
+
+func _on_multiplayer_player_joined(_peer_id: int, _user_id: int, _display_name: String) -> void:
+	if not is_visitor:
+		# Sync our plots to the newly joined peer
+		_broadcast_all_plots()
+
+
+func _broadcast_all_plots() -> void:
+	if is_visitor:
+		return
+	var slots_data := {}
+	for slot in get_tree().get_nodes_in_group("farm_slots"):
+		slots_data[slot.plotId] = {
+			"state": slot.currentState,
+			"seed_id": slot.currentSeedId,
+			"ready_at": slot.readyAtUnixTime
+		}
+	MultiplayerManager.broadcast_farm_slots(slots_data)
 
 
 func _plot_status_to_state(status: String) -> int:

@@ -1,57 +1,10 @@
 [gd_scene format=3 uid="uid://cqvqt2oo68wo3"]
 
 [ext_resource type="Script" path="res://scripts/client/prefabs/ui/fishing_minigame.gd" id="1_fmgame"]
-[ext_resource type="SystemFont" path="res://resources/ui_system_font.tres" id="2_font"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wait_bg"]
-bg_color = Color(0.05, 0.09, 0.14, 0.92)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.3, 0.55, 0.85, 0.75)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bite_bg"]
-bg_color = Color(0.35, 0.12, 0.02, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 0.65, 0.1, 0.9)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-shadow_color = Color(1, 0.5, 0, 0.5)
-shadow_size = 18
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
-bg_color = Color(0.08, 0.06, 0.04, 0.95)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.3, 0.55, 0.8, 0.7)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_catch_bg"]
-bg_color = Color(0.1, 0.08, 0.06, 0.9)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.5, 0.4, 0.2, 0.6)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[ext_resource type="StyleBox" uid="uid://dtx53ap3anrf3" path="res://resources/ui/button.tres" id="4_3av1w"]
+[ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="4_mpsva"]
+[ext_resource type="Texture2D" uid="uid://bvn4uakkaeen0" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/fish.png" id="5_karpv"]
+[ext_resource type="StyleBox" uid="uid://m2ay5qd62oxb" path="res://resources/ui/field.tres" id="6_karpv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_catch_fill"]
 bg_color = Color(0.25, 0.9, 0.35, 1)
@@ -59,18 +12,6 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_result_bg"]
-bg_color = Color(0.05, 0.09, 0.04, 0.94)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.25, 0.85, 0.35, 0.85)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
 
 [node name="FishingMinigame" type="Control" unique_id=486897809]
 layout_mode = 3
@@ -90,33 +31,25 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -90.0
-offset_top = 50.0
-offset_right = 90.0
-offset_bottom = 110.0
+offset_left = -84.5
+offset_top = 22.0
+offset_right = 84.5
+offset_bottom = 102.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_wait_bg")
+theme_override_styles/panel = ExtResource("4_3av1w")
 
 [node name="VBox" type="VBoxContainer" parent="WaitPanel" unique_id=1946955294]
 layout_mode = 2
-theme_override_constants/separation = 4
 alignment = 1
 
 [node name="BobberLabel" type="Label" parent="WaitPanel/VBox" unique_id=1069307776]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 28
-text = "O"
-horizontal_alignment = 1
-
-[node name="WaitLabel" type="Label" parent="WaitPanel/VBox" unique_id=1124920043]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 13
-text = "Dang cho ca..."
+theme = ExtResource("4_mpsva")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 24
+text = "Waiting..."
 horizontal_alignment = 1
 
 [node name="BitePanel" type="PanelContainer" parent="." unique_id=1827968400]
@@ -134,7 +67,8 @@ offset_bottom = 90.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bite_bg")
+theme = ExtResource("4_mpsva")
+theme_override_styles/panel = ExtResource("4_3av1w")
 
 [node name="BiteMargin" type="MarginContainer" parent="BitePanel" unique_id=557118323]
 layout_mode = 2
@@ -145,10 +79,10 @@ theme_override_constants/margin_bottom = 10
 
 [node name="BiteLabel" type="Label" parent="BitePanel/BiteMargin" unique_id=1710904722]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 17
-text = "CA CAN CAU! Nhan Space / Click!"
+theme = ExtResource("4_mpsva")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 16
+text = "HIT!!! Press Space / Click"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -173,33 +107,37 @@ layout_mode = 1
 offset_right = 36.0
 offset_bottom = 200.0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/panel = ExtResource("4_3av1w")
 
 [node name="BarBg" type="Control" parent="BarPanel/BarContainer" unique_id=1226605934]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="FishZone" type="ColorRect" parent="BarPanel/BarContainer/BarBg" unique_id=1300006501]
+[node name="FishZone" type="TextureRect" parent="BarPanel/BarContainer/BarBg" unique_id=695446064]
 layout_mode = 1
-offset_right = 36.0
-offset_bottom = 36.0
+offset_left = 1.0
+offset_right = 25.0
+offset_bottom = 24.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
 mouse_filter = 2
-color = Color(0.25, 0.95, 0.4, 0.55)
+texture = ExtResource("5_karpv")
+stretch_mode = 5
 
 [node name="PlayerZone" type="ColorRect" parent="BarPanel/BarContainer/BarBg" unique_id=693307394]
 layout_mode = 1
-offset_right = 36.0
+offset_right = 26.0
 offset_bottom = 56.0
 mouse_filter = 2
-color = Color(0.3, 0.6, 0.95, 0.85)
+color = Color(0.57269996, 0.6970616, 0.83, 0.8509804)
 
 [node name="CatchProgress" type="ProgressBar" parent="BarPanel" unique_id=714274145]
 layout_mode = 1
 offset_left = 44.0
 offset_right = 60.0
 offset_bottom = 200.0
-theme_override_styles/background = SubResource("StyleBoxFlat_catch_bg")
+theme_override_styles/background = ExtResource("6_karpv")
 theme_override_styles/fill = SubResource("StyleBoxFlat_catch_fill")
+value = 25.72
 fill_mode = 3
 show_percentage = false
 
@@ -211,14 +149,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -160.0
-offset_top = 30.0
-offset_right = 160.0
-offset_bottom = 90.0
+offset_left = -107.0
+offset_top = 32.0
+offset_right = 107.0
+offset_bottom = 92.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_result_bg")
+theme_override_styles/panel = ExtResource("4_3av1w")
 
 [node name="ResultMargin" type="MarginContainer" parent="ResultPanel" unique_id=1141624615]
 layout_mode = 2
@@ -229,9 +167,9 @@ theme_override_constants/margin_bottom = 10
 
 [node name="ResultLabel" type="Label" parent="ResultPanel/ResultMargin" unique_id=1576737144]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.3, 1, 0.4, 1)
-theme_override_fonts/font = ExtResource("2_font")
-theme_override_font_sizes/font_size = 16
-text = "Ca can cau!"
+theme = ExtResource("4_mpsva")
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 24
+text = "CATCHED!"
 horizontal_alignment = 1
 vertical_alignment = 1

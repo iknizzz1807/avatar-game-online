@@ -97,6 +97,11 @@ func _poll_active_trade() -> void:
 		return
 	var trade: Dictionary = _extract_trade(response)
 	if trade.is_empty():
+		if not active_trade.is_empty():
+			active_trade = {}
+			_hide_trade()
+			ToastManager.show_toast("Trade da ket thuc.")
+			trade_closed.emit()
 		return
 	active_trade = trade
 	trade_updated.emit(trade)

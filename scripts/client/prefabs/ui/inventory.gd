@@ -30,11 +30,19 @@ const SLOT_COUNT: int = 20;
 # NODES
 # ═════════════════════════════════════════════════════════════════════════════
 
-@onready var gridContainer: GridContainer = $Panel/MC/VBox/GridContainer;
-@onready var closeButton: Button = $Panel/MC/VBox/TitleBar/CloseButton;
-@onready var tooltipSection: VBoxContainer = $Panel/MC/VBox/TooltipSection;
-@onready var tooltipName: Label = $Panel/MC/VBox/TooltipSection/TooltipName;
-@onready var tooltipSellButton: Button = $Panel/MC/VBox/TooltipSection/SellButton;
+@onready var gridContainer: GridContainer = $TabContainer/InventoryPanel/MC/VBox/GridContainer;
+@onready var closeButton: Button = $TabContainer/InventoryPanel/MC/VBox/TitleBar/CloseButton;
+@onready var closeButton2: Button = $TabContainer/FriendsPanel/MC/VBox/TitleBar/CloseButton2;
+@onready var tooltipSection: VBoxContainer = $TabContainer/InventoryPanel/MC/VBox/TooltipSection;
+@onready var tooltipName: Label = $TabContainer/InventoryPanel/MC/VBox/TooltipSection/TooltipName;
+@onready var tooltipSellButton: Button = $TabContainer/InventoryPanel/MC/VBox/TooltipSection/SellButton;
+
+@onready var tabContainer: TabContainer = $TabContainer;
+@onready var friendsList: ItemList = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn/FriendsList;
+@onready var removeFriendButton: Button = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn/RemoveFriendButton;
+@onready var requestsList: ItemList = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestsList;
+@onready var acceptButton: Button = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestButtons/AcceptButton;
+@onready var declineButton: Button = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestButtons/DeclineButton;
 
 # ═════════════════════════════════════════════════════════════════════════════
 # STATE
@@ -46,6 +54,8 @@ const SLOT_COUNT: int = 20;
 var inventoryData: Array = [];
 var slots: Array[ItemSlot] = [];
 var selectedSlot: int = -1;
+var _friends_data: Array = [];
+var _selected_context_friend: Dictionary = {};
 
 # TODO(Backend): Sync coins from the Go server instead of local simulation
 var coins: int = 1000;
@@ -57,12 +67,31 @@ var coins: int = 1000;
 func _ready() -> void:
 	add_to_group("inventory");
 	closeButton.pressed.connect(_on_close_pressed);
+	closeButton2.pressed.connect(_on_close_pressed);
 	tooltipSellButton.pressed.connect(_on_sell_pressed);
+	
+	removeFriendButton.pressed.connect(_on_remove_friend_pressed)
+	acceptButton.pressed.connect(_on_accept_pressed)
+	declineButton.pressed.connect(_on_decline_pressed)
+	FriendManager.friends_updated.connect(_on_friends_updated)
+	friendsList.item_clicked.connect(_on_friend_item_clicked)
+	
+	tabContainer.set_tab_title(0, tr("INVENTORY_TAB"))
+	tabContainer.set_tab_title(1, tr("FRIENDS_TAB"))
+	
+	$TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn/FriendsTitle.text = tr("FRIENDS")
+	removeFriendButton.text = tr("REMOVE_FRIEND")
+	$TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestsTitle.text = tr("FRIEND_REQUESTS")
+	acceptButton.text = tr("ACCEPT")
+	declineButton.text = tr("DECLINE")
+	
 	_collect_slots();
 	# Connect hotbar nodes so they refresh whenever the inventory changes.
 	inventory_updated.connect(_on_inventory_updated_hotbar);
 	if ApiClient.has_auth_token():
 		load_inventory()
+		FriendManager.load_friends()
+		_refresh_friend_requests()
 	else:
 		_load_example_slots();
 
@@ -83,6 +112,8 @@ func set_inventory(data: Array) -> void:
 func open_inventory() -> void:
 	if ApiClient.has_auth_token():
 		load_inventory()
+		FriendManager.load_friends()
+		_refresh_friend_requests()
 	visible = true;
 
 
@@ -232,3 +263,105 @@ func _on_inventory_updated_hotbar(data: Array) -> void:
 	for hotbar in get_tree().get_nodes_in_group("hotbar"):
 		if hotbar.has_method("populate"):
 			hotbar.populate(data)
+
+
+func _on_friends_updated(friends: Array) -> void:
+	_friends_data = friends
+	friendsList.clear()
+	for friend in friends:
+		if friend is Dictionary:
+			var name: String = str(friend.get("display_name", ""))
+			var map: String = str(friend.get("current_map", ""))
+			var label: String = "%s (%s)" % [name, map] if not map.is_empty() else name
+			var idx: int = friendsList.add_item(label)
+			friendsList.set_item_metadata(idx, friend.get("id", -1))
+
+
+func _on_friend_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
+	if mouse_button_index != MOUSE_BUTTON_RIGHT:
+		return
+	if index < 0 or index >= _friends_data.size():
+		return
+	var friend = _friends_data[index]
+	_show_friend_context_menu(friend, get_global_mouse_position())
+
+
+func _show_friend_context_menu(friend: Dictionary, screen_pos: Vector2) -> void:
+	var menus := get_tree().get_nodes_in_group("context_menu")
+	if menus.is_empty():
+		return
+	var menu = menus[0]
+	if menu.action_selected.is_connected(_on_friend_context_action):
+		menu.action_selected.disconnect(_on_friend_context_action)
+	menu.action_selected.connect(_on_friend_context_action, CONNECT_ONE_SHOT)
+	
+	_selected_context_friend = friend
+	
+	var in_farm: bool = (MultiplayerManager.local_scene_name == "game")
+	var actions = [
+		{
+			"id": "invite_to_farm",
+			"label": tr("INVITE_TO_FARM"),
+			"enabled": in_farm,
+			"tooltip": "" if in_farm else tr("MUST_BE_IN_FARM_TO_INVITE")
+		}
+	]
+	
+	menu.show_menu(actions, self, screen_pos)
+
+
+func _on_friend_context_action(actionId: String, target: Object) -> void:
+	if target != self:
+		return
+	match actionId:
+		"invite_to_farm":
+			if _selected_context_friend.is_empty():
+				return
+			var friend_id = _selected_context_friend.get("id", -1)
+			if friend_id > 0:
+				MultiplayerManager.send_farm_invite(friend_id)
+
+
+func _refresh_friend_requests() -> void:
+	requestsList.clear()
+	if not ApiClient.has_auth_token():
+		return
+	var response: Dictionary = await ApiClient.request_json("/api/friends/requests")
+	if not response.get("ok", false):
+		return
+	var requests: Array = ApiClient.response_data(response).get("requests", [])
+	for request in requests:
+		if request is Dictionary:
+			var name: String = str(request.get("requester_name", ""))
+			var label: String = name
+			var idx: int = requestsList.add_item(label)
+			requestsList.set_item_metadata(idx, request.get("id", -1))
+
+
+func _on_remove_friend_pressed() -> void:
+	var selected: PackedInt32Array = friendsList.get_selected_items()
+	if selected.is_empty():
+		return
+	var friend_id = friendsList.get_item_metadata(selected[0])
+	if friend_id is int and friend_id > 0:
+		await FriendManager.remove_friend(friend_id)
+
+
+func _on_accept_pressed() -> void:
+	var selected: PackedInt32Array = requestsList.get_selected_items()
+	if selected.is_empty():
+		return
+	var request_id = requestsList.get_item_metadata(selected[0])
+	if request_id is int and request_id > 0:
+		await FriendManager.accept_request(request_id)
+		_refresh_friend_requests()
+
+
+func _on_decline_pressed() -> void:
+	var selected: PackedInt32Array = requestsList.get_selected_items()
+	if selected.is_empty():
+		return
+	var request_id = requestsList.get_item_metadata(selected[0])
+	if request_id is int and request_id > 0:
+		await FriendManager.decline_request(request_id)
+		_refresh_friend_requests()

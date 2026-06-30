@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://item0fish01"]
 
 [ext_resource type="Script" uid="uid://cqa3bd8hwje16" path="res://scripts/shared/item_data.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bvn4uakkaeen0" path="res://sprites/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_ASSET_PACK_V2.1/Sunnyside_World_Assets/Elements/Crops/fish.png" id="2_xypp0"]
+[ext_resource type="Texture2D" uid="uid://dtch22q2y6qax" path="res://sprites/fish_3.png" id="2_xypp0"]
 
 [resource]
 script = ExtResource("1_script")

@@ -27,21 +27,21 @@ const BITE_WINDOW:      float = 1.8   ## How long the player has to react (secon
 const MINIGAME_DURATION:float = 7.0   ## Total bar-game time (seconds)
 const SUCCESS_THRESHOLD:float = 0.75  ## Fraction of catch-meter needed to win
 const GRAVITY:          float = 180.0 ## How fast player zone falls (px/s²)
-const LIFT:             float = 380.0 ## How fast player zone rises when held (px/s²)
-const FISH_SPEED_BASE:  float = 80.0  ## Fish zone oscillation speed (px/s)
-const FISH_SPEED_RAND:  float = 60.0  ## Random extra speed added to fish zone
+const LIFT:             float = 280.0 ## How fast player zone rises when held (px/s²)
+const FISH_SPEED_BASE:  float = 40.0  ## Fish zone oscillation speed (px/s)
+const FISH_SPEED_RAND:  float = 30.0  ## Random extra speed added to fish zone
 const BAR_HEIGHT:       float = 200.0 ## Pixel height of the play area
 const ZONE_HEIGHT:      float = 56.0  ## Player zone height (px)
 const FISH_HEIGHT:      float = 36.0  ## Fish zone height (px)
 
 # ── Node references (set from tscn) ───────────────────────────────────────────
 @onready var _wait_panel:      Control         = $WaitPanel
-@onready var _wait_label:      Label           = $WaitPanel/VBox/WaitLabel
+#@onready var _wait_label:      Label           = $WaitPanel/VBox/WaitLabel
 @onready var _bite_panel:      Control         = $BitePanel
 @onready var _bite_label:      Label           = $BitePanel/BiteMargin/BiteLabel
 @onready var _bar_panel:       Control         = $BarPanel
 @onready var _bar_bg:          Control         = $BarPanel/BarContainer/BarBg
-@onready var _fish_zone:       ColorRect       = $BarPanel/BarContainer/BarBg/FishZone
+@onready var _fish_zone:       TextureRect       = $BarPanel/BarContainer/BarBg/FishZone
 @onready var _player_zone:     ColorRect       = $BarPanel/BarContainer/BarBg/PlayerZone
 @onready var _catch_bar:       ProgressBar     = $BarPanel/CatchProgress
 @onready var _result_panel:    Control         = $ResultPanel
@@ -116,7 +116,7 @@ func _process_waiting(delta: float) -> void:
 
 	# Animate bobber label
 	var bob_offset := sin(_bobber_time * 3.5) * 4.0
-	_wait_label.text   = tr("ĐANG_CHỜ_CÁ")
+	#_wait_label.text   = tr("ĐANG_CHỜ_CÁ")
 
 	if _phase_timer <= 0.0:
 		_set_phase(Phase.BITE)

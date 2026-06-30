@@ -3,13 +3,15 @@
 [ext_resource type="Script" uid="uid://d0a1hjbvbopd" path="res://scripts/client/prefabs/ui/inventory.gd" id="1_d8e3d"]
 [ext_resource type="PackedScene" uid="uid://cbfnig2hg4ehu" path="res://prefabs/ui/components/item_slot.tscn" id="2_g36n7"]
 [ext_resource type="Script" uid="uid://bagfxkfa7im1l" path="res://scripts/shared/inventory_slot.gd" id="3_islot"]
-[ext_resource type="Resource" uid="uid://item0seed01" path="res://resources/items/seed_carrot.tres" id="4_seed"]
-[ext_resource type="Resource" uid="uid://item0crop01" path="res://resources/items/crop_carrot.tres" id="5_crop"]
+[ext_resource type="Resource" uid="uid://b7uscsqfl1c8q" path="res://resources/items/seed_carrot.tres" id="4_seed"]
+[ext_resource type="Resource" uid="uid://bm3vqjnijqkhq" path="res://resources/items/crop_carrot.tres" id="5_crop"]
 [ext_resource type="Resource" uid="uid://item0fish01" path="res://resources/items/fish_small.tres" id="6_fish"]
 [ext_resource type="Resource" uid="uid://co7uip3u7skm2" path="res://resources/items/rod_bamboo.tres" id="7_rod"]
 [ext_resource type="Resource" uid="uid://item0bait01" path="res://resources/items/bait_normal.tres" id="8_bait"]
 [ext_resource type="StyleBox" uid="uid://c0r71un0cdua" path="res://resources/ui/panel.tres" id="9_8uuda"]
 [ext_resource type="Theme" uid="uid://6obfcnk51xri" path="res://resources/ui/ui_game_theme.tres" id="9_theme"]
+[ext_resource type="FontFile" uid="uid://dkpbaknlgcqve" path="res://resources/Minecraft.ttf" id="9_txqcx"]
+[ext_resource type="StyleBox" uid="uid://dtx53ap3anrf3" path="res://resources/ui/button.tres" id="10_sxfyj"]
 
 [sub_resource type="Resource" id="ex_1"]
 script = ExtResource("3_islot")
@@ -61,132 +63,242 @@ theme = ExtResource("9_theme")
 script = ExtResource("1_d8e3d")
 EXAMPLE_SLOTS = Array[ExtResource("3_islot")]([SubResource("ex_1"), SubResource("ex_2"), SubResource("ex_3"), SubResource("ex_4"), SubResource("ex_5"), SubResource("ex_6"), SubResource("ex_7"), SubResource("ex_8")])
 
-[node name="Panel" type="PanelContainer" parent="." unique_id=224372060]
+[node name="TabContainer" type="TabContainer" parent="." unique_id=1392655834]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -248.0
+offset_left = -300.0
 offset_top = -225.0
-offset_right = 185.0
+offset_right = 300.0
 offset_bottom = 185.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = ExtResource("9_8uuda")
+theme_override_colors/drop_mark_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_colors/font_selected_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_colors/font_hovered_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_colors/font_unselected_color = Color(0.76862746, 0.6039216, 0.42352942, 1)
+theme_override_fonts/font = ExtResource("9_txqcx")
+theme_override_styles/tab_unselected = ExtResource("10_sxfyj")
+theme_override_styles/tab_hovered = ExtResource("10_sxfyj")
+theme_override_styles/tab_selected = ExtResource("10_sxfyj")
+theme_override_styles/tab_disabled = ExtResource("10_sxfyj")
+theme_override_styles/tab_focus = ExtResource("10_sxfyj")
+current_tab = 0
 
-[node name="MC" type="MarginContainer" parent="Panel" unique_id=556479765]
+[node name="InventoryPanel" type="PanelContainer" parent="TabContainer" unique_id=1340754920]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("9_8uuda")
+metadata/_tab_index = 0
+
+[node name="MC" type="MarginContainer" parent="TabContainer/InventoryPanel" unique_id=724648872]
 layout_mode = 2
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="VBox" type="VBoxContainer" parent="Panel/MC" unique_id=970981711]
+[node name="VBox" type="VBoxContainer" parent="TabContainer/InventoryPanel/MC" unique_id=2048594918]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="TitleBar" type="HBoxContainer" parent="Panel/MC/VBox" unique_id=196337454]
+[node name="TitleBar" type="HBoxContainer" parent="TabContainer/InventoryPanel/MC/VBox" unique_id=1017295971]
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="Panel/MC/VBox/TitleBar" unique_id=407813423]
+[node name="TitleLabel" type="Label" parent="TabContainer/InventoryPanel/MC/VBox/TitleBar" unique_id=359340706]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 32
 text = "INVENTORY_020"
 
-[node name="CloseButton" type="Button" parent="Panel/MC/VBox/TitleBar" unique_id=1559302826]
+[node name="CloseButton" type="Button" parent="TabContainer/InventoryPanel/MC/VBox/TitleBar" unique_id=1952120787]
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 theme_override_font_sizes/font_size = 18
 text = "X"
 
-[node name="GridContainer" type="GridContainer" parent="Panel/MC/VBox" unique_id=2145531185]
+[node name="GridContainer" type="GridContainer" parent="TabContainer/InventoryPanel/MC/VBox" unique_id=2145531185]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/h_separation = 24
 theme_override_constants/v_separation = 24
 columns = 5
 
-[node name="ItemSlot" parent="Panel/MC/VBox/GridContainer" unique_id=1954823864 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1954823864 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot2" parent="Panel/MC/VBox/GridContainer" unique_id=620989428 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot2" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=620989428 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot3" parent="Panel/MC/VBox/GridContainer" unique_id=451512133 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot3" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=451512133 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot4" parent="Panel/MC/VBox/GridContainer" unique_id=1963045045 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot4" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1963045045 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot5" parent="Panel/MC/VBox/GridContainer" unique_id=1575987731 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot5" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1575987731 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot6" parent="Panel/MC/VBox/GridContainer" unique_id=1114029650 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot6" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1114029650 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot7" parent="Panel/MC/VBox/GridContainer" unique_id=780651472 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot7" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=780651472 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot8" parent="Panel/MC/VBox/GridContainer" unique_id=1778023668 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot8" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1778023668 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot9" parent="Panel/MC/VBox/GridContainer" unique_id=859107077 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot9" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=859107077 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot10" parent="Panel/MC/VBox/GridContainer" unique_id=880668171 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot10" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=880668171 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot11" parent="Panel/MC/VBox/GridContainer" unique_id=1427097874 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot11" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1427097874 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot12" parent="Panel/MC/VBox/GridContainer" unique_id=1921494323 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot12" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1921494323 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot13" parent="Panel/MC/VBox/GridContainer" unique_id=1514769065 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot13" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1514769065 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot14" parent="Panel/MC/VBox/GridContainer" unique_id=2080451199 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot14" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=2080451199 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot15" parent="Panel/MC/VBox/GridContainer" unique_id=1426181112 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot15" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1426181112 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot16" parent="Panel/MC/VBox/GridContainer" unique_id=754236950 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot16" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=754236950 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot17" parent="Panel/MC/VBox/GridContainer" unique_id=675849746 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot17" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=675849746 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot18" parent="Panel/MC/VBox/GridContainer" unique_id=833494358 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot18" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=833494358 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot19" parent="Panel/MC/VBox/GridContainer" unique_id=1365219480 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot19" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1365219480 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="ItemSlot20" parent="Panel/MC/VBox/GridContainer" unique_id=1392182014 instance=ExtResource("2_g36n7")]
+[node name="ItemSlot20" parent="TabContainer/InventoryPanel/MC/VBox/GridContainer" unique_id=1392182014 instance=ExtResource("2_g36n7")]
 layout_mode = 2
 
-[node name="TooltipSection" type="VBoxContainer" parent="Panel/MC/VBox" unique_id=500076775]
+[node name="TooltipSection" type="VBoxContainer" parent="TabContainer/InventoryPanel/MC/VBox" unique_id=500076775]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="Separator" type="HSeparator" parent="Panel/MC/VBox/TooltipSection" unique_id=2062243780]
+[node name="Separator" type="HSeparator" parent="TabContainer/InventoryPanel/MC/VBox/TooltipSection" unique_id=2062243780]
 layout_mode = 2
 
-[node name="TooltipName" type="Label" parent="Panel/MC/VBox/TooltipSection" unique_id=2064788764]
+[node name="TooltipName" type="Label" parent="TabContainer/InventoryPanel/MC/VBox/TooltipSection" unique_id=2064788764]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 text = "THIS_IS_A_TOOL_TIP"
 horizontal_alignment = 1
 
-[node name="SellButton" type="Button" parent="Panel/MC/VBox/TooltipSection" unique_id=2142448636]
+[node name="SellButton" type="Button" parent="TabContainer/InventoryPanel/MC/VBox/TooltipSection" unique_id=2142448636]
 custom_minimum_size = Vector2(48, 32)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
 text = "SELL"
+
+[node name="FriendsPanel" type="PanelContainer" parent="TabContainer" unique_id=1212822320]
+visible = false
+custom_minimum_size = Vector2(600, 504)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("9_8uuda")
+metadata/_tab_index = 1
+
+[node name="MC" type="MarginContainer" parent="TabContainer/FriendsPanel" unique_id=1399063914]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="TabContainer/FriendsPanel/MC" unique_id=327719268]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleBar" type="HBoxContainer" parent="TabContainer/FriendsPanel/MC/VBox" unique_id=86566231]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="TabContainer/FriendsPanel/MC/VBox/TitleBar" unique_id=160462882]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 32
+text = "FRIENDS"
+
+[node name="CloseButton2" type="Button" parent="TabContainer/FriendsPanel/MC/VBox/TitleBar" unique_id=516844652]
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+theme_override_font_sizes/font_size = 18
+text = "X"
+
+[node name="FriendsTab" type="HBoxContainer" parent="TabContainer/FriendsPanel/MC/VBox" unique_id=1935640206]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="FriendsColumn" type="VBoxContainer" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab" unique_id=215743611]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="FriendsTitle" type="Label" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn" unique_id=12767077]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+text = "FRIENDS"
+horizontal_alignment = 1
+
+[node name="FriendsList" type="ItemList" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn" unique_id=1481942986]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("9_txqcx")
+theme_override_font_sizes/font_size = 16
+
+[node name="RemoveFriendButton" type="Button" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn" unique_id=246322332]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+text = "REMOVE_FRIEND"
+
+[node name="RequestsColumn" type="VBoxContainer" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab" unique_id=533806613]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="RequestsTitle" type="Label" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn" unique_id=78638076]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+text = "FRIEND_REQUESTS"
+horizontal_alignment = 1
+
+[node name="RequestsList" type="ItemList" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn" unique_id=608245380]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RequestButtons" type="HBoxContainer" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn" unique_id=838223153]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="AcceptButton" type="Button" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestButtons" unique_id=1620332313]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+text = "ACCEPT"
+
+[node name="DeclineButton" type="Button" parent="TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestButtons" unique_id=1700922307]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5647059, 0.38431373, 0.3647059, 1)
+text = "DECLINE"

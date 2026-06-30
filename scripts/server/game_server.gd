@@ -229,6 +229,8 @@ func _is_allowed_server_map(server_map_name: String) -> bool:
 
 
 func _server_map_from_scene(scene_name: String) -> String:
+	if scene_name.begins_with("game_"):
+		return "farm"
 	match scene_name:
 		"game":
 			return "farm"
@@ -458,3 +460,50 @@ func _broadcast_player_left(peer_id: int, map_id: String) -> void:
 		if _players[target_id].get("map_id", "") != map_id:
 			continue
 		MultiplayerManager._client_player_left.rpc_id(target_id, peer_id)
+
+
+# ─── Farm Invitation RPCs ────────────────────────────────────────────────────
+
+@rpc("any_peer", "reliable")
+func send_farm_invite(target_user_id: int) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if not _players.has(sender_id):
+		return
+	
+	var sender: Dictionary = _players[sender_id]
+	var sender_name: String = sender.get("display_name", "Player")
+	var sender_user_id: int = sender.get("user_id", -1)
+	
+	# Find the target player's peer ID
+	var target_peer_id: int = -1
+	for peer_id in _players:
+		if _players[peer_id].get("user_id", -1) == target_user_id:
+			target_peer_id = peer_id
+			break
+			
+	if target_peer_id > 0:
+		MultiplayerManager.receive_farm_invite.rpc_id(target_peer_id, sender_name, sender_user_id)
+		MultiplayerManager.farm_invite_sent_status.rpc_id(sender_id, true, sender_name)
+	else:
+		MultiplayerManager.farm_invite_sent_status.rpc_id(sender_id, false, "")
+
+
+@rpc("any_peer", "reliable")
+func sync_farm_slots_from_owner(map_id: String, slots_data: Dictionary) -> void:
+	var sender_id: int = multiplayer.get_remote_sender_id()
+	if not _players.has(sender_id):
+		return
+	
+	# Verify that the sender is actually the owner of the map
+	var expected_owner_map_id := "game_" + str(_players[sender_id].get("user_id", -1))
+	if map_id != expected_owner_map_id:
+		push_warning("[GameServer] Peer %d tried to sync farm slots for map '%s', but they only own '%s'" % [sender_id, map_id, expected_owner_map_id])
+		return
+		
+	# Relay this slots_data to everyone else on the same map
+	for target_id: int in _players:
+		if target_id == sender_id:
+			continue
+		if _players[target_id].get("map_id", "") == map_id:
+			MultiplayerManager.sync_all_farm_slots.rpc_id(target_id, map_id, slots_data)
+

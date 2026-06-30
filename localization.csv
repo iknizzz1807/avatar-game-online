@@ -4,7 +4,7 @@ AVATAR_FARM,Avatar Farm,Avatar Farm
 BAMBOO_ROD,Bamboo Rod,Cần Câu Tre
 BACK_TO_LOGIN,Back to Login,Quay lại đăng nhập
 YOU_ARE_NOT_CURRENTLY_FISHING,You are not currently fishing.,Bạn chưa đang câu cá.
-BÁO_CÁO,🚩 Report,🚩 Báo cáo
+BÁO_CÁO,Report,Báo cáo
 HEALTH_POTION,Health Potion,Bình Máu
 BẠN_CHƯA_CÂU,You have not fished.,Bạn chưa câu.
 BẠN_KHÔNG_ĐỦ_XU_ĐỂ_MUA_VẬT_PHẨ,You do not have enough Coins to buy this item.,Bạn không đủ Xu để mua vật phẩm.
@@ -36,10 +36,10 @@ NO_FISH_BITING_YET,No fish biting yet.,Chua co ca can cau.
 READY,Ready!,Chín!
 REMOVING_SEED_NOT_SUPPORTED_ON,Removing seed not supported on server yet.,Chưa hỗ trợ nhổ hạt giống trên server.
 CÁ_CHẠY_MẤT_RỒI,The fish got away.,Cá chạy mất rồi.
-CÁ_CẮN_CÂU,🐟 Fish biting!,🐟 Cá cắn câu!
-CÂU_CÁ,🎣 Start Fishing,🎣 Câu cá
-CÂU_ĐƯỢC,🐟 Caught %s!,🐟 Câu được %s!
-CÂU_ĐƯỢC_CÁ,🐟 Caught fish!,🐟 Câu được cá!
+CÁ_CẮN_CÂU,Fish biting!,Cá cắn câu!
+CÂU_CÁ,Start Fishing,Câu cá
+CÂU_ĐƯỢC,Caught %s!,Câu được %s!
+CÂU_ĐƯỢC_CÁ,Caught fish!,Câu được cá!
 TOMATO,Tomato,Cà Chua
 LARGE_FISH,Large Fish,Cá Lớn
 SMALL_FISH,Small Fish,Cá Nhỏ
@@ -68,7 +68,7 @@ DISPLAY_NAME,Display Name:,Tên hiển thị:
 DONT_HAVE_AN_ACCOUNT_SIGN_UP,Don't have an account? Sign up,Chưa có tài khoản? Đăng ký
 STOP_FISHING,Stop Fishing,Dừng câu
 STOPPED_FISHING_1,Stopped fishing.,Dừng câu cá.
-DỪNG_CÂU,🚶 Stop Fishing,🚶 Dừng câu
+DỪNG_CÂU,Stop Fishing,Dừng câu
 EGG,EGG,EGG
 ENTER,ENTER,ENTER
 ENTER_MESSAGE,Enter message...,Nhập tin nhắn...
@@ -99,16 +99,16 @@ MOVE_CLOSER_TO_PLANT_1,Move closer to plant.,Lại gần hơn để trồng cây
 MOVE_CLOSER_TO_WATER,Move closer to water,Lại gần hơn để tưới nước
 MOVE_CLOSER_TO_THE_WATER_TO_FI,Move closer to the water to fish.,Lại gần mặt nước hơn để câu cá.
 MUA,Buy,Mua
-MUA_CẦN_CÂU,🛒 Buy Rod,🛒 Mua cần câu
-MUA_MỒI_CÂU,🪱 Buy Bait,🪱 Mua mồi câu
+MUA_CẦN_CÂU,Buy Rod,Mua cần câu
+MUA_MỒI_CÂU,Buy Bait,Mua mồi câu
 BUY_ROD,Buy Rod,Mua cần câu
 BUY_BAIT,Buy Bait,Mua mồi câu
 NORMAL_BAIT,Normal Bait,Mồi Thường
 NORMAL_BAIT_1,Normal Bait,Mồi câu thường
-MỜI_ĐẾN_NÔNG_TRẠI,🌾 Invite to Farm,🌾 Mới đến nông trại
-NHẮN_RIÊNG,💬 Whisper,💬 Nhắn riêng
+MỜI_ĐẾN_NÔNG_TRẠI,Invite to Farm,Mới đến nông trại
+NHẮN_RIÊNG,Whisper,Nhắn riêng
 REMOVE_SEED,Remove Seed,Nhổ hạt giống
-NÓI_CHUYỆN,💬 Chat,💬 Nói chuyện
+NÓI_CHUYỆN,Chat,Nói chuyện
 PASSWORD_LABEL,Password:,Mật khẩu:
 PASSWORD_PLACEHOLDER,Password...,Mật khẩu...
 PLANT,Plant,Trồng cây
@@ -123,8 +123,8 @@ SKIP_LOGIN,Skip Login,Bỏ qua đăng nhập
 SKIP_LOGIN_DEMO,Skip Login (Demo),Bỏ qua đăng nhập (Chạy thử)
 THIS_IS_A_TOAST,THIS IS A TOAST,THIS IS A TOAST
 THIS_IS_A_TOOL_TIP,This is a tooltip,Đây là tooltip
-TRAO_ĐỔI,🤝 Trade,🤝 Trao đổi
-TRAO_ĐỔI_VẬT_PHẨM,🤝 Trade Items,🤝 Trao đổi vật phẩm
+TRAO_ĐỔI,Trade,Trao đổi
+TRAO_ĐỔI_VẬT_PHẨM,Trade Items,Trao đổi vật phẩm
 FARM_ACTION_FAILED,Farm action failed.,Thao tác nông trại thất bại.
 THIS_IS_A_TOOL_TIP_1,This is a tool tip,Đây là tooltip
 HEALTH_POTION_1,Health Potion,Thuốc Hồi Máu
@@ -142,7 +142,7 @@ THIS_ITEM_IS_NOT_SOLD_IN_THE_S,This item is not sold in the shop.,Vật phẩm n
 THIS_FISHING_SPOT_IS_OCCUPIED,This fishing spot is occupied.,Vị trí câu này đang có người.
 WARNING,Warning,Warning
 WHISPER_WILL_BE_IMPLEMENTED_IN,Whisper will be implemented in the next phase.,Whisper se lam o phase sau.
-XEM_TRANG_CÁ_NHÂN,👤 View Profile,👤 Xem trang cá nhân
+XEM_TRANG_CÁ_NHÂN,View Profile,Xem trang cá nhân
 YOU_S,[You]: %s,[Bạn]: %s
 seed_carrot,Carrot Seed,Hạt Cà Rốt
 seed_corn,Corn Seed,Hạt Bắp
@@ -150,7 +150,7 @@ seed_tomato,Tomato Seed,Hạt Cà Chua
 XD,x%d,x%d
 THIS_PLOT_IS_NOT_SEEDED,This plot is not seeded.,Ô này chưa gieo hạt.
 THIS_PLOT_HAS_ALREADY_BEEN_PLA,This plot has already been planted.,Ô đất này đã được trồng.
-ĐANG_CHỜ_CÁ,🎣 Waiting for fish...,🎣 Đang chờ cá...
+ĐANG_CHỜ_CÁ,Waiting for fish...,Đang chờ cá...
 ĐANG_CÂU_RỒI,Already fishing.,Đang câu rồi.
 ALREADY_FISHING,Already fishing.,Đang câu rồi.
 ĐÃ_MUA,Bought %s,Đã mua %s
@@ -172,19 +172,19 @@ TXT_385,"❓
 S,"🌱
 %s","🌱
 %s"
-PLANT_1,🌱 Plant,🌱 Trồng cây
+PLANT_1,Plant,Trồng cây
 READY_1,"🌾
 Ready!","🌾
 Chín!"
-HARVEST_1,🌾 Harvest,🌾 Thu hoạch
+HARVEST_1,Harvest,Thu hoạch
 02D02D,"🌿
 %02d:%02d","🌿
 %02d:%02d"
-WATER_1,💧 Water,💧 Tưới nước
+WATER_1,Water,Tưới nước
 TXT_8395,💨,💨
-INSPECT_PLANT_1,🔍 Inspect Plant,🔍 Kiểm tra cây
-REMOVE_SEED_1,🗑 Remove Seed,🗑 Nhổ hạt giống
-SHOP_1,🛒 Shop,🛒 Cửa hàng
+INSPECT_PLANT_1,Inspect Plant,Kiểm tra cây
+REMOVE_SEED_1,Remove Seed,Nhổ hạt giống
+SHOP_1,Shop,Cửa hàng
 EMPTY_1,"🟫
 Empty","🟫
 Trống"
@@ -210,3 +210,17 @@ SUNFLOWER_SEED,Sunflower Seed,Sunflower Seed
 SUNFLOWER,Sunflower,Sunflower
 WHEAT_SEED,Wheat Seed,Wheat Seed
 WHEAT,Wheat,Wheat
+INVENTORY_TAB,Inventory,Túi đồ
+FRIENDS_TAB,Friends,Bạn bè
+FRIENDS,Friends,Danh sách bạn bè
+FRIEND_REQUESTS,Friend Requests,Lời mời kết bạn
+REMOVE_FRIEND,Remove Friend,Hủy kết bạn
+ACCEPT,Accept,Đồng ý
+DECLINE,Decline,Từ chối
+INVITE_TO_FARM,Invite to Farm,Mời đến nông trại
+MUST_BE_IN_FARM_TO_INVITE,Must be in farm to invite,Phải ở nông trại mới mời được
+FARM_INVITATION,Farm Invitation,Lời mời đến nông trại
+FARM_INVITE_PROMPT,%s has invited you to their farm. Do you want to go?,%s muốn mời bạn đến nông trại của họ. Bạn có muốn đi không?
+FRIEND_OFFLINE_OR_NOT_IN_GAME,Friend is offline or not in game.,Bạn bè đang ngoại tuyến hoặc không trong game.
+INVITATION_SENT,Invitation sent to %s.,Đã gửi lời mời tới %s.
+FAILED_TO_JOIN_FARM,Failed to join farm.,Không thể tham gia nông trại.

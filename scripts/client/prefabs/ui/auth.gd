@@ -152,13 +152,11 @@ func _on_login_success(data: Dictionary) -> void:
 
 func _on_server_connected() -> void:
 	print("[Auth] Connected to game server — loading map: " + MultiplayerManager.local_scene_name)
-	_set_saved_spawn_position()
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % MultiplayerManager.local_scene_name)
 
 
 func _on_server_connection_failed() -> void:
 	push_warning("[Auth] Could not connect to game server — loading offline.")
-	_set_saved_spawn_position()
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % MultiplayerManager.local_scene_name)
 
 
@@ -167,6 +165,9 @@ func _on_server_connection_failed() -> void:
 func _save_credentials() -> void:
 	var path := MultiplayerManager.get_profile_save_path()
 	var config := ConfigFile.new()
+	# Load existing file to preserve other sections like [position]
+	config.load(path)
+	
 	if _remember_me_checkbox != null and _remember_me_checkbox.button_pressed:
 		var username := _login_user.text.strip_edges()
 		var password := _login_pass.text
@@ -179,11 +180,8 @@ func _save_credentials() -> void:
 		config.set_value("login", "remember", true)
 		config.save(path)
 	else:
-		var dir := DirAccess.open("user://")
-		if dir != null:
-			var filename := path.get_file()
-			if dir.file_exists(filename):
-				dir.remove(filename)
+		config.erase_section("login")
+		config.save(path)
 
 
 func _load_credentials() -> void:
@@ -200,17 +198,3 @@ func _load_credentials() -> void:
 		if remember:
 			_login_user.text = username
 			_login_pass.text = password
-
-
-func _set_saved_spawn_position() -> void:
-	var path := MultiplayerManager.get_profile_save_path()
-	var config := ConfigFile.new()
-	var err := config.load(path)
-	if err == OK:
-		var saved_scene = config.get_value("position", "scene", "")
-		if saved_scene == MultiplayerManager.local_scene_name:
-			var x = config.get_value("position", "x", 0.0)
-			var y = config.get_value("position", "y", 0.0)
-			if x != 0.0 or y != 0.0:
-				TeleportData.spawn_position = Vector2(x, y)
-				print("[Auth] Loaded last saved position: %s in scene %s" % [TeleportData.spawn_position, saved_scene])

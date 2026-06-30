@@ -419,3 +419,30 @@ func save_player_position() -> void:
 		config.save(path)
 		print("[MultiplayerManager] Saved player position: %s in scene %s" % [player.global_position, local_scene_name])
 
+
+@rpc("authority", "reliable")
+func receive_friend_request_notification(request_data: Dictionary) -> void:
+	FriendManager.handle_rpc_friend_request(request_data)
+
+
+@rpc("authority", "reliable")
+func receive_trade_request(trade_data: Dictionary) -> void:
+	TradeManager.handle_rpc_trade_request(trade_data)
+
+
+@rpc("authority", "reliable")
+func receive_trade_updated(trade_data: Dictionary) -> void:
+	TradeManager.handle_rpc_trade_updated(trade_data)
+
+
+@rpc("authority", "reliable")
+func receive_trade_canceled() -> void:
+	TradeManager.handle_rpc_trade_canceled()
+
+
+@rpc("authority", "reliable")
+func receive_login_rejected(reason: String) -> void:
+	ToastManager.show_toast(reason, ToastManager.Type.ERROR)
+	disconnect_from_server()
+	get_tree().change_scene_to_file("res://scenes/auth.tscn")
+

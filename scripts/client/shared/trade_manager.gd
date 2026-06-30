@@ -4,7 +4,7 @@ signal trade_updated(trade: Dictionary)
 signal trade_closed()
 
 const TRADE_SCREEN := preload("res://prefabs/ui/screens/trade.tscn")
-const POLL_SECONDS: float = 2.0
+const POLL_SECONDS: float = 30.0
 
 var active_trade: Dictionary = {}
 var _trade_ui: Control = null
@@ -42,6 +42,11 @@ func request_trade(target_user_id: int, target_name: String = "") -> void:
 	if name.is_empty():
 		name = str(trade.get("target_name", "player"))
 	ToastManager.show_toast("Da gui loi moi trade toi " + name + ".")
+	
+	# Notify target peer via Godot server RPC
+	var server_node = get_tree().root.get_node_or_null("ServerScene")
+	if server_node and MultiplayerManager.multiplayer.has_multiplayer_peer():
+		server_node.send_trade_request.rpc_id(1, target_user_id, trade)
 
 
 func accept_trade(trade_id: int) -> void:
@@ -53,6 +58,7 @@ func accept_trade(trade_id: int) -> void:
 
 
 func cancel_trade(trade_id: int) -> void:
+	var other_id = _get_other_user_id(active_trade)
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/trade/%d/cancel" % trade_id,
 		HTTPClient.METHOD_POST
@@ -62,6 +68,12 @@ func cancel_trade(trade_id: int) -> void:
 		_hide_trade()
 		ToastManager.show_toast("Da huy trade.")
 		trade_closed.emit()
+		
+		# Notify target peer via Godot server RPC
+		if other_id > 0:
+			var server_node = get_tree().root.get_node_or_null("ServerScene")
+			if server_node and MultiplayerManager.multiplayer.has_multiplayer_peer():
+				server_node.send_trade_canceled.rpc_id(1, other_id)
 	else:
 		ToastManager.show_toast("Khong huy duoc trade.", ToastManager.Type.WARNING)
 
@@ -163,6 +175,12 @@ func _handle_trade_response(response: Dictionary, success_text: String, error_te
 			_hide_trade()
 		elif not success_text.is_empty():
 			ToastManager.show_toast(success_text)
+			
+		# Broadcast to target peer via Godot server RPC
+		var other_id = _get_other_user_id(trade)
+		var server_node = get_tree().root.get_node_or_null("ServerScene")
+		if server_node and MultiplayerManager.multiplayer.has_multiplayer_peer():
+			server_node.send_trade_updated.rpc_id(1, other_id, trade)
 
 
 func _extract_trade(response: Dictionary) -> Dictionary:
@@ -188,3 +206,63 @@ func _cleanup_trade_prompt() -> void:
 		_pending_prompt_dialog.queue_free()
 	_pending_prompt_dialog = null
 	_pending_prompt_trade_id = -1
+
+
+func _get_other_user_id(trade: Dictionary) -> int:
+	var my_id = MultiplayerManager.local_user_id
+	var req_id = int(trade.get("requester_id", -1))
+	var tgt_id = int(trade.get("target_id", -1))
+	if my_id == req_id:
+		return tgt_id
+	else:
+		return req_id
+
+
+func _normalize_trade_for_viewer(trade: Dictionary) -> Dictionary:
+	if trade.is_empty():
+		return trade
+		
+	var my_id = MultiplayerManager.local_user_id
+	var req_id = int(trade.get("requester_id", -1))
+	var tgt_id = int(trade.get("target_id", -1))
+	
+	# Determine actual role
+	var actual_role := "target"
+	if my_id == req_id:
+		actual_role = "requester"
+		
+	# If the dictionary's my_role matches actual role, keep it
+	var current_role = trade.get("my_role", "")
+	if current_role == actual_role:
+		return trade
+		
+	# Otherwise, swap offers and roles
+	var new_trade = trade.duplicate(true)
+	new_trade["my_role"] = actual_role
+	new_trade["my_offer"] = trade.get("their_offer", [])
+	new_trade["their_offer"] = trade.get("my_offer", [])
+	return new_trade
+
+
+func handle_rpc_trade_request(trade_data: Dictionary) -> void:
+	var normalized = _normalize_trade_for_viewer(trade_data)
+	_prompt_incoming_trade(normalized)
+
+
+func handle_rpc_trade_updated(trade_data: Dictionary) -> void:
+	var normalized = _normalize_trade_for_viewer(trade_data)
+	active_trade = normalized
+	_show_trade(normalized)
+	trade_updated.emit(normalized)
+	if _trade_ui != null and _trade_ui.visible:
+		_trade_ui.set_trade(normalized)
+	if normalized.get("status", "") == "completed":
+		ToastManager.show_toast("Trade thanh cong.", ToastManager.Type.SUCCESS)
+		_hide_trade()
+
+
+func handle_rpc_trade_canceled() -> void:
+	active_trade = {}
+	_hide_trade()
+	ToastManager.show_toast("Trade da ket thuc.")
+	trade_closed.emit()

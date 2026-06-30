@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://ck3trbmxal703"]
 
 [ext_resource type="Script" uid="uid://8awfctsd13kg" path="res://scripts/client/prefabs/player/remote_player.gd" id="1_remote"]
-[ext_resource type="Script" path="res://scripts/client/prefabs/player/other_player.gd" id="2_other"]
 [ext_resource type="Texture2D" uid="uid://elfswkp7g1wu" path="res://sprites/Characters/Basic Charakter Actions.png" id="2_ig736"]
+[ext_resource type="Script" uid="uid://c0mjmslu8djgy" path="res://scripts/client/prefabs/player/other_player.gd" id="2_other"]
 [ext_resource type="Texture2D" uid="uid://c51j2mga5duvm" path="res://sprites/Characters/Basic Charakter Spritesheet.png" id="2_sprite"]
+[ext_resource type="FontFile" uid="uid://dkpbaknlgcqve" path="res://resources/Minecraft.ttf" id="3_1bclx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_context"]
 size = Vector2(18, 28)
@@ -661,15 +662,16 @@ offset_left = -32.0
 offset_top = -28.0
 offset_right = 32.0
 offset_bottom = -16.0
-theme_override_font_sizes/font_size = 8
+theme_override_fonts/font = ExtResource("3_1bclx")
+theme_override_font_sizes/font_size = 12
 text = "Player"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ContextTarget" type="Area2D" parent="."]
+[node name="ContextTarget" type="Area2D" parent="." unique_id=403826319]
 script = ExtResource("2_other")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ContextTarget"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContextTarget" unique_id=63428376]
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_context")
 

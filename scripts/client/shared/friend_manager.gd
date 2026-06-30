@@ -2,7 +2,7 @@ extends Node
 
 signal friends_updated(friends: Array)
 
-const POLL_SECONDS: float = 3.0
+const POLL_SECONDS: float = 30.0
 
 var _poll_timer: Timer = null
 var _prompted_request_ids: Dictionary = {}
@@ -40,6 +40,11 @@ func send_friend_request(target_user_id: int, target_name: String = "") -> void:
 		if name.is_empty():
 			name = str(request.get("target_name", "nguoi choi"))
 		ToastManager.show_toast("Da gui loi moi ket ban toi " + name + ".")
+		
+		# Notify target peer via Godot server RPC
+		var server_node = get_tree().root.get_node_or_null("ServerScene")
+		if server_node and MultiplayerManager.multiplayer.has_multiplayer_peer():
+			server_node.send_friend_request_notification.rpc_id(1, target_user_id, request)
 
 
 func accept_request(request_id: int) -> void:
@@ -131,3 +136,7 @@ func _cleanup_friend_prompt() -> void:
 		_pending_prompt_dialog.queue_free()
 	_pending_prompt_dialog = null
 	_pending_prompt_request_id = -1
+
+
+func handle_rpc_friend_request(request_data: Dictionary) -> void:
+	_prompt_friend_request(request_data)

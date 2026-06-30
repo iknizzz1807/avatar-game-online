@@ -103,7 +103,23 @@ func _ready() -> void:
 			global_position = TeleportData.spawn_position
 			TeleportData.spawn_position = Vector2.ZERO
 		else:
-			print("[Player:_ready] TeleportData is ZERO — keeping scene position %s" % global_position)
+			var path := MultiplayerManager.get_profile_save_path()
+			var config := ConfigFile.new()
+			var err := config.load(path)
+			if err == OK:
+				var saved_scene = config.get_value("position", "scene", "")
+				if saved_scene == MultiplayerManager.local_scene_name:
+					var x = config.get_value("position", "x", 0.0)
+					var y = config.get_value("position", "y", 0.0)
+					if x != 0.0 or y != 0.0:
+						global_position = Vector2(x, y)
+						print("[Player:_ready] Snapped to saved position: %s in scene %s" % [global_position, saved_scene])
+					else:
+						print("[Player:_ready] TeleportData and saved position both empty — keeping scene position %s" % global_position)
+				else:
+					print("[Player:_ready] Saved scene '%s' != current scene '%s' — keeping scene position %s" % [saved_scene, MultiplayerManager.local_scene_name, global_position])
+			else:
+				print("[Player:_ready] TeleportData is ZERO, config load err=%d — keeping scene position %s" % [err, global_position])
 
 	# Instantiate pet after player position is finalized
 	var pet : Node2D = PET_SCENE.instantiate()

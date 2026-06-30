@@ -166,6 +166,18 @@ func _register_verified_player(sender_id: int, user_id: int, display_name: Strin
 			_broadcast_player_left(sender_id, old_map)
 			_broadcast_player_joined(sender_id, user_id, display_name, map_id)
 	else:
+		# Check if this user is already logged in under a different peer connection
+		for active_peer_id in _players:
+			if _players[active_peer_id].get("user_id", -1) == user_id:
+				push_warning("[GameServer] Rejected login for user_id=%d: already logged in on peer=%d" % [user_id, active_peer_id])
+				# Notify client of rejection
+				MultiplayerManager.receive_login_rejected.rpc_id(sender_id, "Tài khoản đang được đăng nhập ở nơi khác.")
+				# Disconnect the peer shortly to ensure packet flush
+				get_tree().create_timer(0.1).timeout.connect(func():
+					multiplayer.multiplayer_peer.disconnect_peer(sender_id)
+				)
+				return
+				
 		_players[sender_id] = {
 			"user_id":      user_id,
 			"display_name": display_name,
@@ -506,4 +518,39 @@ func sync_farm_slots_from_owner(map_id: String, slots_data: Dictionary) -> void:
 			continue
 		if _players[target_id].get("map_id", "") == map_id:
 			MultiplayerManager.sync_all_farm_slots.rpc_id(target_id, map_id, slots_data)
+
+
+func _find_peer_id_by_user_id(user_id: int) -> int:
+	for peer_id in _players:
+		if _players[peer_id].get("user_id", -1) == user_id:
+			return peer_id
+	return -1
+
+
+@rpc("any_peer", "reliable")
+func send_friend_request_notification(target_user_id: int, request_data: Dictionary) -> void:
+	var target_peer_id = _find_peer_id_by_user_id(target_user_id)
+	if target_peer_id > 0:
+		MultiplayerManager.receive_friend_request_notification.rpc_id(target_peer_id, request_data)
+
+
+@rpc("any_peer", "reliable")
+func send_trade_request(target_user_id: int, trade_data: Dictionary) -> void:
+	var target_peer_id = _find_peer_id_by_user_id(target_user_id)
+	if target_peer_id > 0:
+		MultiplayerManager.receive_trade_request.rpc_id(target_peer_id, trade_data)
+
+
+@rpc("any_peer", "reliable")
+func send_trade_updated(target_user_id: int, trade_data: Dictionary) -> void:
+	var target_peer_id = _find_peer_id_by_user_id(target_user_id)
+	if target_peer_id > 0:
+		MultiplayerManager.receive_trade_updated.rpc_id(target_peer_id, trade_data)
+
+
+@rpc("any_peer", "reliable")
+func send_trade_canceled(target_user_id: int) -> void:
+	var target_peer_id = _find_peer_id_by_user_id(target_user_id)
+	if target_peer_id > 0:
+		MultiplayerManager.receive_trade_canceled.rpc_id(target_peer_id)
 

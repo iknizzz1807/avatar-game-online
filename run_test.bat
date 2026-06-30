@@ -16,9 +16,9 @@ start "Godot Server" cmd /c "%GODOT_EXEC% --headless --server || pause"
 timeout /t 2 /nobreak >nul
 
 echo Starting Client 1...
-start "Godot Client 1" cmd /c "%GODOT_EXEC% || pause"
+start "Godot Client 1" cmd /c "%GODOT_EXEC% --profile=client1 || pause"
 
 echo Starting Client 2...
-start "Godot Client 2" cmd /c "%GODOT_EXEC% || pause"
+start "Godot Client 2" cmd /c "%GODOT_EXEC% --profile=client2 || pause"
 
 echo All processes started!

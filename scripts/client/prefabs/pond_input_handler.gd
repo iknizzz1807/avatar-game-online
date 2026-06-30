@@ -169,11 +169,11 @@ func _stop_fishing() -> void:
 		)
 		if response.get("ok", false):
 			_sync_inventory(ApiClient.response_data(response))
-			ToastManager.show_toast("Đã dừng câu cá.")
+			ToastManager.show_toast("Stopped fishing.")
 		else:
-			ToastManager.show_toast("Bạn chưa đang câu cá.", ToastManager.Type.WARNING)
+			ToastManager.show_toast("You are not fishing.", ToastManager.Type.WARNING)
 	else:
-		ToastManager.show_toast("Đã dừng câu cá.")
+		ToastManager.show_toast("Stopped fishing.")
 
 
 ## Called by PlayerFishingState after the minigame is won.
@@ -227,7 +227,7 @@ func _buy_item(item_id: String) -> void:
 		{ "item_id": item_id, "quantity": 1 }
 	)
 	if response.get("ok", false):
-		ToastManager.show_toast("Đã mua vật phẩm.")
+		ToastManager.show_toast("Fish rod acquired.")
 		_sync_inventory(ApiClient.response_data(response))
 	else:
 		ToastManager.show_toast(_shop_error_message(response.get("error", "")), ToastManager.Type.WARNING)
@@ -266,15 +266,15 @@ func _sync_inventory(data: Dictionary) -> void:
 func _fishing_error_message(error_code: String) -> String:
 	match error_code:
 		"NO_FISHING_ROD":
-			return "Bạn cần mua cần câu trước."
+			return "You need a fishing rod."
 		"NO_BAIT":
-			return "Bạn cần mua mồi câu trước."
+			return "You need baits."
 		"SEAT_OCCUPIED":
-			return "Vị trí câu này đang có người."
+			return "Seat acquired."
 		"INVALID_INPUT":
-			return "Bạn chưa ở đúng khu câu cá hoặc dữ liệu không hợp lệ."
+			return "Out of range."
 		_:
-			return "Không thể bắt đầu câu cá."
+			return "Cannot fish."
 
 
 func _shop_error_message(error_code: String) -> String:

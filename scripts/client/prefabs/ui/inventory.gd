@@ -378,6 +378,7 @@ func _on_logout_pressed() -> void:
 	confirm_dialog.dialog_text = tr("CONFIRM_LOGOUT_PROMPT")
 	confirm_dialog.confirmed.connect(func() -> void:
 		confirm_dialog.queue_free()
+		MultiplayerManager.save_player_position()
 		hide()
 		MultiplayerManager.disconnect_from_server()
 		ApiClient.clear_auth_token()

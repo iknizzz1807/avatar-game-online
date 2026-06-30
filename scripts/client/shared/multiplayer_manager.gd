@@ -389,3 +389,33 @@ func broadcast_farm_slots(slots_data: Dictionary) -> void:
 	if server_node and multiplayer.has_multiplayer_peer():
 		server_node.sync_farm_slots_from_owner.rpc_id(1, local_map_id, slots_data)
 
+
+func get_profile_save_path() -> String:
+	var profile := ""
+	var prefix := "--profile="
+	for arg in OS.get_cmdline_args():
+		if arg.begins_with(prefix):
+			profile = arg.substr(prefix.length())
+			break
+	if not profile.is_empty():
+		return "user://credentials_" + profile + ".cfg"
+	return "user://credentials.cfg"
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		save_player_position()
+
+
+func save_player_position() -> void:
+	var player = get_tree().get_first_node_in_group("local_player")
+	if player != null:
+		var path := get_profile_save_path()
+		var config := ConfigFile.new()
+		config.load(path)
+		config.set_value("position", "scene", local_scene_name)
+		config.set_value("position", "x", player.global_position.x)
+		config.set_value("position", "y", player.global_position.y)
+		config.save(path)
+		print("[MultiplayerManager] Saved player position: %s in scene %s" % [player.global_position, local_scene_name])
+

@@ -1,20 +1,11 @@
 extends Node
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PLAYER REGISTRY — Scene-level singleton (NOT a global Autoload).
-#
-# Place this node in game.tscn. It listens to MultiplayerManager signals and
-# maintains the dictionary of live RemotePlayer nodes.
-#
-# The remote_player.tscn scene is used for all other players.
-# ═════════════════════════════════════════════════════════════════════════════
+# Scene-level. Used to track all remote players in the scene.
 
 const REMOTE_PLAYER_SCENE: PackedScene = preload("res://prefabs/characters/remote_player.tscn")
 
-# peer_id → RemotePlayer node
 var _remote_players: Dictionary = {}
 
-## Parent node where RemotePlayer nodes are added (set in _ready via export).
 @export var players_container: NodePath = NodePath(".")
 var _container: Node
 
@@ -28,8 +19,6 @@ func _ready() -> void:
 	
 	MultiplayerManager.send_registration()
 
-
-# ─── Signal handlers ──────────────────────────────────────────────────────────
 
 func _on_player_joined(peer_id: int, user_id: int, display_name: String) -> void:
 	if _remote_players.has(peer_id):
@@ -46,7 +35,6 @@ func _on_player_joined(peer_id: int, user_id: int, display_name: String) -> void
 
 	_container.add_child(node)
 	_remote_players[peer_id] = node
-	print("[PlayerRegistry] Spawned RemotePlayer for %s (peer=%d)" % [display_name, peer_id])
 
 
 func _on_player_left(peer_id: int) -> void:
@@ -56,16 +44,9 @@ func _on_player_left(peer_id: int) -> void:
 	var node: Node = _remote_players[peer_id]
 	node.queue_free()
 	_remote_players.erase(peer_id)
-	print("[PlayerRegistry] Removed RemotePlayer peer=%d" % peer_id)
 
-
-# ─── Public helpers ───────────────────────────────────────────────────────────
-
-## Returns the RemotePlayer node for a given peer_id, or null.
 func get_remote_player(peer_id: int) -> Node:
 	return _remote_players.get(peer_id, null)
 
-
-## Returns all currently tracked remote players.
 func get_all_remote_players() -> Array:
 	return _remote_players.values()

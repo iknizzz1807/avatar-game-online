@@ -1,64 +1,33 @@
 extends PanelContainer
 class_name ItemSlot
 
-# ═════════════════════════════════════════════════════════════════════════════
-# SIGNALS
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Fired on a plain click (no drag). Inventory uses this to show the tooltip.
 signal slot_clicked(slotIndex: int);
-## Fired when another slot's item is dropped onto this one.
 signal swap_requested(fromIndex: int, toIndex: int);
 
-# ═════════════════════════════════════════════════════════════════════════════
-# STATE
-# ═════════════════════════════════════════════════════════════════════════════
-
 var slotIndex: int = -1;
-## Slot data dict: { "resource": ItemData, "quantity": int }
-## Empty dict {} means the slot is empty.
 var slotData: Dictionary = {};
 
 var isSelected: bool = false;
 var wasDragging: bool = false;
-# ═════════════════════════════════════════════════════════════════════════════
-# NODES
-# ═════════════════════════════════════════════════════════════════════════════
 
 @onready var iconRect: TextureRect = $Overlay/MarginContainer/TextureRect;
 @onready var iconLabel: Label = $Overlay/IconLabel;
 @onready var quantityLabel: Label = $Overlay/QuantityLabel;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# LIFECYCLE
-# ═════════════════════════════════════════════════════════════════════════════
-
 func _ready() -> void:
-	# Ensure this root node is the sole mouse-event receiver.
-	# Children use MOUSE_FILTER_IGNORE so clicks/hover pass through to us.
 	mouse_filter = Control.MOUSE_FILTER_STOP;
 	_ignore_mouse_on_children(self);
 	mouse_entered.connect(_on_mouse_entered);
 	mouse_exited.connect(_on_mouse_exited);
 	_refresh();
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PUBLIC API
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Show [param data] in this slot.
-## [param data] must be { "resource": ItemData, "quantity": int } or {} for empty.
 func set_item(data: Dictionary) -> void:
 	slotData = data;
 	_refresh();
 
-## Toggle the selection highlight on this slot.
 func set_selected(selected: bool) -> void:
 	isSelected = selected;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# DRAG-AND-DROP
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _get_drag_data(atPosition: Vector2) -> Variant:
 	if slotData.is_empty():
@@ -93,10 +62,6 @@ func _can_drop_data(atPosition: Vector2, data: Variant) -> bool:
 func _drop_data(atPosition: Vector2, data: Variant) -> void:
 	swap_requested.emit(data["from_index"], slotIndex);
 
-# ═════════════════════════════════════════════════════════════════════════════
-# CLICK
-# ═════════════════════════════════════════════════════════════════════════════
-
 func _gui_input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton):
 		return ;
@@ -108,10 +73,6 @@ func _gui_input(event: InputEvent) -> void:
 	else:
 		if not wasDragging:
 			slot_clicked.emit(slotIndex);
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PRIVATE
-# ═════════════════════════════════════════════════════════════════════════════
 
 ## Recursively set mouse_filter = IGNORE on every child Control
 ## so all mouse events fall through to the root PanelContainer.

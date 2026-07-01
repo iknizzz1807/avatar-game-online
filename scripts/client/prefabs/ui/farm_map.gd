@@ -1,44 +1,18 @@
 extends Control
 class_name FarmMap
 
-# ═════════════════════════════════════════════════════════════════════════════
-# SIGNALS
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Emitted when the player clicks a plot.
-## Parent scene decides what action to send to Go Server based on [state].
-## States: "EMPTY" | "SEEDED" | "GROWING" | "READY"
 signal plot_action_requested(plotIndex: int, currentState: String);
 signal close_requested();
-
-# ═════════════════════════════════════════════════════════════════════════════
-# CONSTANTS
-# ═════════════════════════════════════════════════════════════════════════════
 
 const PLOT_COUNT: int = 16;
 const COLUMNS: int = 4;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# NODES
-# ═════════════════════════════════════════════════════════════════════════════
-
 @onready var gridContainer: GridContainer = $Panel/MC/VBox/GridContainer;
 @onready var closeButton: Button = $Panel/MC/VBox/TitleBar/CloseButton;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# STATE
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Each element: { "index": int, "state": String, "seed_type": String,
-##                 "ready_at": float }   (ready_at = Unix timestamp from Go Server)
 var plotData: Array = [];
 var plotButtons: Array[Button] = [];
-## Remaining seconds for each GROWING plot (client-side countdown only).
 var growTimers: Array[float] = [];
-
-# ═════════════════════════════════════════════════════════════════════════════
-# LIFECYCLE
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _ready() -> void:
 	closeButton.pressed.connect(_on_close_pressed);
@@ -47,18 +21,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_tick_countdowns(delta);
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PUBLIC API
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Load all 16 plots from Go Server response.
-## [param data] Array of 16 plot dicts.
 func set_plots(data: Array) -> void:
 	plotData = data;
 	_refresh_plots();
 
-## Update a single plot after a server response (seed / water / harvest).
-## [param plotDict] updated plot dict from Go Server.
 func update_plot(plotDict: Dictionary) -> void:
 	var idx: int = plotDict.get("index", -1);
 	if idx < 0 or idx >= PLOT_COUNT:
@@ -69,10 +35,6 @@ func update_plot(plotDict: Dictionary) -> void:
 
 func open_map() -> void:
 	visible = true;
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PRIVATE
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _build_plots() -> void:
 	for i: int in range(PLOT_COUNT):

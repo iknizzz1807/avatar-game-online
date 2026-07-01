@@ -1,13 +1,6 @@
 extends ContextMenuTarget
 class_name FarmSlot
 
-# ═════════════════════════════════════════════════════════════════════════════
-# FARM SLOT
-# Extends ContextMenuTarget, which provides all right-click / context menu
-# wiring. This class only needs to declare WHAT actions are available and
-# HOW to react to them.
-# ═════════════════════════════════════════════════════════════════════════════
-
 enum PlotState {
 	EMPTY,
 	SEEDED,
@@ -16,20 +9,14 @@ enum PlotState {
 }
 
 @onready var plantSprite: Sprite2D = $Plant
-#@onready var timerLabel: Label = $Timer
-
-## How close (pixels) the player must be to interact with this plot.
-## Adjust this in the Inspector without changing the collision shape.
 @export var watering_distance: float = 80.0
 
-# State variables
 var plotId: int = -1
 var currentState: int = PlotState.EMPTY
 var readyAtUnixTime: int = 0
 var currentSeedId: String = ""
 var _ready_refresh_requested: bool = false
 
-# For local testing, simulate a short growth time (e.g. 5 seconds)
 var LOCAL_GROWTH_DURATION: int = 5
 
 var is_visitor: bool:
@@ -42,12 +29,11 @@ var is_visitor: bool:
 		return MultiplayerManager.local_map_id != owner_map_id
 
 
-# ─── LIFECYCLE ────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
 	if plotId == -1:
 		plotId = get_index()
-	super._ready()  # ← sets input_pickable, connects _on_input_event, adds to group
+	super._ready()
 	add_to_group("farm_slots")
 	_update_visuals()
 	if plotId == 0:
@@ -60,19 +46,13 @@ func _process(_delta: float) -> void:
 		var timeLeft: int = readyAtUnixTime - currentTime
 		
 		if timeLeft > 0:
-			#timerLabel.text = _format_time(timeLeft)
-			#timerLabel.visible = true
-			_update_visuals()  # refresh the growth-stage sprite every frame
+			_update_visuals()
 		else:
 			currentState = PlotState.READY
 			_ready_refresh_requested = false
 			_update_visuals()
 	else:
 		pass;
-		#timerLabel.visible = false
-
-# ─── INPUT ────────────────────────────────────────────────────────────────────
-# Override to add left-click on top of the right-click from ContextMenuTarget.
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void:
 	if is_visitor:
@@ -83,9 +63,7 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void
 		MOUSE_BUTTON_LEFT:
 			_handle_click()
 		MOUSE_BUTTON_RIGHT:
-			_handle_right_click(event.global_position)  # inherited from ContextMenuTarget
-
-# ─── LEFT-CLICK BEHAVIOUR ────────────────────────────────────────────────────
+			_handle_right_click(event.global_position) 
 
 func _handle_click() -> void:
 	match currentState:
@@ -96,8 +74,6 @@ func _handle_click() -> void:
 			_request_server_action("plant")
 			
 		PlotState.SEEDED:
-			# Delegate to the nearby local player so the watering animation plays first.
-			# The player's USE_WATER state calls water() when the animation finishes.
 			_request_water_via_player()
 			
 		PlotState.GROWING:
@@ -106,10 +82,8 @@ func _handle_click() -> void:
 		PlotState.READY:
 			_request_server_action("harvest")
 
-# ─── CONTEXT MENU — ContextMenuTarget interface ───────────────────────────────
+# CONTEXT MENU
 
-## Returns state-appropriate actions for this plot.
-## Add new actions by appending dicts here; no other file needs changing.
 func _build_actions() -> Array:
 	if is_visitor:
 		return []
@@ -154,7 +128,6 @@ func _on_context_action(actionId: String, target: Object) -> void:
 				return
 			_request_server_action("plant")
 		"water":
-			# Delegate to the nearby local player so the watering animation plays first.
 			_request_water_via_player()
 		"remove_seed":
 			ToastManager.show_toast(tr("REMOVING_SEED_NOT_SUPPORTED_ON"), ToastManager.Type.WARNING)
@@ -163,10 +136,6 @@ func _on_context_action(actionId: String, target: Object) -> void:
 		"inspect":
 			print("[FarmSlot %d] Context: Inspecting (GROWING – no action yet)." % plotId)
 
-# ─── HELPER FUNCTIONS ─────────────────────────────────────────────────────────
-
-## Returns true when the local-authority player is within [watering_distance] pixels.
-## Uses a world-space distance check so the collision shape (click area) is unaffected.
 func _is_player_nearby() -> bool:
 	for node in get_tree().get_nodes_in_group("local_player"):
 		if node is Node2D:
@@ -174,9 +143,6 @@ func _is_player_nearby() -> bool:
 				return true
 	return false
 
-
-## Finds the local-authority player within [watering_distance] and asks them to
-## perform the watering animation. The player will call water() when done.
 func _request_water_via_player() -> void:
 	if currentState != PlotState.SEEDED:
 		return
@@ -187,9 +153,6 @@ func _request_water_via_player() -> void:
 				return
 	ToastManager.show_toast(tr("MOVE_CLOSER_TO_WATER"), ToastManager.Type.WARNING)
 
-
-## Called by PlayerUseWaterState after the watering animation finishes.
-## This is the only place that actually advances the plot to GROWING.
 func water() -> void:
 	if currentState != PlotState.SEEDED:
 		return
@@ -226,14 +189,12 @@ func _update_visuals() -> void:
 				plantSprite.visible = false
 				$Background.modulate = Color(0.5, 0.8, 0.5)
 			else:
-				# Map elapsed time fraction → sprite index within [0, last]
 				var grow_secs: float = float(item_data.growSecs) if item_data.growSecs > 0 else 1.0
 				var current_unix: int = int(Time.get_unix_time_from_system())
-				# readyAtUnixTime was set when watering began
 				var start_unix: float = float(readyAtUnixTime) - grow_secs
 				var elapsed: float = clampf(float(current_unix) - start_unix, 0.0, grow_secs)
-				var progress: float = elapsed / grow_secs            # 0.0 → 1.0
-				var idx: int = int(progress * (sprites.size() - 1))  # 0 → last index
+				var progress: float = elapsed / grow_secs            
+				var idx: int = int(progress * (sprites.size() - 1)) 
 				idx = clampi(idx, 0, sprites.size() - 1)
 				plantSprite.texture = sprites[idx]
 				plantSprite.visible = true
@@ -300,7 +261,6 @@ func _request_server_action(action: String, seed_id: String = "") -> void:
 	_apply_server_plots(data.get("plots", []), true)
 	if data.has("inventory"):
 		var raw_inv: Array = data.get("inventory", [])
-		# Push to the inventory panel so its internal state stays current.
 		for inv in get_tree().get_nodes_in_group("inventory"):
 			if inv.has_method("set_server_inventory"):
 				inv.set_server_inventory(raw_inv)
@@ -332,7 +292,6 @@ func _apply_server_plots(plots: Array, broadcast: bool) -> void:
 
 func _on_multiplayer_player_joined(_peer_id: int, _user_id: int, _display_name: String) -> void:
 	if not is_visitor:
-		# Sync our plots to the newly joined peer
 		_broadcast_all_plots()
 
 
@@ -410,9 +369,6 @@ func _pick_available_seed_id() -> String:
 				return item_id
 	return ""
 
-
-## Reads the currently selected seed_id from the player's hotbar.
-## Returns an empty string if no seed is selected (caller should fall back to auto-pick).
 func _get_hotbar_seed_id() -> String:
 	for hud in get_tree().get_nodes_in_group("hud"):
 		if hud.has_method("get_hotbar"):

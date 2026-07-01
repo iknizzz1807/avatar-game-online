@@ -20,7 +20,7 @@ func _ready() -> void:
 
 func send_friend_request(target_user_id: int, target_name: String = "") -> void:
 	if not ApiClient.has_auth_token():
-		ToastManager.show_toast("Dang nhap de ket ban.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Login to send friend requests.", ToastManager.Type.WARNING)
 		return
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/friends/request",
@@ -28,20 +28,19 @@ func send_friend_request(target_user_id: int, target_name: String = "") -> void:
 		{ "target_user_id": target_user_id }
 	)
 	if not response.get("ok", false):
-		ToastManager.show_toast("Khong gui duoc loi moi ket ban.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Failed to send friend request.", ToastManager.Type.WARNING)
 		return
 	var data: Dictionary = ApiClient.response_data(response)
 	var request: Dictionary = data.get("request", {})
 	var status: String = str(request.get("status", "pending"))
 	if status == "accepted":
-		ToastManager.show_toast("Hai ban da la ban be.", ToastManager.Type.SUCCESS)
+		ToastManager.show_toast("Friend request accepted.", ToastManager.Type.SUCCESS)
 	else:
 		var name: String = target_name
 		if name.is_empty():
 			name = str(request.get("target_name", "nguoi choi"))
-		ToastManager.show_toast("Da gui loi moi ket ban toi " + name + ".")
+		ToastManager.show_toast("Friend request sent to " + name + ".")
 		
-		# Notify target peer via Godot server RPC
 		var server_node = get_tree().root.get_node_or_null("ServerScene")
 		if server_node and MultiplayerManager.multiplayer.has_multiplayer_peer():
 			server_node.send_friend_request_notification.rpc_id(1, target_user_id, request)
@@ -53,10 +52,10 @@ func accept_request(request_id: int) -> void:
 		HTTPClient.METHOD_POST
 	)
 	if response.get("ok", false):
-		ToastManager.show_toast("Da ket ban.", ToastManager.Type.SUCCESS)
+		ToastManager.show_toast("Friend request accepted.", ToastManager.Type.SUCCESS)
 		load_friends()
 	else:
-		ToastManager.show_toast("Khong chap nhan duoc loi moi.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Failed to accept friend request.", ToastManager.Type.WARNING)
 
 
 func decline_request(request_id: int) -> void:
@@ -65,9 +64,9 @@ func decline_request(request_id: int) -> void:
 		HTTPClient.METHOD_POST
 	)
 	if response.get("ok", false):
-		ToastManager.show_toast("Da tu choi loi moi.")
+		ToastManager.show_toast("Friend request declined.", ToastManager.Type.SUCCESS)
 	else:
-		ToastManager.show_toast("Khong tu choi duoc loi moi.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Failed to decline friend request.", ToastManager.Type.WARNING)
 
 
 func remove_friend(friend_id: int) -> void:
@@ -76,10 +75,10 @@ func remove_friend(friend_id: int) -> void:
 		HTTPClient.METHOD_DELETE
 	)
 	if response.get("ok", false):
-		ToastManager.show_toast("Da xoa ban.")
+		ToastManager.show_toast("Friend removed.", ToastManager.Type.SUCCESS)
 		load_friends()
 	else:
-		ToastManager.show_toast("Khong xoa duoc ban.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Failed to remove friend.", ToastManager.Type.WARNING)
 
 
 func load_friends() -> void:
@@ -111,8 +110,8 @@ func _prompt_friend_request(request: Dictionary) -> void:
 	_pending_prompt_request_id = request_id
 	var dialog: ConfirmationDialog = ConfirmationDialog.new()
 	_pending_prompt_dialog = dialog
-	dialog.title = "Loi moi ket ban"
-	dialog.dialog_text = "%s muon ket ban voi ban." % request.get("requester_name", "Nguoi choi")
+	dialog.title = "Friend Request"
+	dialog.dialog_text = "%s wants to be your friend." % request.get("requester_name", "Player")
 	dialog.confirmed.connect(_on_friend_prompt_confirmed)
 	dialog.canceled.connect(_on_friend_prompt_canceled)
 	get_tree().root.add_child(dialog)

@@ -15,6 +15,12 @@ func _physics_process(delta: float) -> void:
 	var target_pos = follow_target.global_position
 	var distance = global_position.distance_to(target_pos)
 	
+	if distance > 200.0:
+		global_position = target_pos
+		velocity = Vector2.ZERO
+		sprite.play("idle")
+		return
+		
 	if distance > follow_distance:
 		var dir = global_position.direction_to(target_pos)
 		# Smooth follow via velocity

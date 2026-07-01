@@ -660,7 +660,7 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_water"]
 radius = 16.0
 
-[node name="Player" type="CharacterBody2D" unique_id=349396540]
+[node name="Player" type="CharacterBody2D" unique_id=349396540 groups=["player"]]
 y_sort_enabled = true
 script = ExtResource("1_1ir3x")
 MAX_SPEED = 100.0
@@ -672,6 +672,7 @@ y_sort_enabled = true
 texture = ExtResource("1_72ieh")
 hframes = 4
 vframes = 4
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1082885784]
 position = Vector2(0, 5)

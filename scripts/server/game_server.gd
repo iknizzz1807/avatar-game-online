@@ -1,19 +1,5 @@
 extends Node
 
-# ═════════════════════════════════════════════════════════════════════════════
-# GAME SERVER — Dedicated Server Root
-#
-# Launch with:  ./avatar-game-online.x86_64 --headless --server
-# Or in editor: add --server to the run arguments.
-#
-# Responsibilities:
-#   • Create ENet listen server on PORT
-#   • Accept clients and wait for authenticated registration RPC
-#   • Broadcast joined/left events to all peers in the same map
-#   • The server is the MultiplayerSpawner authority — it spawns player nodes
-#     for newly connected peers and despawns them on disconnect.
-# ═════════════════════════════════════════════════════════════════════════════
-
 const PORT: int = 7777
 const MAX_CLIENTS: int = 64
 var api_base: String = "http://127.0.0.1:8080"
@@ -68,7 +54,7 @@ func _start_server() -> void:
 	print("[GameServer] Listening on port %d (max %d clients)" % [PORT, MAX_CLIENTS])
 
 
-# ─── Peer lifecycle ───────────────────────────────────────────────────────────
+# Peer lifecycle
 
 func _on_peer_connected(peer_id: int) -> void:
 	print("[GameServer] Peer connected: %d" % peer_id)
@@ -102,7 +88,7 @@ func _on_peer_disconnected(peer_id: int) -> void:
 	print("[GameServer] Player %s (peer %d) unregistered" % [info.get("display_name", "?"), peer_id])
 
 
-# ─── Client → Server RPCs ─────────────────────────────────────────────────────
+# Client -> Server RPCs
 
 @rpc("any_peer", "reliable")
 func register_player(_user_id: int, _display_name: String, _map_id: String) -> void:
@@ -110,32 +96,21 @@ func register_player(_user_id: int, _display_name: String, _map_id: String) -> v
 	push_warning("[GameServer] Rejected unauthenticated legacy registration from peer %d" % sender_id)
 	multiplayer.multiplayer_peer.disconnect_peer(sender_id)
 
-
-## Called by the client immediately after the ENet connection is established,
-## and also every time the client loads a new map (scene).
 @rpc("any_peer", "reliable")
 func register_player_with_token(token: String, map_id: String) -> void:
 	var sender_id: int = multiplayer.get_remote_sender_id()
 	
-	# For already-registered peers (scene change re-registration), we trust the
-	# server-approved map_id from request_map_change rather than re-querying the
-	# DB (which can be stale due to async HTTP round-trip timing).
-	# Skip the cooldown check — this player is already authenticated.
 	if _players.has(sender_id):
 		var info: Dictionary = _players[sender_id]
 		var user_id: int = info.get("user_id", -1)
 		var display_name: String = info.get("display_name", "Player")
-		# Use client-supplied map_id (already validated server-side via request_map_change).
 		_register_verified_player(sender_id, user_id, display_name, map_id, token)
 		return
 	
-	# First-time registration — apply anti-spam checks then verify token.
 	if _pending_registrations.has(sender_id):
-		# A verification is already in-flight for this peer — ignore duplicate.
 		push_warning("[GameServer] Registration already in-flight for peer %d — ignoring." % sender_id)
 		return
 	if not _allow_rpc(sender_id, "register", REGISTER_COOLDOWN_SECONDS):
-		# Cooldown hit — soft-reject so the player isn't kicked.
 		push_warning("[GameServer] Registration cooldown for peer %d — soft reject." % sender_id)
 		return
 	
@@ -379,19 +354,15 @@ func _is_movement_valid(peer_id: int, pos: Vector2) -> bool:
 	_last_movement[peer_id] = { "pos": pos, "time": now }
 	return true
 
-# ─── Farm Sync RPCs ──────────────────────────────────────────────────────────
+# Farm Sync RPCs
 
 @rpc("any_peer", "reliable")
 func request_farm_action(_map_id: String, plot_id: int, _action: String, _data: String) -> void:
-	# Farm state is authoritative in the Go API. Client-triggered broadcast was
-	# intentionally disabled to avoid reload amplification/DDoS from forged RPCs.
 	pass
 
 
 @rpc("any_peer", "reliable")
 func notify_farm_changed(plot_id: int) -> void:
-	# Kept as a harmless no-op for older clients; do not broadcast client-supplied
-	# farm events. The actor already applies the Go API response locally.
 	pass
 
 
@@ -454,7 +425,7 @@ func _read_arg_or_env(arg_name: String, env_name: String, default_value: String)
 	return env_value if not env_value.is_empty() else default_value
 
 
-# ─── Broadcast helpers ───────────────────────────────────────────────────────
+# Broadcast helpers
 
 func _broadcast_player_joined(peer_id: int, user_id: int, display_name: String, map_id: String) -> void:
 	for target_id: int in _players:
@@ -474,7 +445,7 @@ func _broadcast_player_left(peer_id: int, map_id: String) -> void:
 		MultiplayerManager._client_player_left.rpc_id(target_id, peer_id)
 
 
-# ─── Farm Invitation RPCs ────────────────────────────────────────────────────
+# Farm Invitation RPCs
 
 @rpc("any_peer", "reliable")
 func send_farm_invite(target_user_id: int) -> void:

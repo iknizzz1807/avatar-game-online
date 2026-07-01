@@ -1,43 +1,23 @@
 extends StateNode
 class_name PlayerNormalState
 
-# ─── Typed reference to the parent Player node ───────────────────────────────
 var player: Player;
-
-# ─── Last non-zero input direction used to keep facing when idle ──────────────
 var lastFacingDir: Vector2 = Vector2.DOWN;
-
-# ─────────────────────────────────────────────────────────────────────────────
 
 func ready_state() -> void:
 	player = parent as Player;
-
-
 func begin_state() -> void:
-	pass ;
-
-
+	pass;
 func end_state() -> void:
-	pass ;
-
-
-# ─── Process (non-physics) ───────────────────────────────────────────────────
-
+	pass;
 func update(_delta: float) -> void:
 	pass
-
-
-# ─── Physics update ──────────────────────────────────────────────────────────
 
 func fixed_update(delta: float) -> void:
 	var inputDir: Vector2 = _handle_movement(delta);
 	_update_animation(inputDir);
 	player.move_and_slide();
-	# Write sync vars so MultiplayerSynchronizer replicates them to other peers.
 	_write_sync_vars(inputDir);
-
-
-# ─── Private helpers ─────────────────────────────────────────────────────────
 
 func _handle_movement(delta: float) -> Vector2:
 	var inputDir: Vector2 = Input.get_vector("move_left", "move_right", "move_up", "move_down");
@@ -61,29 +41,21 @@ func _update_animation(inputDir: Vector2) -> void:
 	else:
 		playback.travel("Idle");
 
-	# Always keep Idle blend position synced so the transition is seamless
 	player.animationTree["parameters/Idle/blend_position"] = _mirror_blend(lastFacingDir);
 
-	# Flip based on the snapped cardinal — never on a raw diagonal
 	player.sprite.flip_h = lastFacingDir.x < 0.0;
 
 
-## Write the four sync vars so MultiplayerSynchronizer replicates them.
 func _write_sync_vars(inputDir: Vector2) -> void:
 	player.sync_anim_state = "Run" if inputDir != Vector2.ZERO else "Idle";
 	player.sync_facing     = _mirror_blend(lastFacingDir);
 	player.sync_flip_h     = lastFacingDir.x < 0.0;
-	# sync_position is updated in Player._physics_process after move_and_slide.
 
-
-	# Pick whichever axis is dominant and snap to a unit cardinal vector
 func _snap_to_cardinal(dir: Vector2) -> Vector2:
 	if absf(dir.x) >= absf(dir.y):
 		return Vector2(signf(dir.x), 0.0);
 	else:
 		return Vector2(0.0, signf(dir.y));
 
-
-# Strip the sign from X so we always sample the right-facing side of the BlendSpace
 func _mirror_blend(dir: Vector2) -> Vector2:
 	return Vector2(absf(dir.x), dir.y);

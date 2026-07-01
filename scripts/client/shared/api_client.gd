@@ -85,7 +85,7 @@ func _handle_session_expired() -> void:
 	if get_node_or_null("/root/MultiplayerManager"):
 		MultiplayerManager.disconnect_from_server()
 	if get_node_or_null("/root/ToastManager"):
-		ToastManager.show_toast("Phien dang nhap het han.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Session expired.", ToastManager.Type.WARNING)
 	get_tree().change_scene_to_file("res://scenes/auth.tscn")
 
 

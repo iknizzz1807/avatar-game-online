@@ -1,23 +1,8 @@
 extends TileMapLayer
-## PondInputHandler — attach this script to the Water TileMapLayer in fish_pond.tscn.
-##
-## Handles:
-##   • Left-click on any water tile  → start fishing immediately
-##   • Right-click on any water tile → show a context menu with fishing actions
-##
-## Proximity check: the local player must be within FISH_RANGE pixels of the
-## clicked tile, otherwise a warning toast is shown.
 
-# ── Tuning ────────────────────────────────────────────────────────────────────
-const FISH_RANGE: float = 90.0   ## Max distance (px) player can be to fish
+const FISH_RANGE: float = 90.0
 
-# ── State ─────────────────────────────────────────────────────────────────────
 var _is_fishing: bool = false
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# LIFECYCLE
-# ─────────────────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
 	add_to_group("pond_input_handler")
@@ -27,13 +12,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not (event is InputEventMouseButton and event.pressed):
 		return
 
-	# Check if the click landed on a filled water tile
 	var local_pos: Vector2  = to_local(get_global_mouse_position())
 	var cell:      Vector2i = local_to_map(local_pos)
 	if get_cell_source_id(cell) == -1:
-		return   # Not a water tile
+		return 
 
-	var world_pos: Vector2 = map_to_local(cell) + Vector2(8, 8)  # tile centre
+	var world_pos: Vector2 = map_to_local(cell) + Vector2(8, 8)
 	var player:    Node    = _get_local_player()
 
 	match event.button_index:
@@ -43,11 +27,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		MOUSE_BUTTON_RIGHT:
 			get_viewport().set_input_as_handled()
 			_handle_right_click(world_pos, player, event.global_position)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# CLICK HANDLERS
-# ─────────────────────────────────────────────────────────────────────────────
 
 func _handle_left_click(tile_world_pos: Vector2, player: Node) -> void:
 	if not _check_proximity(tile_world_pos, player):
@@ -70,11 +49,7 @@ func _handle_right_click(tile_world_pos: Vector2, player: Node, screen_pos: Vect
 
 	menu.show_menu(_build_actions(tile_world_pos, player), self, screen_pos)
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# CONTEXT MENU
-# ─────────────────────────────────────────────────────────────────────────────
-
+## Context menu actions
 func _build_actions(tile_world_pos: Vector2, player: Node) -> Array:
 	var in_range: bool = _check_proximity_silent(tile_world_pos, player)
 	return [
@@ -118,22 +93,18 @@ func _on_context_action(action_id: String, _target: Object, tile_world_pos: Vect
 			_buy_item("bait_normal")
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# FISHING API
-# ─────────────────────────────────────────────────────────────────────────────
+# Fishing logic
 
 func _start_fishing(tile_world_pos: Vector2, player: Node) -> void:
 	if _is_fishing:
 		return
 
-	# Direction from player toward clicked tile
 	var dir: Vector2 = Vector2.DOWN
 	if player != null:
 		var diff: Vector2 = tile_world_pos - player.global_position
 		if diff.length() > 1.0:
 			dir = diff.normalized()
 
-	# Call server if connected
 	if ApiClient.has_auth_token():
 		var response: Dictionary = await ApiClient.request_json(
 			"/api/fishing/start",
@@ -156,7 +127,6 @@ func _stop_fishing() -> void:
 		return
 	_is_fishing = false
 
-	# Tell the player to stop
 	for p in get_tree().get_nodes_in_group("local_player"):
 		if p.has_method("stop_fishing"):
 			p.stop_fishing()
@@ -175,8 +145,6 @@ func _stop_fishing() -> void:
 	else:
 		ToastManager.show_toast("Stopped fishing.")
 
-
-## Called by PlayerFishingState after the minigame is won.
 func on_minigame_success() -> void:
 	_is_fishing = false
 	if ApiClient.has_auth_token():
@@ -201,11 +169,8 @@ func on_minigame_success() -> void:
 		else:
 			ToastManager.show_toast(tr("CHƯA_CÓ_CÁ_CẮN_CÂU"), ToastManager.Type.WARNING)
 	else:
-		# Offline / no auth — give a placeholder reward toast
 		ToastManager.show_toast(tr("CÂU_ĐƯỢC_CÁ"), ToastManager.Type.SUCCESS)
 
-
-## Called by PlayerFishingState after the minigame is lost.
 func on_minigame_failed(_reason: String) -> void:
 	_is_fishing = false
 	if ApiClient.has_auth_token():
@@ -219,7 +184,7 @@ func on_minigame_failed(_reason: String) -> void:
 
 func _buy_item(item_id: String) -> void:
 	if not ApiClient.has_auth_token():
-		ToastManager.show_toast("Cần đăng nhập server để mua vật phẩm.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("You need to log in to the server to buy items.", ToastManager.Type.WARNING)
 		return
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/shop/buy",
@@ -233,13 +198,9 @@ func _buy_item(item_id: String) -> void:
 		ToastManager.show_toast(_shop_error_message(response.get("error", "")), ToastManager.Type.WARNING)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# HELPERS
-# ─────────────────────────────────────────────────────────────────────────────
-
 func _check_proximity(tile_world_pos: Vector2, player: Node) -> bool:
 	if not _check_proximity_silent(tile_world_pos, player):
-		ToastManager.show_toast("Lại gần mặt nước hơn để câu cá.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Move closer to the water.", ToastManager.Type.WARNING)
 		return false
 	return true
 
@@ -262,7 +223,7 @@ func _sync_inventory(data: Dictionary) -> void:
 		if inv.has_method("set_server_inventory"):
 			inv.set_server_inventory(data.get("inventory", []))
 
-
+# TODO: Add localization
 func _fishing_error_message(error_code: String) -> String:
 	match error_code:
 		"NO_FISHING_ROD":

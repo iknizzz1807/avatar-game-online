@@ -1,69 +1,46 @@
 extends Control
 class_name FishingMinigame
 
-# ═════════════════════════════════════════════════════════════════════════════
-# FISHING MINIGAME
-#
-# Stardew Valley-style fishing bar minigame.
-#
-# Phases:
-#   IDLE      → hidden, waiting to be started
-#   WAITING   → bobber animation, random delay before a fish bites
-#   BITE      → "! FISH ON !" alert, player must press Space / LMB within window
-#   MINIGAME  → the bar game; hold Space/LMB to raise player zone, keep it on fish
-#   RESULT    → brief success/fail display, then emit signal and return to IDLE
-# ═════════════════════════════════════════════════════════════════════════════
-
 signal fishing_success()
 signal fishing_failed(reason: String)
 
-# ── Phase enum ────────────────────────────────────────────────────────────────
 enum Phase { IDLE, WAITING, BITE, MINIGAME, RESULT }
 
-# ── Tuning ────────────────────────────────────────────────────────────────────
-const WAIT_MIN:         float = 3.0   ## Minimum wait before a bite (seconds)
-const WAIT_MAX:         float = 8.0   ## Maximum wait before a bite (seconds)
-const BITE_WINDOW:      float = 1.8   ## How long the player has to react (seconds)
-const MINIGAME_DURATION:float = 7.0   ## Total bar-game time (seconds)
-const SUCCESS_THRESHOLD:float = 0.75  ## Fraction of catch-meter needed to win
-const GRAVITY:          float = 180.0 ## How fast player zone falls (px/s²)
-const LIFT:             float = 280.0 ## How fast player zone rises when held (px/s²)
-const FISH_SPEED_BASE:  float = 40.0  ## Fish zone oscillation speed (px/s)
-const FISH_SPEED_RAND:  float = 30.0  ## Random extra speed added to fish zone
-const BAR_HEIGHT:       float = 200.0 ## Pixel height of the play area
-const ZONE_HEIGHT:      float = 56.0  ## Player zone height (px)
-const FISH_HEIGHT:      float = 36.0  ## Fish zone height (px)
+const WAIT_MIN = 3.0
+const WAIT_MAX = 8.0
+const BITE_WINDOW = 1.8
+const MINIGAME_DURATION = 7.0
+const SUCCESS_THRESHOLD = 0.75
+const GRAVITY = 180.0
+const LIFT = 280.0
+const FISH_SPEED_BASE = 40.0
+const FISH_SPEED_RAND = 30.0
+const BAR_HEIGHT = 200.0
+const ZONE_HEIGHT = 56.0
+const FISH_HEIGHT = 36.0
 
-# ── Node references (set from tscn) ───────────────────────────────────────────
-@onready var _wait_panel:      Control         = $WaitPanel
-#@onready var _wait_label:      Label           = $WaitPanel/VBox/WaitLabel
-@onready var _bite_panel:      Control         = $BitePanel
-@onready var _bite_label:      Label           = $BitePanel/BiteMargin/BiteLabel
-@onready var _bar_panel:       Control         = $BarPanel
-@onready var _bar_bg:          Control         = $BarPanel/BarContainer/BarBg
-@onready var _fish_zone:       TextureRect       = $BarPanel/BarContainer/BarBg/FishZone
-@onready var _player_zone:     ColorRect       = $BarPanel/BarContainer/BarBg/PlayerZone
-@onready var _catch_bar:       ProgressBar     = $BarPanel/CatchProgress
-@onready var _result_panel:    Control         = $ResultPanel
-@onready var _result_label:    Label           = $ResultPanel/ResultMargin/ResultLabel
-@onready var _bobber:          Label           = $WaitPanel/VBox/BobberLabel
+@onready var _wait_panel : Control = $WaitPanel
+@onready var _bite_panel : Control = $BitePanel
+@onready var _bite_label : Label = $BitePanel/BiteMargin/BiteLabel
+@onready var _bar_panel : Control = $BarPanel
+@onready var _bar_bg : Control = $BarPanel/BarContainer/BarBg
+@onready var _fish_zone : TextureRect = $BarPanel/BarContainer/BarBg/FishZone
+@onready var _player_zone : ColorRect = $BarPanel/BarContainer/BarBg/PlayerZone
+@onready var _catch_bar : ProgressBar = $BarPanel/CatchProgress
+@onready var _result_panel : Control = $ResultPanel
+@onready var _result_label : Label = $ResultPanel/ResultMargin/ResultLabel
+@onready var _bobber : Label = $WaitPanel/VBox/BobberLabel
 
-# ── Runtime state ─────────────────────────────────────────────────────────────
-var _phase:           Phase  = Phase.IDLE
-var _phase_timer:     float  = 0.0
-var _player_vel:      float  = 0.0
-var _player_y:        float  = 0.0     ## Top edge of player zone inside bar
-var _fish_y:          float  = 0.0     ## Top edge of fish zone inside bar
-var _fish_vel:        float  = 0.0
-var _catch_progress:  float  = 0.0
-var _bobber_time:     float  = 0.0
-var _holding:         bool   = false
-var _result_timer:    float  = 0.0
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# LIFECYCLE
-# ─────────────────────────────────────────────────────────────────────────────
+var _phase : Phase  = Phase.IDLE
+var _phase_timer : float  = 0.0
+var _player_vel : float  = 0.0
+var _player_y : float  = 0.0
+var _fish_y : float  = 0.0
+var _fish_vel : float  = 0.0
+var _catch_progress : float  = 0.0
+var _bobber_time : float  = 0.0
+var _holding : bool   = false
+var _result_timer : float  = 0.0
 
 func _ready() -> void:
 	_set_phase(Phase.IDLE)
@@ -89,57 +66,37 @@ func _unhandled_input(event: InputEvent) -> void:
 			_holding = event.pressed
 			get_viewport().set_input_as_handled()
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-# PUBLIC API
-# ─────────────────────────────────────────────────────────────────────────────
-
-## Begin the fishing sequence from the start.
 func start() -> void:
 	if _phase != Phase.IDLE:
 		return
 	_set_phase(Phase.WAITING)
 
 
-## Immediately cancel and return to idle (e.g. player stopped fishing).
 func cancel() -> void:
 	_set_phase(Phase.IDLE)
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# PHASE LOGIC
-# ─────────────────────────────────────────────────────────────────────────────
-
 func _process_waiting(delta: float) -> void:
 	_phase_timer -= delta
 	_bobber_time  += delta
-
-	# Animate bobber label
-	var bob_offset := sin(_bobber_time * 3.5) * 4.0
-	#_wait_label.text   = tr("ĐANG_CHỜ_CÁ")
-
 	if _phase_timer <= 0.0:
 		_set_phase(Phase.BITE)
 
 
 func _process_bite(delta: float) -> void:
 	_phase_timer -= delta
-
-	# Animate the bite label pulsing
 	var alpha: float = 0.6 + 0.4 * sin(_phase_timer * 8.0)
 	_bite_label.modulate.a = alpha
 
 	if _phase_timer <= 0.0:
-		# Player missed the bite window
 		_phase_timer = 1.5
 		_set_phase(Phase.RESULT)
-		_finish(false, "Cá chạy mất rồi! Phản ứng chậm quá.")
+		_finish(false, "Better luck next time!")
 
 
 func _process_minigame(delta: float) -> void:
 	_phase_timer -= delta
 
-	# ── Player zone physics ──────────────────────────────────────────────
 	_holding = Input.is_action_pressed("ui_accept") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	if _holding:
 		_player_vel -= LIFT * delta
@@ -150,7 +107,7 @@ func _process_minigame(delta: float) -> void:
 		0.0, BAR_HEIGHT - ZONE_HEIGHT)
 	_player_vel = clampf(_player_vel, -LIFT, GRAVITY)
 
-	# ── Fish zone movement ───────────────────────────────────────────────
+	# Fish zone movement
 	_fish_y += _fish_vel * delta
 	if _fish_y <= 0.0:
 		_fish_y   = 0.0
@@ -159,14 +116,12 @@ func _process_minigame(delta: float) -> void:
 		_fish_y   = BAR_HEIGHT - FISH_HEIGHT
 		_fish_vel = -(absf(_fish_vel) + randf_range(20.0, 50.0))
 
-	# Occasional random impulse to the fish
 	if randf() < 0.015:
 		_fish_vel += randf_range(-FISH_SPEED_RAND, FISH_SPEED_RAND)
 	_fish_vel = clampf(_fish_vel,
 		-(FISH_SPEED_BASE + FISH_SPEED_RAND),
 		 FISH_SPEED_BASE + FISH_SPEED_RAND)
 
-	# ── Catch meter ──────────────────────────────────────────────────────
 	var overlap: bool = _zones_overlap()
 	if overlap:
 		_catch_progress = minf(_catch_progress + delta * 0.25, 1.0)
@@ -174,27 +129,20 @@ func _process_minigame(delta: float) -> void:
 		_catch_progress = maxf(_catch_progress - delta * 0.20, 0.0)
 	_catch_bar.value = _catch_progress * 100.0
 
-	# ── Update visuals ───────────────────────────────────────────────────
 	_player_zone.position.y = _player_y
 	_fish_zone.position.y   = _fish_y
 	_player_zone.modulate   = Color(0.2, 0.85, 0.35, 0.85) if overlap else Color(0.3, 0.6, 0.95, 0.85)
 
-	# ── Win / lose check ─────────────────────────────────────────────────
 	if _catch_progress >= SUCCESS_THRESHOLD:
 		_finish(true, "")
 	elif _phase_timer <= 0.0:
-		_finish(false, "Cá thoát mất rồi! Lần sau cố hơn nhé.")
+		_finish(false, "Better luck next time!")
 
 
 func _process_result(delta: float) -> void:
 	_result_timer -= delta
 	if _result_timer <= 0.0:
 		_set_phase(Phase.IDLE)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# STATE TRANSITIONS
-# ─────────────────────────────────────────────────────────────────────────────
 
 func _set_phase(p: Phase) -> void:
 	_phase = p
@@ -256,11 +204,6 @@ func _finish(success: bool, reason: String) -> void:
 		_result_label.text     = "💨 " + reason
 		_result_label.modulate = Color(1.0, 0.4, 0.35)
 		fishing_failed.emit(reason)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# HELPERS
-# ─────────────────────────────────────────────────────────────────────────────
 
 func _zones_overlap() -> bool:
 	var pTop:    float = _player_y

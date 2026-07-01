@@ -165,29 +165,12 @@ LOGIN_SUCCESSFUL,Login successful!,Đăng nhập thành công!
 LOGIN_FAILED,Login failed:,Đăng nhập thất bại:
 LOGIN_FAILED_1,Login failed: ,Đăng nhập thất bại: 
 ANONYMOUS_LOGIN_SUCCESSFUL,Anonymous login successful!,Đăng nhập ẩn danh thành công!
-TXT_2037,⚠,⚠
-TXT_385,"❓
-???","❓
-???"
-S,"🌱
-%s","🌱
-%s"
 PLANT_1,Plant,Trồng cây
-READY_1,"🌾
-Ready!","🌾
-Chín!"
 HARVEST_1,Harvest,Thu hoạch
-02D02D,"🌿
-%02d:%02d","🌿
-%02d:%02d"
 WATER_1,Water,Tưới nước
-TXT_8395,💨,💨
 INSPECT_PLANT_1,Inspect Plant,Kiểm tra cây
 REMOVE_SEED_1,Remove Seed,Nhổ hạt giống
 SHOP_1,Shop,Cửa hàng
-EMPTY_1,"🟫
-Empty","🟫
-Trống"
 BEETROOT_SEED,Beetroot Seed,Beetroot Seed
 BEETROOT,Beetroot,Beetroot
 CABBAGE_SEED,Cabbage Seed,Cabbage Seed

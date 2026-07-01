@@ -1,13 +1,6 @@
 extends ContextMenuTarget
 class_name ShopkeeperInteraction
 
-# ═════════════════════════════════════════════════════════════════════════════
-# SHOPKEEPER INTERACTION
-#
-# Attaches to the Shopkeeper's Area2D. Provides the right-click "Buy Items"
-# option which opens the Shop UI.
-# ═════════════════════════════════════════════════════════════════════════════
-
 func _build_actions() -> Array:
 	return [
 		{ "id": "shop", "label": tr("SHOP_ACTION") }

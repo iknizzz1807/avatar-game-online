@@ -1,36 +1,18 @@
 extends Control
 
-# ═════════════════════════════════════════════════════════════════════════════
-# AUTH SCREEN
-#
-# Handles login and sign-up against the Go REST server.
-# On successful login:
-#   1. Stores JWT + user info in MultiplayerManager
-#   2. Connects to the Godot dedicated server
-#   3. Transitions to game.tscn
-# ═════════════════════════════════════════════════════════════════════════════
-
 const GAME_SCENE: String = "res://scenes/game.tscn"
 
-# ─── Nodes ────────────────────────────────────────────────────────────────────
-@onready var _login_panel: Control  = $Login
-@onready var _signup_panel: Control = $SignUp
-
-# Login panel
-@onready var _login_user:       LineEdit = $Login/VBoxContainer/GridContainer/TextEdit
-@onready var _login_pass:       LineEdit = $Login/VBoxContainer/GridContainer/TextEdit2
-@onready var _login_btn:        Button   = $Login/VBoxContainer/Button
-@onready var _skip_btn:         Button   = $Login/VBoxContainer/SkipButton
-@onready var _register_link:    Button   = $Login/VBoxContainer/RegisterButton
-
-# Sign-up panel
-@onready var _signup_user:      LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit
-@onready var _signup_pass:      LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit2
-@onready var _signup_btn:       Button   = $SignUp/VBoxContainer/Button
-@onready var _back_to_login:    Button   = $SignUp/VBoxContainer/BackToLoginButton
-
-#@onready var _http: HTTPRequest = $HTTPRequest
-
+@onready var _login_panel : Control  = $Login
+@onready var _signup_panel : Control = $SignUp
+@onready var _login_user : LineEdit = $Login/VBoxContainer/GridContainer/TextEdit
+@onready var _login_pass : LineEdit = $Login/VBoxContainer/GridContainer/TextEdit2
+@onready var _login_btn : Button = $Login/VBoxContainer/Button
+@onready var _skip_btn : Button = $Login/VBoxContainer/SkipButton
+@onready var _register_link : Button = $Login/VBoxContainer/RegisterButton
+@onready var _signup_user : LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit
+@onready var _signup_pass : LineEdit = $SignUp/VBoxContainer/GridContainer/TextEdit2
+@onready var _signup_btn : Button = $SignUp/VBoxContainer/Button
+@onready var _back_to_login : Button = $SignUp/VBoxContainer/BackToLoginButton
 @onready var _remember_me_checkbox: CheckBox = $Login/VBoxContainer/RememberMe
 
 
@@ -48,7 +30,6 @@ func _ready() -> void:
 	_login_panel.visible  = true
 	_signup_panel.visible = false
 
-	# If this is the dedicated server, hide the auth UI to avoid confusion!
 	if "--server" in OS.get_cmdline_args():
 		_login_panel.visible = false
 		_signup_panel.visible = false
@@ -58,9 +39,6 @@ func _ready() -> void:
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		label.set_anchors_preset(Control.PRESET_FULL_RECT)
 		add_child(label)
-
-
-# ─── Panel toggle helpers ─────────────────────────────────────────────────────
 
 func _show_signup() -> void:
 	_login_panel.visible  = false
@@ -74,9 +52,6 @@ func _show_login() -> void:
 	_signup_panel.visible = false
 	_login_panel.visible  = true
 	_login_user.grab_focus()
-
-
-# ─── Button handlers ──────────────────────────────────────────────────────────
 
 func _on_login_pressed() -> void:
 	if _login_user.text.strip_edges() == "" or _login_pass.text == "":
@@ -137,14 +112,12 @@ func _on_login_success(data: Dictionary) -> void:
 
 	print("[Auth] Logged in as %s (id=%d)" % [display_name, user_id])
 
-	# Store info in the multiplayer manager
 	ApiClient.set_auth_token(token)
 	MultiplayerManager.set_auth_token(token)
 	MultiplayerManager.set_local_player(user_id, display_name, map_id)
 
 	_save_credentials()
 
-	# Connect to the Godot dedicated server
 	MultiplayerManager.connected_to_server.connect(_on_server_connected, CONNECT_ONE_SHOT)
 	MultiplayerManager.connection_failed.connect(_on_server_connection_failed, CONNECT_ONE_SHOT)
 	MultiplayerManager.connect_to_server()
@@ -160,12 +133,9 @@ func _on_server_connection_failed() -> void:
 	get_tree().change_scene_to_file("res://scenes/%s.tscn" % MultiplayerManager.local_scene_name)
 
 
-# ─── Save & Load Credentials ──────────────────────────────────────────────────
-
 func _save_credentials() -> void:
 	var path := MultiplayerManager.get_profile_save_path()
 	var config := ConfigFile.new()
-	# Load existing file to preserve other sections like [position]
 	config.load(path)
 	
 	if _remember_me_checkbox != null and _remember_me_checkbox.button_pressed:

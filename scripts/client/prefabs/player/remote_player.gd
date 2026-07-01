@@ -3,38 +3,22 @@ class_name RemotePlayer
 
 const FISHING_LINE_DRAWER_SCRIPT := preload("res://scripts/client/shared/fishing_line_drawer.gd")
 
-# ═════════════════════════════════════════════════════════════════════════════
-# REMOTE PLAYER — Display-only node for other players in the world.
-#
-# Position and animation state are driven by MultiplayerSynchronizer, which
-# writes directly to `sync_position`, `sync_anim_state`, `sync_facing`, and
-# `sync_flip_h`. This script applies those values each frame with smooth
-# interpolation for position.
-#
-# The owning peer ID and display name are set by PlayerRegistry when this
-# node is spawned.
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Set by PlayerRegistry after spawning.
 @export var display_name_text: String = "":
 	set(v):
 		display_name_text = v
 		if is_node_ready() and _name_label:
 			_name_label.text = v
 
-## Set by PlayerRegistry — used for context menu identification.
 @export var peer_id: int = -1
 @export var user_id: int = -1
 
-# ─── Sync vars (written by MultiplayerSynchronizer on the owning side) ────────
 var sync_position:   Vector2 = Vector2.ZERO
-var sync_anim_state: String  = "Idle"    # "Idle" or "Run"
-var sync_facing:     Vector2 = Vector2(0.0, 1.0)  # blend position
+var sync_anim_state: String  = "Idle"
+var sync_facing:     Vector2 = Vector2(0.0, 1.0)
 var sync_flip_h:     bool    = false
 
 var _fishing_line_key: String = ""
 
-# ─── Interpolation ────────────────────────────────────────────────────────────
 const INTERP_SPEED: float = 20.0
 
 @onready var _sprite:    Sprite2D      = $Sprite2D
@@ -52,7 +36,6 @@ func _ready() -> void:
 	add_child(pet)
 	pet.global_position = sync_position
 	
-	# Initialise position immediately so we don't lerp from world origin.
 	global_position = sync_position
 	if _name_label:
 		_name_label.text = display_name_text
@@ -68,10 +51,12 @@ func configure_context_menu(target_user_id: int, target_name: String) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	# Smooth position interpolation
-	global_position = global_position.lerp(sync_position, INTERP_SPEED * delta)
+	# Smooth position interpolation or teleport if distance is large
+	if global_position.distance_to(sync_position) > 200.0:
+		global_position = sync_position
+	else:
+		global_position = global_position.lerp(sync_position, INTERP_SPEED * delta)
 
-	# Apply animation state
 	var playback: AnimationNodeStateMachinePlayback = \
 		_anim_tree.get("parameters/playback") as AnimationNodeStateMachinePlayback
 	if playback:
@@ -117,7 +102,6 @@ func _generate_fishing_line_points(start: Vector2, end: Vector2, segments: int, 
 	for i in range(safe_segments + 1):
 		var t := float(i) / float(safe_segments)
 		var base_point := start.lerp(end, t)
-		# 4t(1-t) is 0 at both ends and peaks at 1 in the middle.
 		var parabola_factor := 4.0 * t * (1.0 - t)
 		points.append(base_point + Vector2(0, sag * parabola_factor))
 	return points

@@ -1,5 +1,3 @@
-## Typed resource representing a single item definition.
-## Create .tres instances in resources/items/ for each item in the game.
 ## The inventory stores { "resource": ItemData, "quantity": int } per slot.
 extends Resource
 class_name ItemData
@@ -7,31 +5,24 @@ class_name ItemData
 @export_group("Identity")
 @export var id: int = 0;
 @export var itemName: String = "";
-## Emoji shown as fallback when no texture is assigned.
-@export var icon: String = "❓";
+@export var icon: String = "❓"; # Fallback. Temp
 @export var texture: Texture2D = null;
 
 @export_group("Economy")
-## Purchase price at any shop (0 = not sold in shops).
+## 0 = not sold in shops.
 @export var buyPrice: int = 0;
-## Value when the player sells this item (0 = cannot sell).
+## 0 = cannot sell.
 @export var sellPrice: int = 0;
 @export var sellable: bool = false;
 
 @export_group("Behaviour")
-## Type string — matches Items.TYPE_* constants.
+## Type string
 @export var type: String = "";
-## Whether multiple units stack in one inventory slot (max 99).
 @export var stackable: bool = true;
 
 @export_group("Farming")
-## Seconds from watering to harvest (0 for non-seed items).
 @export var growSecs: int = 0;
 ## ID of the ItemData produced when this seed is harvested (0 = none).
 @export var yieldsId: int = 0;
-## Growth-stage sprites shown on the farm plot while this seed is planted.
 ## Index 0 = just seeded, last index = fully mature (READY).
-## The farm slot selects a sprite by mapping elapsed-time progress
-## (0.0 → 1.0) linearly across this list.
-## Leave empty to use the fallback colour-tint behaviour.
 @export var growthSprites: Array[Texture2D] = [];

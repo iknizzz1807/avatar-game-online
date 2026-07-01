@@ -1,34 +1,16 @@
 extends Control
 class_name Inventory
 
-# ═════════════════════════════════════════════════════════════════════════════
-# SIGNALS
-# ═════════════════════════════════════════════════════════════════════════════
-
 signal sell_requested(itemId: String, quantity: int);
 signal close_requested();
 signal coins_changed(amount: int);
-## Fired whenever inventoryData changes so the Hotbar (and other listeners) can refresh.
 signal inventory_updated(data: Array);
-
-# ═════════════════════════════════════════════════════════════════════════════
-# INSPECTOR — Example data (editable in the Godot editor)
-# Assign ItemData resources and quantities directly in the Inspector.
-# These are loaded on _ready() and used until the Go Server sends real data.
-# ═════════════════════════════════════════════════════════════════════════════
 
 @export_group("Example Data")
 @export var EXAMPLE_SLOTS: Array[InventorySlot] = [];
 
-# ═════════════════════════════════════════════════════════════════════════════
-# CONSTANTS
-# ═════════════════════════════════════════════════════════════════════════════
-
 const SLOT_COUNT: int = 20;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# NODES
-# ═════════════════════════════════════════════════════════════════════════════
 
 @onready var gridContainer: GridContainer = $TabContainer/InventoryPanel/MC/VBox/GridContainer;
 @onready var closeButton: Button = $TabContainer/InventoryPanel/MC/VBox/TitleBar/CloseButton;
@@ -39,6 +21,7 @@ const SLOT_COUNT: int = 20;
 @onready var tooltipName: Label = $TabContainer/InventoryPanel/MC/VBox/TooltipSection/TooltipName;
 @onready var tooltipSellButton: Button = $TabContainer/InventoryPanel/MC/VBox/TooltipSection/SellButton;
 
+# Luoi qua bo vo day
 @onready var tabContainer: TabContainer = $TabContainer;
 @onready var friendsList: ItemList = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn/FriendsList;
 @onready var removeFriendButton: Button = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/FriendsColumn/RemoveFriendButton;
@@ -46,25 +29,13 @@ const SLOT_COUNT: int = 20;
 @onready var acceptButton: Button = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestButtons/AcceptButton;
 @onready var declineButton: Button = $TabContainer/FriendsPanel/MC/VBox/FriendsTab/RequestsColumn/RequestButtons/DeclineButton;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# STATE
-# ═════════════════════════════════════════════════════════════════════════════
-
-## 20-element array. Each element is one of:
-##   { "resource": ItemData, "quantity": int }  — filled slot
-##   {}                                          — empty slot
 var inventoryData: Array = [];
 var slots: Array[ItemSlot] = [];
 var selectedSlot: int = -1;
 var _friends_data: Array = [];
 var _selected_context_friend: Dictionary = {};
 
-# TODO(Backend): Sync coins from the Go server instead of local simulation
 var coins: int = 1000;
-
-# ═════════════════════════════════════════════════════════════════════════════
-# LIFECYCLE
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _ready() -> void:
 	add_to_group("inventory");
@@ -91,7 +62,6 @@ func _ready() -> void:
 	declineButton.text = tr("DECLINE")
 	
 	_collect_slots();
-	# Connect hotbar nodes so they refresh whenever the inventory changes.
 	inventory_updated.connect(_on_inventory_updated_hotbar);
 	if ApiClient.has_auth_token():
 		load_inventory()
@@ -99,10 +69,6 @@ func _ready() -> void:
 		_refresh_friend_requests()
 	else:
 		_load_example_slots();
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PUBLIC API
-# ═════════════════════════════════════════════════════════════════════════════
 
 ## Load fresh inventory from Go Server.
 ## [param data] Array of { "resource": ItemData, "quantity": int } or {}.
@@ -154,26 +120,19 @@ func add_item(item_id: int, quantity: int) -> bool:
 	if item_res.stackable:
 		for i in range(inventoryData.size()):
 			if not inventoryData[i].is_empty() and inventoryData[i]["resource"].id == item_id:
-				# TODO(Backend): Sync item addition with Go server
 				inventoryData[i]["quantity"] += quantity;
 				_refresh_slots();
 				return true;
 				
-	# Find an empty slot
 	for i in range(inventoryData.size()):
 		if inventoryData[i].is_empty():
-			# TODO(Backend): Sync item addition with Go server
 			inventoryData[i] = { "resource": item_res, "quantity": quantity };
 			_refresh_slots();
 			return true;
 			
 	return false;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PRIVATE — build & refresh
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Gather the 20 ItemSlot instances already placed in the scene by the editor.
+# Editor
 func _collect_slots() -> void:
 	for child: Node in gridContainer.get_children():
 		var slot: ItemSlot = child as ItemSlot;
@@ -184,7 +143,6 @@ func _collect_slots() -> void:
 		slot.swap_requested.connect(_on_slot_swap);
 		slots.append(slot);
 
-## Convert EXAMPLE_SLOTS export array into inventoryData and display it.
 func _load_example_slots() -> void:
 	var data: Array = [];
 	for s: InventorySlot in EXAMPLE_SLOTS:
@@ -199,10 +157,6 @@ func _refresh_slots() -> void:
 		slots[i].set_item(inventoryData[i] if i < inventoryData.size() else {});
 	_hide_tooltip();
 	inventory_updated.emit(inventoryData);
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PRIVATE — event handlers
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _on_slot_clicked(idx: int) -> void:
 	if selectedSlot >= 0:
@@ -269,6 +223,7 @@ func _on_inventory_updated_hotbar(data: Array) -> void:
 		if hotbar.has_method("populate"):
 			hotbar.populate(data)
 
+## FRIENDS PANEL
 
 func _on_friends_updated(friends: Array) -> void:
 	_friends_data = friends

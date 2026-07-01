@@ -1,48 +1,30 @@
 extends Node
 
-# ═════════════════════════════════════════════════════════════════════════════
-# MULTIPLAYER MANAGER — Client Autoload Singleton
-#
-# Add to Project → Project Settings → Autoload as "MultiplayerManager".
-#
-# Responsibilities:
-#   • Connect to / disconnect from the Godot dedicated server
-#   • Call register_player_with_token() on the server after connecting
-#   • Listen for server RPCs (_client_player_joined, _client_player_left)
-#   • Emit typed signals so the game scene can react (spawn/despawn nodes, etc.)
-#   • Store local player info set by the auth flow
-# ═════════════════════════════════════════════════════════════════════════════
 
 signal connected_to_server()
 signal disconnected_from_server()
 signal connection_failed()
-
-## Emitted when the server tells us another player joined our map.
 signal player_joined(peer_id: int, user_id: int, display_name: String)
-
-## Emitted when the server tells us a player left (or disconnected).
 signal player_left(peer_id: int)
-
 signal chat_received(sender_name: String, text: String)
 signal map_change_result(result: Dictionary)
 
 const DEFAULT_HOST: String = "127.0.0.1"
 const DEFAULT_PORT: int    = 7777
 
-## A list of scene names that should be treated as private/local instances.
-## The player's unique ID will be appended to the map_id to isolate them from other players.
+# List of scene names that are instanced per player (farm).
 const INSTANCED_SCENES: Array[String] = [
 	"game",
 ]
 
-# ─── Local player info (populated by auth flow before connecting) ─────────────
+# Local player info
 var local_user_id:      int    = -1
 var local_display_name: String = ""
 var local_auth_token:   String = ""
 var local_scene_name:   String = "game"
 var local_map_id:       String = "game"
 
-# ─── Internal ─────────────────────────────────────────────────────────────────
+# Internal
 var _peer: ENetMultiplayerPeer = null
 var _invite_dialog: ConfirmationDialog = null
 var _pending_invite_user_id: int = -1
@@ -64,8 +46,7 @@ func get_server_port() -> int:
 
 # ─── Public API ───────────────────────────────────────────────────────────────
 
-## Call this after a successful Go REST login.
-## user_id / display_name come from the /api/auth/login response.
+## Perform a REST login.
 func set_local_player(user_id: int, display_name: String, map_id: String = "game") -> void:
 	local_user_id      = user_id
 	local_display_name = display_name
@@ -75,7 +56,7 @@ func set_local_player(user_id: int, display_name: String, map_id: String = "game
 func set_auth_token(token: String) -> void:
 	local_auth_token = token
 
-## Sets the scene name and automatically computes the map_id to isolate personal maps.
+## Sets the scene name.
 func set_map(scene_name: String) -> void:
 	var target_map_id_override := ""
 	if scene_name.contains("_"):
@@ -107,7 +88,7 @@ func get_server_map_name(scene_name: String = "") -> String:
 		_:
 			return scene_name
 
-
+# Go dùng scene tên khác :V
 func _server_map_to_scene(map_id: String) -> String:
 	if map_id.begins_with("game_"):
 		return "game"
@@ -146,20 +127,13 @@ func connect_to_server(host: String = "", port: int = 0) -> void:
 	print("[MultiplayerManager] Connecting to %s:%d …" % [host, port])
 
 
-## Gracefully disconnect from the server.
 func disconnect_from_server() -> void:
 	if _peer == null:
 		return
 	multiplayer.multiplayer_peer = null
 	_peer = null
-	print("[MultiplayerManager] Disconnected.")
 
-
-
-
-
-# ─── Multiplayer callbacks ────────────────────────────────────────────────────
-
+# Multiplayer callbacks
 func _on_connected_to_server() -> void:
 	print("[MultiplayerManager] Connected! My peer ID: %d" % multiplayer.get_unique_id())
 	connected_to_server.emit()
@@ -190,16 +164,16 @@ func _on_server_disconnected() -> void:
 	disconnected_from_server.emit()
 
 
-# ─── Server → Client RPCs (server calls these on us) ─────────────────────────
+# Server → Client RPCs
 
-## The server tells us that peer_id's player has joined our map.
+## joined peer_id.
 @rpc("authority", "reliable")
 func _client_player_joined(peer_id: int, user_id: int, display_name: String, _map_id: String) -> void:
 	print("[MultiplayerManager] Player joined: %s (peer=%d)" % [display_name, peer_id])
 	player_joined.emit(peer_id, user_id, display_name)
 
 
-## The server tells us that peer_id's player has left / disconnected.
+## disconnected peer_id.
 @rpc("authority", "reliable")
 func _client_player_left(peer_id: int) -> void:
 	print("[MultiplayerManager] Player left: peer=%d" % peer_id)
@@ -239,9 +213,9 @@ func map_change_approved(scene_name: String) -> void:
 func map_change_denied() -> void:
 	map_change_result.emit({ "approved": false, "scene_name": "" })
 
-# ─── Farm Sync ──────────────────────────────────────────────────────────────
+# Farm Sync
 
-## Send a farm action to the server (plant, water, harvest, remove)
+## Send farm action (plant, water, harvest, remove)
 func send_farm_action(plot_id: int, action: String, data: String = "") -> void:
 	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
 	if server_node and multiplayer.has_multiplayer_peer():
@@ -265,11 +239,9 @@ func farm_changed(map_id: String, _plot_id: int) -> void:
 
 @rpc("authority", "reliable")
 func sync_farm_slot(map_id: String, plot_id: int, state: int, seed_id: String, ready_at: int) -> void:
-	# Only care if we are on the same map
 	if map_id != local_map_id:
 		return
 	
-	# Find the FarmSlot by plotId
 	var slots = get_tree().get_nodes_in_group("farm_slots")
 	for slot in slots:
 		if slot.plotId == plot_id:
@@ -281,11 +253,10 @@ func sync_all_farm_slots(map_id: String, slots_data: Dictionary) -> void:
 	if map_id != local_map_id:
 		return
 	
-	# slots_data is a dictionary with plot_id as int-like string or int
 	var slots = get_tree().get_nodes_in_group("farm_slots")
 	for slot in slots:
-		# Convert plotId to string because JSON keys might be strings, or check both
 		var plot_key = slot.plotId
+		# bruh
 		if slots_data.has(plot_key):
 			var data = slots_data[plot_key]
 			slot.sync_state(data.get("state", 0), data.get("seed_id", ""), data.get("ready_at", 0))
@@ -293,8 +264,9 @@ func sync_all_farm_slots(map_id: String, slots_data: Dictionary) -> void:
 			var data = slots_data[str(plot_key)]
 			slot.sync_state(data.get("state", 0), data.get("seed_id", ""), data.get("ready_at", 0))
 
+# Sync Player Movement.
 
-## The server relays another player's movement state to us.
+## player's movement state relays.
 @rpc("authority", "unreliable_ordered")
 func update_remote_player(peer_id: int, pos: Vector2, anim_state: String, facing: Vector2, flip_h: bool) -> void:
 	var registries := get_tree().get_nodes_in_group("player_registry")
@@ -329,7 +301,7 @@ func _read_arg_or_env(arg_name: String, env_name: String, default_value: String)
 	return env_value if not env_value.is_empty() else default_value
 
 
-# ─── Farm Invitation RPCs ────────────────────────────────────────────────────
+# Farm Invitation
 
 func send_farm_invite(target_user_id: int) -> void:
 	var server_node: Node = get_tree().root.get_node_or_null("ServerScene")
@@ -406,7 +378,7 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_player_position()
 
-
+# For showcase.
 func save_player_position() -> void:
 	var player = get_tree().get_first_node_in_group("local_player")
 	if player != null:

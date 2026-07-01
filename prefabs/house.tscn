@@ -10,8 +10,9 @@ y_sort_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1408656691]
 y_sort_enabled = true
+position = Vector2(0, -14)
 texture = ExtResource("1_25t6t")
-offset = Vector2(0, -51)
+offset = Vector2(0, -37)
 region_enabled = true
 region_rect = Rect2(68, 123, 72, 101)
 

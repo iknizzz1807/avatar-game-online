@@ -3,7 +3,8 @@
 ## Do NOT change IDs after release; they are stored in the DB.
 class_name Items
 
-# ─── Item types ───────────────────────────────────────────────────────────────
+## Go dùng string để lưu trữ ID của item, nhưng Godot dùng int :V.
+
 const TYPE_SEED: String = "seed";
 const TYPE_CROP: String = "crop";
 const TYPE_FISH: String = "fish";
@@ -11,7 +12,6 @@ const TYPE_TOOL: String = "tool";
 const TYPE_BAIT: String = "bait";
 const TYPE_POTION: String = "potion";
 
-# ─── Item IDs ─────────────────────────────────────────────────────────────────
 const ID_SEED_BEETROOT: int = 1;
 const ID_SEED_CABBAGE: int = 2;
 const ID_SEED_CARROT: int = 3;
@@ -110,6 +110,7 @@ const INT_ID_BY_SERVER_ID: Dictionary = {
 static func _static_init() -> void:
 	var path: String = "res://resources/items/"
 	var dir: DirAccess = DirAccess.open(path)
+	# Load all .tres files in the resources/items/ folder and add them to the CATALOGUE.
 	if dir:
 		dir.list_dir_begin()
 		var file_name: String = dir.get_next()
@@ -121,9 +122,7 @@ static func _static_init() -> void:
 			file_name = dir.get_next()
 		dir.list_dir_end()
 
-# ─── Lookup helpers ───────────────────────────────────────────────────────────
 
-## Returns the ItemData resource for [param id], or null if not found.
 static func get_item(id: int) -> ItemData:
 	for item: ItemData in CATALOGUE:
 		if item.id == id:
@@ -154,7 +153,6 @@ static func build_item_from_server(data: Dictionary) -> ItemData:
 	fallback.stackable = true
 	return fallback
 
-## Returns every ItemData of a given [param type] (one of the TYPE_* constants).
 static func get_by_type(type: String) -> Array[ItemData]:
 	var result: Array[ItemData] = [];
 	for item: ItemData in CATALOGUE:

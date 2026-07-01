@@ -25,7 +25,7 @@ func _ready() -> void:
 
 func request_trade(target_user_id: int, target_name: String = "") -> void:
 	if not ApiClient.has_auth_token():
-		ToastManager.show_toast("Dang nhap de trao doi.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Please log in to trade.", ToastManager.Type.WARNING)
 		return
 	var response: Dictionary = await ApiClient.request_json(
 		"/api/trade/request",
@@ -33,7 +33,7 @@ func request_trade(target_user_id: int, target_name: String = "") -> void:
 		{ "target_user_id": target_user_id }
 	)
 	if not response.get("ok", false):
-		ToastManager.show_toast("Khong gui duoc loi moi trade.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Cannot send trade request.", ToastManager.Type.WARNING)
 		return
 	var trade: Dictionary = _extract_trade(response)
 	active_trade = trade
@@ -41,7 +41,7 @@ func request_trade(target_user_id: int, target_name: String = "") -> void:
 	var name: String = target_name
 	if name.is_empty():
 		name = str(trade.get("target_name", "player"))
-	ToastManager.show_toast("Da gui loi moi trade toi " + name + ".")
+	ToastManager.show_toast("Trade request sent to " + name + ".")
 	
 	# Notify target peer via Godot server RPC
 	var server_node = get_tree().root.get_node_or_null("ServerScene")
@@ -54,7 +54,7 @@ func accept_trade(trade_id: int) -> void:
 		"/api/trade/%d/accept" % trade_id,
 		HTTPClient.METHOD_POST
 	)
-	_handle_trade_response(response, "Da chap nhan trade.", "Khong chap nhan duoc trade.")
+	_handle_trade_response(response, "Trade accepted.", "Failed to accept trade.")
 
 
 func cancel_trade(trade_id: int) -> void:
@@ -66,7 +66,7 @@ func cancel_trade(trade_id: int) -> void:
 	if response.get("ok", false):
 		active_trade = {}
 		_hide_trade()
-		ToastManager.show_toast("Da huy trade.")
+		ToastManager.show_toast("Trade canceled.")
 		trade_closed.emit()
 		
 		# Notify target peer via Godot server RPC
@@ -75,7 +75,7 @@ func cancel_trade(trade_id: int) -> void:
 			if server_node and MultiplayerManager.multiplayer.has_multiplayer_peer():
 				server_node.send_trade_canceled.rpc_id(1, other_id)
 	else:
-		ToastManager.show_toast("Khong huy duoc trade.", ToastManager.Type.WARNING)
+		ToastManager.show_toast("Failed to cancel trade.", ToastManager.Type.WARNING)
 
 
 func set_offer(trade_id: int, items: Array) -> void:
@@ -84,7 +84,7 @@ func set_offer(trade_id: int, items: Array) -> void:
 		HTTPClient.METHOD_POST,
 		{ "items": items }
 	)
-	_handle_trade_response(response, "Da cap nhat vat pham.", "Khong cap nhat duoc vat pham.")
+	_handle_trade_response(response, "Offer updated.", "Failed to update offer.")
 
 
 func set_ready(trade_id: int, ready: bool) -> void:
@@ -93,12 +93,11 @@ func set_ready(trade_id: int, ready: bool) -> void:
 		HTTPClient.METHOD_POST,
 		{ "ready": ready }
 	)
-	_handle_trade_response(response, "Da san sang.", "Trade that bai.")
-
+	_handle_trade_response(response, "Ready.", "Failed to set ready.")
 
 func refresh_trade(trade_id: int) -> void:
 	var response: Dictionary = await ApiClient.request_json("/api/trade/%d" % trade_id)
-	_handle_trade_response(response, "", "Khong tai duoc trade.")
+	_handle_trade_response(response, "", "Failed to load trade.")
 
 
 func _poll_active_trade() -> void:
@@ -112,7 +111,7 @@ func _poll_active_trade() -> void:
 		if not active_trade.is_empty():
 			active_trade = {}
 			_hide_trade()
-			ToastManager.show_toast("Trade da ket thuc.")
+			ToastManager.show_toast("Trade ended.")
 			trade_closed.emit()
 		return
 	active_trade = trade
@@ -131,8 +130,8 @@ func _prompt_incoming_trade(trade: Dictionary) -> void:
 	_pending_prompt_trade_id = trade_id
 	var dialog: ConfirmationDialog = ConfirmationDialog.new()
 	_pending_prompt_dialog = dialog
-	dialog.title = "Loi moi trade"
-	dialog.dialog_text = "%s muon trao doi vat pham voi ban." % trade.get("requester_name", "Nguoi choi")
+	dialog.title = "Trade Request"
+	dialog.dialog_text = "%s wants to trade items with you." % trade.get("requester_name", "Player")
 	dialog.confirmed.connect(_on_trade_prompt_confirmed)
 	dialog.canceled.connect(_on_trade_prompt_canceled)
 	get_tree().root.add_child(dialog)
@@ -171,7 +170,7 @@ func _handle_trade_response(response: Dictionary, success_text: String, error_te
 		_show_trade(trade)
 		trade_updated.emit(trade)
 		if trade.get("status", "") == "completed":
-			ToastManager.show_toast("Trade thanh cong.", ToastManager.Type.SUCCESS)
+			ToastManager.show_toast("Trade completed.", ToastManager.Type.SUCCESS)
 			_hide_trade()
 		elif not success_text.is_empty():
 			ToastManager.show_toast(success_text)

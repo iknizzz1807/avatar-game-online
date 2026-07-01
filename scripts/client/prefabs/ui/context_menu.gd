@@ -1,43 +1,21 @@
 extends PanelContainer
 class_name ContextMenu
 
-# ═════════════════════════════════════════════════════════════════════════════
-# SIGNALS
-# ═════════════════════════════════════════════════════════════════════════════
 
-## Emitted when the player clicks an action item.
-## [param action_id]  String key for the chosen action (e.g. "plant", "harvest").
-## [param target]     The game-world object that was right-clicked (FarmSlot,
-##                    OtherPlayer, NPC, etc.) – cast to the type you expect.
+const ITEM_PREFAB = preload("res://prefabs/ui/components/context_menu_item.tscn")
 signal action_selected(action_id: String, target: Object);
-
-# ═════════════════════════════════════════════════════════════════════════════
-# NODES
-# ═════════════════════════════════════════════════════════════════════════════
-
 @onready var itemList: VBoxContainer = $MarginContainer/VBoxContainer;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PRIVATE STATE
-# ═════════════════════════════════════════════════════════════════════════════
-
-## The world object that opened this menu (FarmSlot, OtherPlayer, …).
 var _target: Object = null;
 var _screen_pos: Vector2 = Vector2.ZERO;
 var _last_actions_signature: String = "";
 var _refresh_elapsed: float = 0.0;
-
-## Whether the menu is currently visible and consuming input.
 var _active: bool = false;
 
-# ═════════════════════════════════════════════════════════════════════════════
-# LIFECYCLE
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _ready() -> void:
 	hide();
 	add_to_group("context_menu");
-	# Process input even when paused, so the menu can always be dismissed.
 	process_mode = Node.PROCESS_MODE_ALWAYS;
 	set_process(false);
 
@@ -54,40 +32,17 @@ func _process(delta: float) -> void:
 	if signature != _last_actions_signature:
 		_set_actions(actions);
 
-# ═════════════════════════════════════════════════════════════════════════════
-# PUBLIC API
-# ═════════════════════════════════════════════════════════════════════════════
-
-## Show the context menu at [param screen_pos] with [param actions].
-##
-## [param actions]    Array of Dictionaries. Each dict shape:
-##     {
-##         "id":      String   – unique action key, e.g. "plant"
-##         "label":   String   – display text, e.g. "🌱 Trồng cây"
-##         "enabled": bool     – (optional, default true) greys out the button
-##         "tooltip": String   – (optional) shown on hover when button is disabled
-##     }
-##
-## [param target]     The game object that was right-clicked. Passed back via
-##                    [signal action_selected] so callers know which object
-##                    the action should apply to.
-##
-## To add a new target type (NPC, chest, etc.) just call this method from
-## that object with its own action list — no changes needed here.
 func show_menu(actions: Array, target: Object, screen_pos: Vector2) -> void:
 	_target = target;
 	_screen_pos = screen_pos;
 	_refresh_elapsed = 0.0;
 	_set_actions(actions);
-
-	# Position the menu; clamp so it never goes off-screen.
 	_place_at(screen_pos);
 
 	show();
 	_active = true;
 	set_process(true);
 
-## Close the menu without selecting any action.
 func dismiss() -> void:
 	_active = false;
 	set_process(false);
@@ -96,31 +51,21 @@ func dismiss() -> void:
 	_target = null;
 	_last_actions_signature = "";
 
-# ═════════════════════════════════════════════════════════════════════════════
-# INPUT HANDLING
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not _active:
 		return;
-
-	# Dismiss on Escape
 	if event.is_action_pressed("ui_cancel"):
 		dismiss();
 		get_viewport().set_input_as_handled();
 		return;
 
-	# Dismiss when clicking anywhere outside the panel
 	if event is InputEventMouseButton and event.pressed:
 		var localPos: Vector2 = get_local_mouse_position();
 		var menuRect: Rect2 = Rect2(Vector2.ZERO, size);
 		if not menuRect.has_point(localPos):
 			dismiss();
 			get_viewport().set_input_as_handled();
-
-# ═════════════════════════════════════════════════════════════════════════════
-# PRIVATE HELPERS
-# ═════════════════════════════════════════════════════════════════════════════
 
 func _on_action_pressed(actionId: String) -> void:
 	var target: Object = _target;
@@ -132,8 +77,6 @@ func _clear_items() -> void:
 	for child: Node in itemList.get_children():
 		child.queue_free();
 
-
-const ITEM_PREFAB = preload("res://prefabs/ui/components/context_menu_item.tscn")
 
 func _set_actions(actions: Array) -> void:
 	_last_actions_signature = JSON.stringify(actions);
@@ -159,9 +102,7 @@ func _can_refresh_target_actions() -> bool:
 			return method.get("args", []).size() == 0
 	return false
 
-## Place the menu at [param pos], clamping so it stays fully within the viewport.
 func _place_at(pos: Vector2) -> void:
-	# We need the panel to be the right size before clamping, so force a layout pass.
 	await get_tree().process_frame;
 
 	var vpSize: Vector2 = get_viewport_rect().size;

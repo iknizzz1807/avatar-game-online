@@ -1,18 +1,7 @@
 extends Area2D
-class_name OtherPlayer
+class_name OtherPlayer 
 
-# ═════════════════════════════════════════════════════════════════════════════
-# OTHER PLAYER
-# Extends ContextMenuTarget, which provides all right-click / context menu
-# wiring. This class only declares WHAT social actions are available and
-# HOW to react to them.
-#
-# HOW TO ADD A NEW ACTION
-# ───────────────────────
-# 1. Add a dict to _build_actions().
-# 2. Add a matching branch in _on_context_action().
-# Done — no changes needed anywhere else.
-# ═════════════════════════════════════════════════════════════════════════════
+# Player Context Menu
 
 @export var playerName: String = "Unknown"
 @export var playerId: int = -1
@@ -37,17 +26,12 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shapeIdx: int) -> void
 	menu.action_selected.connect(_on_context_action, CONNECT_ONE_SHOT)
 	menu.show_menu(_build_actions(), self, event.global_position)
 
-# ─── CONTEXT MENU — ContextMenuTarget interface ───────────────────────────────
-
 func _build_actions() -> Array:
 	return [
 		{ "id": "view_profile", "label": tr("XEM_TRANG_CÁ_NHÂN") },
 		{ "id": "add_friend",   "label": "Ket ban" },
 		{ "id": "trade",        "label": tr("TRAO_ĐỔI_VẬT_PHẨM") },
 		{ "id": "whisper",      "label": tr("NHẮN_RIÊNG") },
-		# ── Add future social actions below ──
-		# { "id": "invite_farm",  "label": tr("MỜI_ĐẾN_NÔNG_TRẠI") },
-		# { "id": "report",       "label": tr("BÁO_CÁO") },
 	]
 
 func _on_context_action(actionId: String, target: Object) -> void:
